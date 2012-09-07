@@ -1,0 +1,65 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: casacore
+Upstream-Contact: FIXME
+Source: FIXME
+
+Files: *
+Copyright: 1992-2012
+ 2010, ESO (in the framework of the ALMA collaboration)
+License: LGPL-2+
+ FIXME
+
+Files: ./casa/OS/test/*
+ ./*/*/test/*
+Copyright: 1993-2011
+ ESO (in the framework of the ALMA collaboration)
+License: GPL
+ FIXME
+
+Files: ./casa/OS/*.h
+Copyright: 1984, 1989, William LeFebvre, Rice University
+ 1989, - 1994, William LeFebvre, Northwestern University
+ 1994-1995, William LeFebvre, Argonne National Laboratory
+ 1996, William LeFebvre, Group sys Consulting
+ 2002, Associated Universities Inc
+ details
+License: UNKNOWN
+ FIXME
+
+Files: ./images/Images/test/tAntennaResponses.cc
+Copyright: 2003-2004,
+License: GPL-2+
+ FIXME
+
+Files: ./images/Images/ImageReorderer.h
+Copyright: 1998-2001,2003, Associated Universities, Inc. Washington DC, USA
+License: GPL-2+
+ FIXME
+
+Files: ./components/ComponentModels/FluxCalcLogFreqPolynomial.h
+Copyright: 2010, Associated Universities, Inc. Washington DC, USA
+License: LGPL-2+
+ FIXME
+
+Files: ./casa/Utilities/generic.h
+Copyright: 1988, Free Software Foundation
+License: LGPL-2+
+ FIXME
+
+Files: ./casa/OS/HostInfoBsd.h
+Copyright: 2009, Associated Universities Inc
+License: UNKNOWN
+ FIXME
+
+Files: ./install/printer/range.c
+Copyright: Barry Brachman
+License: UNKNOWN
+ FIXME
+
+Files: ./install/codedevl/glish-mode.el
+Copyright: 1987, the
+ 1990, 1994 Free Software Foundation, Inc
+ 1996-1998, Jeffrey A. Uphoff, NRAO/AUI
+License: UNKNOWN
+ FIXME
+

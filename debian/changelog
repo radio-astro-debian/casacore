@@ -1,0 +1,5 @@
+casacore (1.5.0-1) UNRELEASED; urgency=low
+
+  * Initial release. Closes: #XXXXXX
+
+ -- Ole Streicher <debian@liska.ath.cx>  Thu, 06 Sep 2012 09:46:06 +0200
