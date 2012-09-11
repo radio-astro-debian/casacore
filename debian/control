@@ -3,24 +3,246 @@ Priority: optional
 Maintainer: Debian Science Maintainers <debian-science-maintainers@lists.alioth.debian.org>
 Uploaders: Ole Streicher <debian@liska.ath.cx>
 DM-Upload-Allowed: yes
-Build-Depends: debhelper (>= 9),cmake
+Build-Depends: bison,
+               cfitsio-dev,
+               cmake,
+               debhelper (>= 9),
+               flex,
+               gfortran,
+               libfftw3-dev,
+               wcslib-dev
 Standards-Version: 3.9.3
 Section: science
 Homepage: http://code.google.com/p/casacore/
 Vcs-Git: git://git.debian.org/git/debian-science/packages/casacore.git
 Vcs-Browser: http://git.debian.org/?p=debian-science/packages/casacore.git
 
-Package: casacore
+Package: casacore-dev
+Section: libdevel
+Architecture: all
+Depends: ${misc:Depends}, libcasa-casa, libcasa-scimath, libcasa-scimath-f
+Pre-Depends: ${misc:Pre-Depends}
+Description: Common Astronomy Software Applications core library
+ The casacore package contains the core libraries of the old AIPS++/CASA
+ package. This split was made to get a better separation of core libraries and
+ applications.
+ .
+ This package contains the header files for application development.
+
+Package: casacore-tools
+Section: science
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Description: Tools build with CASA
+ The casacore package contains the core libraries of the old AIPS++/CASA
+ package. This split was made to get a better separation of core libraries and
+ applications.
+ .
+ This package contains the tools built with the CASAcore package.
+
+Package: libcasa-casa
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Description: Common Astronomy Software Applications core library
+Description: CASA core library
  The casacore package contains the core libraries of the old AIPS++/CASA
  package. This split was made to get a better separation of core libraries and
- applications. CASA is now built on top of casacore.
+ applications.
  .
- The system consists of a set of layered libraries (packages) which can be
- seen best on the Modules page. A Python binding to the libraries has been
- made which is called pyrap. 
+ This package containes the Core modules: N-dim arrays, quanta, OS, IO,
+ logging, and various other classes.
+
+Package: libcasa-scimath
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: CASA scimath library
+ The casacore package contains the core libraries of the old AIPS++/CASA
+ package. This split was made to get a better separation of core libraries and
+ applications.
+ .
+ This package contains the Mathematical modules N-dim functionals,
+ linear/non-linear fitting, and miscellaneous.
+
+Package: libcasa-scimath-f
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: CASA scimath F library
+ The casacore package contains the core libraries of the old AIPS++/CASA
+ package. This split was made to get a better separation of core libraries and
+ applications.
+ .
+ This package contains the Mathematical modules N-dim functionals,
+ linear/non-linear fitting, and miscellaneous.
+
+Package: libcasa-tables
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: CASA table library
+ The casacore package contains the core libraries of the old AIPS++/CASA
+ package. This split was made to get a better separation of core libraries and
+ applications.
+ .
+ This package contains the database-like table system with advanced query
+ language (TaQL).
+
+Package: libcasa-measures
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: CASA measures library
+ The casacore package contains the core libraries of the old AIPS++/CASA
+ package. This split was made to get a better separation of core libraries and
+ applications.
+ .
+ This package implements quantities with references frames and their
+ persistency.
+
+Package: libcasa-lattices
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: CASA lattice library
+ The casacore package contains the core libraries of the old AIPS++/CASA
+ package. This split was made to get a better separation of core libraries and
+ applications.
+ .
+ This package implements memory- or disk-based N-dim arrays (lattices) with
+ masking, regions, expressions, and math.
+
+Package: libcasa-fits
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: CASA FITS library
+ The casacore package contains the core libraries of the old AIPS++/CASA
+ package. This split was made to get a better separation of core libraries and
+ applications.
+ .
+ This package contains a C++ interface on top of cfitsio.
+
+Package: libcasa-ms
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: CASA ms library
+ The casacore package contains the core libraries of the old AIPS++/CASA
+ package. This split was made to get a better separation of core libraries and
+ applications.
+ .
+ This package contains the data format for visibility data as described in the
+ MeasurementSet definition.
+
+Package: libcasa-derivedmscal
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: CASA derived mscal library
+ The casacore package contains the core libraries of the old AIPS++/CASA
+ package. This split was made to get a better separation of core libraries and
+ applications.
+ .
+ This package contains derived MeasurementSet quantities (like hourangle) that
+ can be used as virtual table columns or as TaQL user defined functions.
+
+Package: libcasa-msfits
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: CASA msfits library
+ The casacore package contains the core libraries of the old AIPS++/CASA
+ package. This split was made to get a better separation of core libraries and
+ applications.
+ .
+ This package contains the mapping of MeasurementSets to/from FITS.
+
+Package: libcasa-coordinates
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: CASA coordinates library
+ The casacore package contains the core libraries of the old AIPS++/CASA
+ package. This split was made to get a better separation of core libraries and
+ applications.
+ .
+ This package contains the implementaion of coordinates for astronomical
+ images.
+
+Package: libcasa-components
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: CASA components library
+ The casacore package contains the core libraries of the old AIPS++/CASA
+ package. This split was made to get a better separation of core libraries and
+ applications.
+ .
+ This package contains the implementation of sky components (point sources,
+ gaussians, etc.).
+
+Package: libcasa-images
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: CASA image processing library
+ The casacore package contains the core libraries of the old AIPS++/CASA
+ package. This split was made to get a better separation of core libraries and
+ applications.
+ .
+ This package implements n-dimensional images with masks, coordinates, and
+ history.
+
+Package: libcasa-meas
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: CASA meas library
+ The casacore package contains the core libraries of the old AIPS++/CASA
+ package. This split was made to get a better separation of core libraries and
+ applications.
+
+Package: libcasa-mirlib
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: CASA mirlib library
+ The casacore package contains the core libraries of the old AIPS++/CASA
+ package. This split was made to get a better separation of core libraries and
+ applications.
+ .
+ This package implements the MIRIAN radio interferometry data reduction
+ package that is of particular interest to users of the Australia Telescope
+ Compact Array (ATCA).

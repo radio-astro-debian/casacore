@@ -8,13 +8,20 @@ Copyright: 1992-2012
  2010, ESO (in the framework of the ALMA collaboration)
 License: LGPL-2+
  FIXME
+ .
+ On Debian systems, the full text of the GNU Lesser General Public
+ License version 2+ can be found in the file
+ `/usr/share/common-licenses/LGPL-2'.
 
 Files: ./casa/OS/test/*
  ./*/*/test/*
 Copyright: 1993-2011
  ESO (in the framework of the ALMA collaboration)
 License: GPL
- FIXME
+ .
+ On Debian systems, the full text of the GNU General Public
+ License version 2 can be found in the file
+ `/usr/share/common-licenses/GPL-2'.
 
 Files: ./casa/OS/*.h
 Copyright: 1984, 1989, William LeFebvre, Rice University
@@ -30,21 +37,37 @@ Files: ./images/Images/test/tAntennaResponses.cc
 Copyright: 2003-2004,
 License: GPL-2+
  FIXME
+ .
+ On Debian systems, the full text of the GNU General Public
+ License version 2 can be found in the file
+ `/usr/share/common-licenses/GPL-2'.
 
 Files: ./images/Images/ImageReorderer.h
 Copyright: 1998-2001,2003, Associated Universities, Inc. Washington DC, USA
 License: GPL-2+
  FIXME
+ .
+ On Debian systems, the full text of the GNU General Public
+ License version 2 can be found in the file
+ `/usr/share/common-licenses/GPL-2'.
 
 Files: ./components/ComponentModels/FluxCalcLogFreqPolynomial.h
 Copyright: 2010, Associated Universities, Inc. Washington DC, USA
 License: LGPL-2+
  FIXME
+ .
+ On Debian systems, the full text of the GNU General Public
+ License version 2 can be found in the file
+ `/usr/share/common-licenses/GPL-2'.
 
 Files: ./casa/Utilities/generic.h
 Copyright: 1988, Free Software Foundation
 License: LGPL-2+
  FIXME
+ .
+ On Debian systems, the full text of the GNU Lesser General Public
+ License version 2+ can be found in the file
+ `/usr/share/common-licenses/LGPL-2'.
 
 Files: ./casa/OS/HostInfoBsd.h
 Copyright: 2009, Associated Universities Inc
@@ -62,4 +85,3 @@ Copyright: 1987, the
  1996-1998, Jeffrey A. Uphoff, NRAO/AUI
 License: UNKNOWN
  FIXME
-
