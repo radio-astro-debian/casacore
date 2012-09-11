@@ -3,9 +3,16 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
+
+DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+
 %:
 	dh  $@ --parallel --buildsystem=cmake
 
-#override_dh_auto_build:
-#	mkdir -p build
-#	( cd build && cmake .. && make )
+override_dh_auto_test:
+	true
+
+override_dh_auto_install:
+	dh_auto_install
+	mkdir debian/tmp/usr/lib/$(DEB_HOST_GNU_TYPE)
+	mv debian/tmp/usr/lib/lib* debian/tmp/usr/lib/$(DEB_HOST_GNU_TYPE)
