@@ -1,5 +1,8 @@
-Author: Ole Streicher <debian@liska.ath.cx>
+Author: Malte Marquarding <Malte.Marquarding@gmail.com>
 Description: Set the SONAME of the libraries to comply with the Debian Policy
+Origin: upstream, https://code.google.com/p/casacore/source/detail?r=21248
+Bug: https://code.google.com/p/casacore/issues/detail?id=50
+Applied-Upstream: 1.6.0
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -3,9 +3,14 @@
