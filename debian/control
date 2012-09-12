@@ -19,8 +19,23 @@ Vcs-Browser: http://git.debian.org/?p=debian-science/packages/casacore.git
 
 Package: casacore-dev
 Section: libdevel
-Architecture: all
-Depends: ${misc:Depends}, libcasa-casa, libcasa-scimath, libcasa-scimath-f
+Architecture: any
+Depends: libcasa-casa1 (= ${binary:Version}),
+         libcasa-components1 (= ${binary:Version}),
+         libcasa-coordinates1 (= ${binary:Version}),
+         libcasa-derivedmscal1 (= ${binary:Version}),
+         libcasa-fits1 (= ${binary:Version}),
+         libcasa-images1 (= ${binary:Version}),
+         libcasa-lattices1 (= ${binary:Version}),
+         libcasa-meas1 (= ${binary:Version}),
+         libcasa-measures1 (= ${binary:Version}),
+         libcasa-mirlib1 (= ${binary:Version}),
+         libcasa-ms1 (= ${binary:Version}),
+         libcasa-msfits1 (= ${binary:Version}),
+         libcasa-scimath-f1 (= ${binary:Version}),
+         libcasa-scimath1 (= ${binary:Version}),
+         libcasa-tables1 (= ${binary:Version}),
+         ${misc:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Description: Common Astronomy Software Applications core library
  The casacore package contains the core libraries of the old AIPS++/CASA
@@ -41,7 +56,7 @@ Description: Tools build with CASA
  .
  This package contains the tools built with the CASAcore package.
 
-Package: libcasa-casa
+Package: libcasa-casa1
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
@@ -55,7 +70,7 @@ Description: CASA core library
  This package containes the Core modules: N-dim arrays, quanta, OS, IO,
  logging, and various other classes.
 
-Package: libcasa-scimath
+Package: libcasa-scimath1
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
@@ -69,7 +84,7 @@ Description: CASA scimath library
  This package contains the Mathematical modules N-dim functionals,
  linear/non-linear fitting, and miscellaneous.
 
-Package: libcasa-scimath-f
+Package: libcasa-scimath-f1
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
@@ -83,7 +98,7 @@ Description: CASA scimath F library
  This package contains the Mathematical modules N-dim functionals,
  linear/non-linear fitting, and miscellaneous.
 
-Package: libcasa-tables
+Package: libcasa-tables1
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
@@ -97,7 +112,7 @@ Description: CASA table library
  This package contains the database-like table system with advanced query
  language (TaQL).
 
-Package: libcasa-measures
+Package: libcasa-measures1
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
@@ -111,7 +126,7 @@ Description: CASA measures library
  This package implements quantities with references frames and their
  persistency.
 
-Package: libcasa-lattices
+Package: libcasa-lattices1
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
@@ -125,7 +140,7 @@ Description: CASA lattice library
  This package implements memory- or disk-based N-dim arrays (lattices) with
  masking, regions, expressions, and math.
 
-Package: libcasa-fits
+Package: libcasa-fits1
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
@@ -138,7 +153,7 @@ Description: CASA FITS library
  .
  This package contains a C++ interface on top of cfitsio.
 
-Package: libcasa-ms
+Package: libcasa-ms1
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
@@ -152,7 +167,7 @@ Description: CASA ms library
  This package contains the data format for visibility data as described in the
  MeasurementSet definition.
 
-Package: libcasa-derivedmscal
+Package: libcasa-derivedmscal1
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
@@ -166,7 +181,7 @@ Description: CASA derived mscal library
  This package contains derived MeasurementSet quantities (like hourangle) that
  can be used as virtual table columns or as TaQL user defined functions.
 
-Package: libcasa-msfits
+Package: libcasa-msfits1
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
@@ -179,7 +194,7 @@ Description: CASA msfits library
  .
  This package contains the mapping of MeasurementSets to/from FITS.
 
-Package: libcasa-coordinates
+Package: libcasa-coordinates1
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
@@ -193,7 +208,7 @@ Description: CASA coordinates library
  This package contains the implementaion of coordinates for astronomical
  images.
 
-Package: libcasa-components
+Package: libcasa-components1
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
@@ -207,7 +222,7 @@ Description: CASA components library
  This package contains the implementation of sky components (point sources,
  gaussians, etc.).
 
-Package: libcasa-images
+Package: libcasa-images1
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
@@ -221,7 +236,7 @@ Description: CASA image processing library
  This package implements n-dimensional images with masks, coordinates, and
  history.
 
-Package: libcasa-meas
+Package: libcasa-meas1
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
@@ -232,7 +247,7 @@ Description: CASA meas library
  package. This split was made to get a better separation of core libraries and
  applications.
 
-Package: libcasa-mirlib
+Package: libcasa-mirlib1
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
