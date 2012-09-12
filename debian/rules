@@ -7,9 +7,4 @@
 	dh  $@ --parallel --buildsystem=cmake
 
 override_dh_auto_configure:
-	dh_auto_configure --  -DBUILD_TESTING=OFF -DUSE_FFTW3=ON -DUSE_HDF5=OFF -DUSE_READLINE=ON -DUSE_THREADS=ON
-
-override_dh_auto_install:
-	dh_auto_install
-	mkdir debian/tmp/usr/lib/$(DEB_HOST_GNU_TYPE)
-	mv debian/tmp/usr/lib/lib* debian/tmp/usr/lib/$(DEB_HOST_GNU_TYPE)
+	dh_auto_configure --  -DBUILD_TESTING=OFF -DUSE_FFTW3=ON -DUSE_HDF5=OFF -DUSE_READLINE=ON -DUSE_THREADS=ON -DLIBRARY_OUTPUT_PATH=lib/$(DEB_HOST_GNU_TYPE)
