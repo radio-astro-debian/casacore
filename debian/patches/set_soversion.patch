@@ -1,0 +1,34 @@
+Author: Ole Streicher <debian@liska.ath.cx>
+Description: Set the SONAME of the libraries to comply with the Debian Policy
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -3,9 +3,14 @@
+ #
+ project(casacore)
+ 
++set(PROJECT_VERSION_MAJOR 1)
++set(PROJECT_VERSION_MINOR 5)
++set(PROJECT_VERSION_PATCH 0)
++set(PROJECT_VERSION_REVISION 1)
++set(PROJECT_VERSION
++"${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
++
+ SET(CPACK_PACKAGE_NAME "casacore")
+-SET(PROJECT_VERSION "1.4.0")
+-SET(PROJECT_VERSION_REVISION 1)
+ string(TOLOWER "${CPACK_PACKAGE_NAME}" CPACK_PACKAGE_NAME_LOWERCASE) 
+ find_program(DPKG_PROGRAM dpkg DOC "dpkg program of Debian-based systems") 
+ if(DPKG_PROGRAM) 
+@@ -179,6 +184,12 @@
+ # Add the modules to be built.
+ foreach (module ${_modules})
+     add_subdirectory (${module})
++    set_target_properties(
++      casa_${module}
++      PROPERTIES
++          VERSION "${PROJECT_VERSION}"
++          SOVERSION "${PROJECT_VERSION_MAJOR}"
++      )
+     if (APPLE)
+         if (${module} STREQUAL scimath_f OR ${module} STREQUAL fits OR ${module} STREQUAL mirlib OR ${module} STREQUAL coordinates)
+             set_target_properties(casa_${module} PROPERTIES LINK_FLAGS -single_module)
