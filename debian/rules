@@ -7,7 +7,7 @@
 	dh  $@ --parallel --buildsystem=cmake
 
 override_dh_auto_configure:
-	dh_auto_configure --  -DBUILD_TESTING=OFF
+	dh_auto_configure --  -DBUILD_TESTING=OFF -DUSE_FFTW3=ON -DUSE_HDF5=OFF -DUSE_READLINE=ON -DUSE_THREADS=ON
 
 override_dh_auto_install:
 	dh_auto_install
