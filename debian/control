@@ -69,7 +69,7 @@ Description: CASA core library
  package. This split was made to get a better separation of core libraries and
  applications.
  .
- This package containes the Core modules: N-dim arrays, quanta, OS, IO,
+ This package contains the Core modules: N-dim arrays, quanta, OS, IO,
  logging, and various other classes.
 
 Package: libcasa-scimath1
