@@ -1,0 +1,11 @@
+Document: casacore
+Title: casacore API documentation
+Author: The casacore development team
+Section: Programming
+Abstract: The casacore package contains the core libraries of the old 
+ AIPS++/CASA package. This split was made to get a better separation of core
+ libraries and applications.
+
+Format: HTML
+Index: /usr/share/doc/casacore-doc/html/index.html
+Files: /usr/share/doc/casacore-doc/html/*.html

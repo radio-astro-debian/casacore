@@ -5,8 +5,9 @@ Uploaders: Ole Streicher <debian@liska.ath.cx>
 DM-Upload-Allowed: yes
 Build-Depends: bison,
                cfitsio-dev,
-               cmake,
+               cmake (>= 1.6.2),
                debhelper (>= 9),
+               doxygen,
                flex,
                gfortran,
                libblas-dev,
@@ -44,7 +45,19 @@ Description: Common Astronomy Software Applications core library
  package. This split was made to get a better separation of core libraries and
  applications.
  .
- This package contains the header files for application development.
+ This package contains the files for application development.
+
+Package: casacore-doc
+Section: doc
+Architecture: all
+Depends: ${misc:Depends}
+Suggests: casacore-dev
+Description: Common Astronomy Software Applications core library (documentation)
+ The casacore package contains the core libraries of the old AIPS++/CASA
+ package. This split was made to get a better separation of core libraries and
+ applications.
+ .
+ This package contains the API documentation.
 
 Package: casacore-tools
 Section: science
@@ -64,13 +77,22 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Description: CASA core library
+Description: CASA core modules
  The casacore package contains the core libraries of the old AIPS++/CASA
  package. This split was made to get a better separation of core libraries and
  applications.
  .
- This package contains the Core modules: N-dim arrays, quanta, OS, IO,
- logging, and various other classes.
+ This package contains the Core modules: Multi-dimensional arrays, Quantities
+ (values with physical units), OS and IO interface classes, Containers (from
+ pre-STL era), Miscellaneous modules for exceptions, tasking interface,
+ command line input, logging, STL wrappers, and basic math classes and
+ functors.
+ .
+ Most of the code has been developed before STL came into existence, so
+ several classes in modules Containers and Utilities are superseded by their
+ STL counterparts. However, they are still used in some casacore
+ code. Furthermore, some classes offer some extra functionality compared to
+ STL.
 
 Package: libcasa-scimath1
 Section: libs
@@ -78,13 +100,13 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Description: CASA scimath library
+Description: Basic mathematical modules of casacore
  The casacore package contains the core libraries of the old AIPS++/CASA
  package. This split was made to get a better separation of core libraries and
  applications.
  .
- This package contains the Mathematical modules N-dim functionals,
- linear/non-linear fitting, and miscellaneous.
+ This package contains the mathematical modules n-dimensional functionals,
+ linear and non-linear fitting, and miscellaneous.
 
 Package: libcasa-scimath-f1
 Section: libs
@@ -106,7 +128,7 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Description: CASA table library
+Description: CASA table system
  The casacore package contains the core libraries of the old AIPS++/CASA
  package. This split was made to get a better separation of core libraries and
  applications.
@@ -125,8 +147,12 @@ Description: CASA measures library
  package. This split was made to get a better separation of core libraries and
  applications.
  .
- This package implements quantities with references frames and their
- persistency.
+ This package implements measures (i.e. quantities with references frames) and
+ their persistency. Examples are the Hour-angle and Declination of a source at
+ a certain time and observatory; an Ra/Dec for a certain mean epoch; an
+ apparent frequency at a certain time given in eV; a local sidereal time at an
+ observatory. Measures can be converted from one reference frame to another
+ (and this possibility is its main reason for existence).
 
 Package: libcasa-lattices1
 Section: libs
@@ -139,8 +165,8 @@ Description: CASA lattice library
  package. This split was made to get a better separation of core libraries and
  applications.
  .
- This package implements memory- or disk-based N-dim arrays (lattices) with
- masking, regions, expressions, and math.
+ This package implements memory- or disk-based N-dimensional arrays (lattices)
+ with masking, regions, expressions, and math.
 
 Package: libcasa-fits1
 Section: libs
@@ -153,7 +179,7 @@ Description: CASA FITS library
  package. This split was made to get a better separation of core libraries and
  applications.
  .
- This package contains a C++ interface on top of cfitsio.
+ This package contains a C++ interface to read and write FITS files.
 
 Package: libcasa-ms1
 Section: libs
@@ -167,7 +193,8 @@ Description: CASA ms library
  applications.
  .
  This package contains the data format for visibility data as described in the
- MeasurementSet definition.
+ MeasurementSet definition. The MeasurementSet is where all data are
+ ultimately to be found in CASA.
 
 Package: libcasa-derivedmscal1
 Section: libs
@@ -244,10 +271,13 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Description: CASA meas library
+Description: CASA functions handling measures
  The casacore package contains the core libraries of the old AIPS++/CASA
  package. This split was made to get a better separation of core libraries and
  applications.
+ .
+ This module extends TaQL (the Table Query Language) with functions handling
+ measures. Currently it can handle directions, epochs, and positions.
 
 Package: libcasa-mirlib1
 Section: libs
