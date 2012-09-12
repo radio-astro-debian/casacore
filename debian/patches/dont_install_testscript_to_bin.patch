@@ -1,0 +1,11 @@
+Author: Ole Streicher <debian@liska.ath.cx>
+Description: Don't install the test script "measuresdata.csh" to /usr/bin
+ This script is just a test script, so it should go into the examples.
+--- a/measures/apps/CMakeLists.txt
++++ b/measures/apps/CMakeLists.txt
+@@ -7,4 +7,4 @@
+ add_executable (measuresdata  measuresdata/measuresdata.cc)
+ target_link_libraries (measuresdata casa_measures)
+ install(TARGETS measuresdata DESTINATION bin)
+-install(PROGRAMS measuresdata/measuresdata.csh DESTINATION bin)
++install(PROGRAMS DESTINATION bin)
