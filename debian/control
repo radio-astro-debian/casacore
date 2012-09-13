@@ -12,6 +12,7 @@ Build-Depends: bison,
                gfortran,
                libblas-dev,
                libfftw3-dev,
+	       liblapack-dev,
                libreadline6-dev,
                wcslib-dev
 Standards-Version: 3.9.3
