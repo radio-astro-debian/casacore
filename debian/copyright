@@ -1,87 +1,70 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: casacore
-Upstream-Contact: FIXME
-Source: FIXME
+Upstream-Name: casacore (formerly AIPS++)
+Upstream-Contact: aips2-request@nrao.edu
+Source: http://code.google.com/p/casacore/downloads
 
 Files: *
-Copyright: 1992-2012
+Copyright: 1992-2012 Associated Universities, Inc. Washington DC, USA.
  2010, ESO (in the framework of the ALMA collaboration)
+ 1988, Free Software Foundation
+ 2012 Ole Streicher (Debian packaging)
 License: LGPL-2+
- FIXME
+ This library is free software; you can redistribute it and/or modify it
+ under the terms of the GNU Library General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or (at your
+ option) any later version.
+ .
+ This library is distributed in the hope that it will be useful, but WITHOUT
+ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Library General Public
+ License for more details.
  .
  On Debian systems, the full text of the GNU Lesser General Public
  License version 2+ can be found in the file
  `/usr/share/common-licenses/LGPL-2'.
 
-Files: ./casa/OS/test/*
- ./*/*/test/*
-Copyright: 1993-2011
- ESO (in the framework of the ALMA collaboration)
-License: GPL
+Files: */*/test/* images/Images/ImageReorderer.h
+ install/codedevl/glish-mode.el
+Copyright: 1993-2011 Associated Universities, Inc. Washington DC, USA.,
+ Copyright by ESO (in the framework of the ALMA collaboration)
+ 1996-1998  Jeffrey A. Uphoff, NRAO/AUI.
+ 1987-1994  Free Software Foundation, Inc.
+License: GPL-2+
+ This program is free software; you can redistribute it and/or modify it
+ under the terms of the GNU General Public License as published by the Free
+ Software Foundation; either version 2 of the License, or (at your option)
+ any later version.
+ .
+ This program is distributed in the hope that it will be useful, but WITHOUT
+ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ more details.
  .
  On Debian systems, the full text of the GNU General Public
  License version 2 can be found in the file
  `/usr/share/common-licenses/GPL-2'.
 
-Files: ./casa/OS/*.h
+Files: casa/OS/*.h
 Copyright: 1984, 1989, William LeFebvre, Rice University
- 1989, - 1994, William LeFebvre, Northwestern University
+ 1989-1994, William LeFebvre, Northwestern University
  1994-1995, William LeFebvre, Argonne National Laboratory
- 1996, William LeFebvre, Group sys Consulting
- 2002, Associated Universities Inc
- details
-License: UNKNOWN
- FIXME
+ 1996 William LeFebvre, Group sys Consulting
+ 2002, 2009 Associated Universities Inc
+License: Free
+  This program may be freely redistributed,
+  but the copyright comment MUST remain intact.
 
-Files: ./images/Images/test/tAntennaResponses.cc
-Copyright: 2003-2004,
-License: GPL-2+
- FIXME
- .
- On Debian systems, the full text of the GNU General Public
- License version 2 can be found in the file
- `/usr/share/common-licenses/GPL-2'.
-
-Files: ./images/Images/ImageReorderer.h
-Copyright: 1998-2001,2003, Associated Universities, Inc. Washington DC, USA
-License: GPL-2+
- FIXME
- .
- On Debian systems, the full text of the GNU General Public
- License version 2 can be found in the file
- `/usr/share/common-licenses/GPL-2'.
-
-Files: ./components/ComponentModels/FluxCalcLogFreqPolynomial.h
-Copyright: 2010, Associated Universities, Inc. Washington DC, USA
-License: LGPL-2+
- FIXME
- .
- On Debian systems, the full text of the GNU General Public
- License version 2 can be found in the file
- `/usr/share/common-licenses/GPL-2'.
-
-Files: ./casa/Utilities/generic.h
-Copyright: 1988, Free Software Foundation
-License: LGPL-2+
- FIXME
- .
- On Debian systems, the full text of the GNU Lesser General Public
- License version 2+ can be found in the file
- `/usr/share/common-licenses/LGPL-2'.
-
-Files: ./casa/OS/HostInfoBsd.h
-Copyright: 2009, Associated Universities Inc
-License: UNKNOWN
- FIXME
-
-Files: ./install/printer/range.c
+Files: install/printer/range.c
 Copyright: Barry Brachman
-License: UNKNOWN
- FIXME
-
-Files: ./install/codedevl/glish-mode.el
-Copyright: 1987, the
- 1990, 1994 Free Software Foundation, Inc
- 1996-1998, Jeffrey A. Uphoff, NRAO/AUI
-License: UNKNOWN
- FIXME
+License: Non-free: FIXME
+ Permission is given to freely copy or distribute this program
+ with the following restrictions:
+ .
+	1) The author is not responsible for the consequences of use of
+		this software and is not responsible for correcting any defects
+	2) The origin of this software must not be misrepresented, either by
+		explicit claim or by omission
+	3) You may not sell this program
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	4) Altered versions must be plainly marked as such, and must not
+		be misrepresented as being the original software
