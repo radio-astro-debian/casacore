@@ -1,3 +1,4 @@
+lgpl_change_range_c.patch
 set_soversion.patch
 dont_install_testscript_to_bin.patch
 multiarch.patch

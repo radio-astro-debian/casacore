@@ -7,6 +7,7 @@ Files: *
 Copyright: 1992-2012 Associated Universities, Inc. Washington DC, USA.
  2010, ESO (in the framework of the ALMA collaboration)
  1988, Free Software Foundation
+ 1985-2012 Distributed Systems Software (Barry Brachman)
  2012 Ole Streicher (Debian packaging)
 License: LGPL-2+
  This library is free software; you can redistribute it and/or modify it
@@ -22,6 +23,11 @@ License: LGPL-2+
  On Debian systems, the full text of the GNU Lesser General Public
  License version 2+ can be found in the file
  `/usr/share/common-licenses/LGPL-2'.
+Note: The files install/printer/{range.c,lwf_a.c} document a non-DFSG
+ compatible license. I contacted the author (Barry Brachman <brachman@dss.ca>)
+ and got the permission from him to distribute the file as LGPL-2+ and to
+ remove or change the copyright note in the file. The license change is
+ reported to upstream.
 
 Files: */*/test/* images/Images/ImageReorderer.h
  install/codedevl/glish-mode.el
@@ -54,7 +60,7 @@ License: Free
   This program may be freely redistributed,
   but the copyright comment MUST remain intact.
 
-Files: install/printer/range.c
+Files: 
 Copyright: Barry Brachman
 License: Non-free: FIXME
  Permission is given to freely copy or distribute this program
