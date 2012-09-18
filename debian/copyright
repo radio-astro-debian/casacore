@@ -59,18 +59,3 @@ Copyright: 1984, 1989, William LeFebvre, Rice University
 License: Free
   This program may be freely redistributed,
   but the copyright comment MUST remain intact.
-
-Files: 
-Copyright: Barry Brachman
-License: Non-free: FIXME
- Permission is given to freely copy or distribute this program
- with the following restrictions:
- .
-	1) The author is not responsible for the consequences of use of
-		this software and is not responsible for correcting any defects
-	2) The origin of this software must not be misrepresented, either by
-		explicit claim or by omission
-	3) You may not sell this program
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-	4) Altered versions must be plainly marked as such, and must not
-		be misrepresented as being the original software
