@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tArray.cc 21179 2012-03-07 10:28:37Z gervandiepen $
+//# $Id$
 
 //# If AIPS_DEBUG is not set, the Assert's won't be called.
 #if !defined(AIPS_DEBUG)

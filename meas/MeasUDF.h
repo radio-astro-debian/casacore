@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: MeasUDF.h 21131 2011-10-18 10:06:18Z gervandiepen $
+//# $Id$
 
 #ifndef MEAS_MEASUDF_H
 #define MEAS_MEASUDF_H

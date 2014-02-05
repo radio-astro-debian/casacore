@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: MSPolnParse.cc 20755 2009-10-01 09:50:00Z Malte.Marquarding $
+//# $Id$
 
 #include <ms/MeasurementSets/MSPolnParse.h>
 #include <ms/MeasurementSets/MSColumns.h>

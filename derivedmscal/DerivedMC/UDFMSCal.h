@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: UDFMSCal.h 21147 2011-11-30 14:45:20Z gervandiepen $
+//# $Id$
 
 #ifndef DERIVEDMSCAL_UDFMSCAL_H
 #define DERIVEDMSCAL_UDFMSCAL_H

@@ -86,7 +86,7 @@
 #       using a "pull-queue" mechanism.
 #
 # Original: 1993/01/25 by Mark Calabretta, ATNF
-# $Id: depend 19989 2007-02-28 10:56:54Z Malte.Marquarding $
+# $Id$
 #=============================================================================
 # Check that AIPSPATH is defined.
   if [ "$AIPSPATH" = "" ] ; then

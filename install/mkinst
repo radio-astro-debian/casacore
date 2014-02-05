@@ -118,7 +118,7 @@
 #
 # Original: 1996/04/17 by Mark Calabretta, ATNF after a perl script by
 #           Shelby Yang, NRAO.
-# $Id: mkinst 19989 2007-02-28 10:56:54Z Malte.Marquarding $
+# $Id$
 #-----------------------------------------------------------------------------
 
   echo "mkinst: Processing template instantiation files..."

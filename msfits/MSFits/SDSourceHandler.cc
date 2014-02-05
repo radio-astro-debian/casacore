@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: SDSourceHandler.cc 19226 2006-01-26 22:13:44Z bgarwood $
+//# $Id$
 
 //# Includes
 #include <msfits/MSFits/SDSourceHandler.h>

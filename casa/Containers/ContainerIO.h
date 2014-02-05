@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: ContainerIO.h 21013 2011-01-06 08:35:09Z gervandiepen $
+//# $Id$
 
 #ifndef CASA_CONTAINERIO_H
 #define CASA_CONTAINERIO_H

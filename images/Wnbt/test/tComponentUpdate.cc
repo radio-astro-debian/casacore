@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tComponentUpdate.cc 19940 2007-02-27 05:35:22Z Malte.Marquarding $
+//# $Id$
 
 #include <images/Wnbt/ComponentUpdate.h>
 #include <casa/Utilities/Assert.h>

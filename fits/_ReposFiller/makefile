@@ -1,4 +1,4 @@
-# $Id: makefile 17899 2004-09-29 13:17:28Z gvandiep $
+# $Id$
 
 XLIBLIST := CFITSIO
 

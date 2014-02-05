@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: version.cc 21026 2011-03-04 09:49:54Z gervandiepen $
+//# $Id$
 
 #include <casa/version.h>
 

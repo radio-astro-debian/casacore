@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: SquareMatrix.tcc 19880 2007-02-15 04:10:07Z Malte.Marquarding $
+//# $Id$
 
 //# Includes
 #include <scimath/Mathematics/SquareMatrix.h>

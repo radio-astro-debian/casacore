@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: LatticeHistSpecialize.h 19909 2007-02-23 02:08:02Z Malte.Marquarding $
+//# $Id$
 
 #ifndef LATTICES_LATTICEHISTSPECIALIZE_H
 #define LATTICES_LATTICEHISTSPECIALIZE_H

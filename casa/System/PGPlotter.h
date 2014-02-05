@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: PGPlotter.h 20551 2009-03-25 00:11:33Z Malte.Marquarding $
+//# $Id$
 
 #ifndef CASA_PGPLOTTER_H
 #define CASA_PGPLOTTER_H

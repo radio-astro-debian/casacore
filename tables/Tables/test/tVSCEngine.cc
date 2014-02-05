@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tVSCEngine.cc 21051 2011-04-20 11:46:29Z gervandiepen $
+//# $Id$
 
 //# Define the variable to exclude the main from dVSCEngine.cc
 #define DVSCENGINE_MAIN

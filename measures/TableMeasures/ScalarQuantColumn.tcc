@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: ScalarQuantColumn.tcc 19918 2007-02-23 03:29:05Z Malte.Marquarding $
+//# $Id$
 
 //# Includes
 #include <measures/TableMeasures/ScalarQuantColumn.h>

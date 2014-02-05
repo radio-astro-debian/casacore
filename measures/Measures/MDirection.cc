@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: MDirection.cc 21169 2012-01-04 08:12:25Z gervandiepen $
+//# $Id$
 
 //# Includes
 #include <casa/Exceptions.h>

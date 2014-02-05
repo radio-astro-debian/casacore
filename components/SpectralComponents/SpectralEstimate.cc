@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: SpectralEstimate.cc 19933 2007-02-27 05:04:51Z Malte.Marquarding $
+//# $Id$
 
 //# Includes
 #include <components/SpectralComponents/SpectralEstimate.h>

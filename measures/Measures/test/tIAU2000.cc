@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tIAU2000.cc 19918 2007-02-23 03:29:05Z Malte.Marquarding $
+//# $Id$
 
 #include <casa/aips.h>
 #include <measures/Measures/SofaTest.h>

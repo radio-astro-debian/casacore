@@ -1,4 +1,4 @@
-# $Id: makefile 20551 2009-03-25 00:11:33Z Malte.Marquarding $
+# $Id$
 
 # Use the generic AIPS++ test makefile.
 #--------------------------------------

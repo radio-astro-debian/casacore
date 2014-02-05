@@ -23,7 +23,7 @@
 //                        520 Edgemont Road
 //                        Charlottesville, Va 22903-2475 Usa
 //
-// $Id: tMSTimeGram.cc 20329 2008-06-06 07:59:22Z gervandiepen $
+// $Id$
 
 #include <casa/aips.h>
 #include <casa/Exceptions/Error.h>

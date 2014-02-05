@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: LatticeCache.h 20403 2008-09-15 07:02:01Z gervandiepen $
+//# $Id$
 
 #ifndef LATTICES_LATTICECACHE_H
 #define LATTICES_LATTICECACHE_H

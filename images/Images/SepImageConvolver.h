@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: SepImageConvolver.h 20229 2008-01-29 15:19:06Z gervandiepen $
+//# $Id$
 
 #ifndef IMAGES_SEPIMAGECONVOLVER_H
 #define IMAGES_SEPIMAGECONVOLVER_H

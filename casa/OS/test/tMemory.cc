@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: tMemory.cc 20551 2009-03-25 00:11:33Z Malte.Marquarding $
+//# $Id$
 
 #include <casa/iostream.h>
 #include <casa/OS/Memory.h>

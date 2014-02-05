@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: ArrayOpsDiffShapes.cc 20739 2009-09-29 01:15:15Z Malte.Marquarding $
+//# $Id$
 #include <casa/Arrays/ArrayOpsDiffShapes.h>
 #include <casa/Arrays/ArrayMath.h>
 //#include <casa/Arrays/ArrayUtil.h>

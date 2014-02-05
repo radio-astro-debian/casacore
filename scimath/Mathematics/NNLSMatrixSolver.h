@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: NNLSMatrixSolver.h 19779 2006-12-12 23:20:42Z gvandiep $
+//# $Id$
 
 #ifndef SCIMATH_NNLSMATRIXSOLVER_H
 #define SCIMATH_NNLSMATRIXSOLVER_H

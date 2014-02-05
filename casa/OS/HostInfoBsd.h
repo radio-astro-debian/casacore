@@ -3,7 +3,7 @@
 **
 ** Based on HostInfoDarwin.h (just the scaffolding code).
 **
-** $Id: HostInfoBsd.h 20766 2009-10-06 00:52:29Z Malte.Marquarding $
+** $Id$
 **
 **  Copyright (c) 2009, Associated Universities Inc.
 */

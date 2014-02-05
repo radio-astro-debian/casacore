@@ -41,7 +41,7 @@
 #    2:  cache file not accessible
 #
 # Original: 1994/11/11 by Mark Calabretta, ATNF
-# $Id: av 16316 2003-07-16 03:38:11Z aips2adm $
+# $Id$
 #=============================================================================
 # Fundamentals.
   if [ ! "$AIPSPATH" ]

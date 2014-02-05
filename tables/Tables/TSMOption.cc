@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: TSMOption.cc 21154 2011-12-02 07:19:09Z gervandiepen $
+//# $Id$
 
 #include <tables/Tables/TSMOption.h>
 #include <casa/System/AipsrcValue.h>

@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: MSMColumn.cc 20551 2009-03-25 00:11:33Z Malte.Marquarding $
+//# $Id$
 
 #include <tables/Tables/MSMColumn.h>
 #include <tables/Tables/RefRows.h>

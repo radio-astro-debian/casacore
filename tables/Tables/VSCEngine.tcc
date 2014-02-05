@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: VSCEngine.tcc 20926 2010-07-05 11:42:12Z gervandiepen $
+//# $Id$
 
 //# Includes
 #include <tables/Tables/VSCEngine.h>

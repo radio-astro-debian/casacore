@@ -22,7 +22,7 @@
 //#                        National Radio Astronomy Observatory
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
-//# $Id: LCLELMask.h 18093 2004-11-30 17:51:10Z ddebonis $
+//# $Id$
 
 
 

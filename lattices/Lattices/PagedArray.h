@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: PagedArray.h 20364 2008-06-30 06:10:38Z gervandiepen $
+//# $Id$
 
 #ifndef LATTICES_PAGEDARRAY_H
 #define LATTICES_PAGEDARRAY_H

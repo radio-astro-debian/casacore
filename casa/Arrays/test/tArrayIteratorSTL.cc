@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tArrayIteratorSTL.cc 20668 2009-07-10 01:14:57Z Malte.Marquarding $
+//# $Id$
 
 #include <casa/Arrays/Array.h>
 #include <casa/Arrays/ArrayMath.h>

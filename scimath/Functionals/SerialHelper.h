@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: SerialHelper.h 19951 2007-02-28 02:59:51Z gervandiepen $
+//# $Id$
 
 #ifndef SCIMATH_SERIALHELPER_H
 #define SCIMATH_SERIALHELPER_H

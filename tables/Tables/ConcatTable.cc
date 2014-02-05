@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: ConcatTable.cc 21212 2012-03-23 15:01:08Z gervandiepen $
+//# $Id$
 
 #include <tables/Tables/ConcatTable.h>
 #include <tables/Tables/ConcatColumn.h>

@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tDerivedMSCal.cc 20921 2010-07-05 11:33:16Z gervandiepen $
+//# $Id$
 
 #include <derivedmscal/DerivedMC/DerivedMSCal.h>
 #include <ms/MeasurementSets/MSDerivedValues.h>

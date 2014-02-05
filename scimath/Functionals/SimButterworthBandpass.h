@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: SimButterworthBandpass.h 20229 2008-01-29 15:19:06Z gervandiepen $
+//# $Id$
 
 #ifndef SCIMATH_SIMBUTTERWORTHBANDPASS_H
 #define SCIMATH_SIMBUTTERWORTHBANDPASS_H

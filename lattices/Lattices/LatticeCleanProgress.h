@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: LatticeCleanProgress.h 18093 2004-11-30 17:51:10Z ddebonis $
+//# $Id$
 
 #ifndef LATTICES_LATTICECLEANPROGRESS_H
 #define LATTICES_LATTICECLEANPROGRESS_H

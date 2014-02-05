@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: TempLattice.h 20739 2009-09-29 01:15:15Z Malte.Marquarding $
+//# $Id$
 
 #ifndef LATTICES_TEMPLATTICE_H
 #define LATTICES_TEMPLATTICE_H

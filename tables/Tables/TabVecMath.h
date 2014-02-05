@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: TabVecMath.h 20551 2009-03-25 00:11:33Z Malte.Marquarding $
+//# $Id$
 
 #ifndef TABLES_TABVECMATH_H
 #define TABLES_TABVECMATH_H

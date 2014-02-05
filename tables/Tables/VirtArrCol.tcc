@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: VirtArrCol.tcc 20551 2009-03-25 00:11:33Z Malte.Marquarding $
+//# $Id$
 
 //# Includes
 #include <tables/Tables/VirtArrCol.h>

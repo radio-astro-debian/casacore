@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: MSFits.h 20690 2009-07-14 03:12:10Z Malte.Marquarding $
+//# $Id$
 
 #ifndef MSFITS_MSFITS_H
 #define MSFITS_MSFITS_H

@@ -1,4 +1,4 @@
-# $Id: makefile 17872 2004-09-24 21:31:30Z gli $
+# $Id$
 XLIBLIST  := CFITSIO
 # Use the generic AIPS++ test makefile.
 #--------------------------------------

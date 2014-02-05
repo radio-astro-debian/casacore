@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: ContainerIO.tcc 21013 2011-01-06 08:35:09Z gervandiepen $
+//# $Id$
 
 //# Includes
 #include <casa/Containers/ContainerIO.h>

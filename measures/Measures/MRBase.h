@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: MRBase.h 20615 2009-06-09 02:16:01Z Malte.Marquarding $
+//# $Id$
 
 #ifndef MEASURES_MRBASE_H
 #define MEASURES_MRBASE_H

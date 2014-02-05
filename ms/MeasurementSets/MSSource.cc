@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: MSSource.cc 19120 2005-12-05 00:23:02Z mwiering $
+//# $Id$
 
 #include <ms/MeasurementSets/MSSource.h>
 #include <casa/BasicSL/String.h>

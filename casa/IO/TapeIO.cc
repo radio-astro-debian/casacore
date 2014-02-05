@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: TapeIO.cc 21029 2011-03-16 13:41:57Z gervandiepen $
+//# $Id$
 
 #include <casa/IO/TapeIO.h>
 #include <casa/OS/Path.h>

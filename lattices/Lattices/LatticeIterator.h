@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: LatticeIterator.h 20229 2008-01-29 15:19:06Z gervandiepen $
+//# $Id$
 
 #ifndef LATTICES_LATTICEITERATOR_H
 #define LATTICES_LATTICEITERATOR_H

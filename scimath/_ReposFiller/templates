@@ -1,4 +1,4 @@
-# $Id: templates 19954 2007-02-28 03:04:02Z gervandiepen $
+# $Id$
 1000 casa/Arrays/Array.cc 
      = scimath/Mathematics/AutoDiff.h 
      = casa/BasicSL/Complex.h 

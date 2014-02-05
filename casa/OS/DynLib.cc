@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: DynLib.cc 20652 2009-07-06 05:04:32Z Malte.Marquarding $
+//# $Id$
 
 //# For the time being assume that all systems have dlopen.
 #ifndef HAVE_DLOPEN

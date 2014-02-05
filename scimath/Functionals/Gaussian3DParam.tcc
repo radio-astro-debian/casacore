@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: Gaussian3DParam.tcc 19879 2007-02-15 03:52:50Z Malte.Marquarding $
+//# $Id$
 
 #include <scimath/Functionals/Gaussian3DParam.h>
 #include <casa/Arrays/ArrayMath.h>

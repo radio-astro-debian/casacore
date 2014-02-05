@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: ObsInfo.h 20739 2009-09-29 01:15:15Z Malte.Marquarding $
+//# $Id$
 
 #ifndef COORDINATES_OBSINFO_H
 #define COORDINATES_OBSINFO_H

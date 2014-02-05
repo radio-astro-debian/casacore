@@ -24,7 +24,7 @@
                            520 Edgemont Road
                            Charlottesville, VA 22903-2475 USA
 
-    $Id: TableGram.ll 21198 2012-03-20 09:53:51Z gervandiepen $
+    $Id$
 */
 
 /* yy_unput is not used, so let flex not generate it, otherwise picky

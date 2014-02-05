@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: SimOrdMapIO.tcc 20551 2009-03-25 00:11:33Z Malte.Marquarding $
+//# $Id$
 
 #include <casa/Containers/SimOrdMapIO.h>
 #include <casa/IO/AipsIO.h>

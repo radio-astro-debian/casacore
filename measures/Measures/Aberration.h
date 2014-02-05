@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: Aberration.h 20739 2009-09-29 01:15:15Z Malte.Marquarding $
+//# $Id$
 
 #ifndef MEASURES_ABERRATION_H
 #define MEASURES_ABERRATION_H

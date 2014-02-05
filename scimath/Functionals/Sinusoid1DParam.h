@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: Sinusoid1DParam.h 21024 2011-03-01 11:46:18Z gervandiepen $
+//# $Id$
 
 #ifndef SCIMATH_SINUSOID1DPARAM_H
 #define SCIMATH_SINUSOID1DPARAM_H

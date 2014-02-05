@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: fits.h 20493 2009-01-16 10:51:43Z gervandiepen $
+//# $Id$
 
 # if !defined(AIPS_FITS)
 # define AIPS_FITS

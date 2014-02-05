@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: PixelCurve1D.cc 20856 2010-01-28 13:35:48Z gervandiepen $
+//# $Id$
 
 
 #include <lattices/Lattices/PixelCurve1D.h>

@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: MaskArrMath.tcc 21051 2011-04-20 11:46:29Z gervandiepen $
+//# $Id$
 
 #include <casa/Arrays/ArrayLogical.h>
 #include <casa/Arrays/MaskArrMath.h>

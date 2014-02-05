@@ -109,7 +109,7 @@
 #    1:  initialization error, no action
 #
 # Original: 1992/05/13 by Mark Calabretta, ATNF
-# $Id: ax_master 16987 2004-01-28 20:58:34Z wyoung $
+# $Id$
 #=============================================================================
 # Fundamentals.
   if [ "$AIPSPATH" = "" ]

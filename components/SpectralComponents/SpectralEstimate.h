@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: SpectralEstimate.h 21229 2012-04-02 12:00:20Z gervandiepen $
+//# $Id$
 
 #ifndef COMPONENTS_SPECTRALESTIMATE_H
 #define COMPONENTS_SPECTRALESTIMATE_H

@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: CurvedImage2D.h 21200 2012-03-20 09:55:47Z gervandiepen $
+//# $Id$
 
 #ifndef IMAGES_CURVEDIMAGE2D_H
 #define IMAGES_CURVEDIMAGE2D_H

@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: VectorKernel.h 19880 2007-02-15 04:10:07Z Malte.Marquarding $
+//# $Id$
 
 #ifndef SCIMATH_VECTORKERNEL_H
 #define SCIMATH_VECTORKERNEL_H

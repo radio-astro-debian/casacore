@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: ModcompDataConversion.h 20551 2009-03-25 00:11:33Z Malte.Marquarding $
+//# $Id$
 
 #ifndef CASA_MODCOMPDATACONVERSION_H
 #define CASA_MODCOMPDATACONVERSION_H

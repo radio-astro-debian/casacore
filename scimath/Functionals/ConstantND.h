@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: ConstantND.h 21209 2012-03-23 06:58:05Z gervandiepen $
+//# $Id$
 
 #ifndef SCIMATH_CONSTANT_H
 #define SCIMATH_CONSTANT_H

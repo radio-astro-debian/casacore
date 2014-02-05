@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: FITSTable3.cc 19974 2007-02-28 05:26:06Z Malte.Marquarding $
+//# $Id$
 
 #include <fits/FITS/FITSTable.h>
 #include <fits/FITS/FITSFieldCopier.h>

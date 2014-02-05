@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: MeasurementSets.h 20691 2009-07-14 03:13:54Z Malte.Marquarding $
+//# $Id$
 
 #ifndef MS_MEASUREMENTSETS_H
 #define MS_MEASUREMENTSETS_H

@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: Register.h 21131 2011-10-18 10:06:18Z gervandiepen $
+//# $Id$
 
 #ifndef MEAS_REGISTER_H
 #define MEAS_REGISTER_H

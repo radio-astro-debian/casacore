@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: MSAntennaGram.h 20934 2010-08-17 09:16:24Z gervandiepen $
+//# $Id$
 
 #ifndef MS_MSANTENNAGRAM_H
 #define MS_MSANTENNAGRAM_H

@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: ArrayPosIter.cc 20857 2010-02-03 13:06:09Z gervandiepen $
+//# $Id$
 
 #include <casa/Arrays/ArrayPosIter.h>
 #include <casa/Arrays/ArrayError.h>

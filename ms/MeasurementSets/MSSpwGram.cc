@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: MSSpwGram.cc 20739 2009-09-29 01:15:15Z Malte.Marquarding $
+//# $Id$
 
 // MSSpwGram; grammar for field command lines
 

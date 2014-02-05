@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tBucketBuffered.cc 21011 2010-12-16 12:37:49Z gervandiepen $
+//# $Id$
 
 #include <casa/IO/BucketBuffered.h>
 #include <casa/IO/BucketFile.h>

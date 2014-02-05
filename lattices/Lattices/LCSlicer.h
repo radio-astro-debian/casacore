@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: LCSlicer.h 20505 2009-01-19 14:37:24Z gervandiepen $
+//# $Id$
 
 #ifndef LATTICES_LCSLICER_H
 #define LATTICES_LCSLICER_H

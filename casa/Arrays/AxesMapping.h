@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: AxesMapping.h 20551 2009-03-25 00:11:33Z Malte.Marquarding $
+//# $Id$
 
 #ifndef CASA_AXESMAPPING_H
 #define CASA_AXESMAPPING_H

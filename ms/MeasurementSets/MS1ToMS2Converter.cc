@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: MS1ToMS2Converter.cc 19944 2007-02-27 11:14:34Z Malte.Marquarding $
+//# $Id$
 
 #include <ms/MeasurementSets/MS1ToMS2Converter.h>
 

@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: Register.cc 21131 2011-10-18 10:06:18Z gervandiepen $
+//# $Id$
 
 #include <meas/MeasUDF/Register.h>
 #include <meas/MeasUDF/PositionUDF.h>

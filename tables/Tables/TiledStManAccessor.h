@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: TiledStManAccessor.h 21014 2011-01-06 08:57:49Z gervandiepen $
+//# $Id$
 
 #ifndef TABLES_TILEDSTMANACCESSOR_H
 #define TABLES_TILEDSTMANACCESSOR_H

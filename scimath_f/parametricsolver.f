@@ -24,7 +24,7 @@
 *                            520 Edgemont Road
 *                            Charlottesville, VA 22903-2475 USA
 *
-*     $Id: parametricsolver.f 17791 2004-08-25 02:28:46Z cvsmgr $
+*     $Id$
 *-------------------------------------------------------------------------
 C
 C Routines for polynomial and spline fitting, using the global

@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: ExprNodeArray.cc 21146 2011-11-30 14:43:25Z gervandiepen $
+//# $Id$
 
 #include <tables/Tables/ExprNode.h>
 #include <tables/Tables/ExprNodeArray.h>

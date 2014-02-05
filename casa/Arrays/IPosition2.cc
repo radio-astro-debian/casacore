@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: IPosition2.cc 21048 2011-04-11 07:51:52Z gervandiepen $
+//# $Id$
 
 //# This source file is not needed if you aren't interested in converting
 //# to and from Array<Int>, i.e. if you don't want IPosition's to depend

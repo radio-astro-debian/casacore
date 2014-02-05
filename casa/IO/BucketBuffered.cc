@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: BucketBuffered.cc 20900 2010-06-04 08:49:48Z gervandiepen $
+//# $Id$
 
 //# Includes
 #include <casa/IO/BucketBuffered.h>

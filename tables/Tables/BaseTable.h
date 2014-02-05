@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: BaseTable.h 21025 2011-03-03 15:09:00Z gervandiepen $
+//# $Id$
 
 #ifndef TABLES_BASETABLE_H
 #define TABLES_BASETABLE_H

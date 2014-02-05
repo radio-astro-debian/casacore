@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: DerivedMC.h 20942 2010-08-26 11:35:06Z gervandiepen $
+//# $Id$
 
 #ifndef DERIVEDMSCAL_DERIVEDMC_H
 #define DERIVEDMSCAL_DERIVEDMC_H

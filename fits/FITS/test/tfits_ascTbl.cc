@@ -24,7 +24,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tfits_ascTbl.cc 20329 2008-06-06 07:59:22Z gervandiepen $
+//# $Id$
 
 //# Includes
 

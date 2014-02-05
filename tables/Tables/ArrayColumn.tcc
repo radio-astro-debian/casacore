@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: ArrayColumn.tcc 21176 2012-02-16 08:24:04Z gervandiepen $
+//# $Id$
 
 #include <tables/Tables/ArrayColumn.h>
 #include <tables/Tables/ArrayColumnFunc.h>

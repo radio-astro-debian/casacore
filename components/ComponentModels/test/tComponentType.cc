@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tComponentType.cc 20059 2007-03-23 04:02:28Z gervandiepen $
+//# $Id$
 
 #include <casa/aips.h>
 #include <casa/Exceptions/Error.h>

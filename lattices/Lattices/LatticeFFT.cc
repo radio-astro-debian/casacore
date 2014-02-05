@@ -25,7 +25,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: LatticeFFT.cc 21130 2011-10-18 07:39:05Z gervandiepen $
+//# $Id$
 
 #include <lattices/Lattices/LatticeFFT.h>
 #include <casa/Arrays/IPosition.h>

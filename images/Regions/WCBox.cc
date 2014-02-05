@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: WCBox.cc 21208 2012-03-22 14:37:22Z gervandiepen $
+//# $Id$
 
 #include <images/Regions/WCBox.h>
 

@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//#   $Id: ProfileFit1D.tcc 21229 2012-04-02 12:00:20Z gervandiepen $
+//#   $Id$
 
 #include <components/SpectralComponents/ProfileFit1D.h>
 

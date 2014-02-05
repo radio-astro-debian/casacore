@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: Gaussian3DParam.h 21024 2011-03-01 11:46:18Z gervandiepen $
+//# $Id$
 
 #ifndef SCIMATH_GAUSSIAN3DPARAM_H
 #define SCIMATH_GAUSSIAN3DPARAM_H

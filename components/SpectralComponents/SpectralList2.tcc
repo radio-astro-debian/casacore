@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: SpectralList2.tcc 19935 2007-02-27 05:07:40Z Malte.Marquarding $
+//# $Id$
 
 //# Includes
 #include <components/SpectralComponents/SpectralList.h>

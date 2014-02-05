@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: MSHistoryColumns.h 20855 2010-01-28 13:35:00Z gervandiepen $
+//# $Id$
 
 #ifndef MS_MSHISTORYCOLUMNS_H
 #define MS_MSHISTORYCOLUMNS_H

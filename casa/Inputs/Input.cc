@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: Input.cc 21210 2012-03-23 12:07:10Z gervandiepen $
+//# $Id$
 
 //  Class Input: the user interface
 

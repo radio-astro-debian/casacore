@@ -24,7 +24,7 @@
                            520 Edgemont Road
                            Charlottesville, VA 22903-2475 USA
 
-    $Id: MSAntennaGram.ll 20934 2010-08-17 09:16:24Z gervandiepen $
+    $Id$
 */
 
 /* yy_unput is not used, so let flex not generate it, otherwise picky

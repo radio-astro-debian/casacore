@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: MBaseline.h 20615 2009-06-09 02:16:01Z Malte.Marquarding $
+//# $Id$
 
 #ifndef MEASURES_MBASELINE_H
 #define MEASURES_MBASELINE_H

@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: MSHistoryHandler.cc 20266 2008-02-26 00:43:05Z gervandiepen $
+//# $Id$
 
 #include <ms/MeasurementSets/MSHistoryHandler.h>
 #include <casa/Logging/LogIO.h>

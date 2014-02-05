@@ -1,4 +1,4 @@
-# $Id: makefile 19989 2007-02-28 10:56:54Z Malte.Marquarding $
+# $Id$
 
 # Use the generic AIPS++ package makefile.
 #-----------------------------------------

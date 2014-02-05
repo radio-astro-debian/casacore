@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: ImageAttrGroupCasa.cc 21236 2012-04-03 12:53:02Z gervandiepen $
+//# $Id$
 
 //# Includes
 #include <images/Images/ImageAttrGroupCasa.h>

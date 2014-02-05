@@ -73,7 +73,7 @@
 #       true or both blank.
 #
 # Original: 1993/09/01 by Mark Calabretta, ATNF
-# $Id: affirm 19989 2007-02-28 10:56:54Z Malte.Marquarding $
+# $Id$
 #=============================================================================
   MODE=and
   BADARG=false

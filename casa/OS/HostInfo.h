@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: HostInfo.h 20891 2010-05-17 07:10:15Z gervandiepen $
+//# $Id$
 
 #ifndef CASA_HOSTINFO_H
 #define CASA_HOSTINFO_H

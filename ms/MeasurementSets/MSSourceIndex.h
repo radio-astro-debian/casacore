@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: MSSourceIndex.h 18349 2005-02-02 16:00:19Z dguo $
+//# $Id$
 
 #ifndef MS_MSSOURCEINDEX_H
 #define MS_MSSOURCEINDEX_H

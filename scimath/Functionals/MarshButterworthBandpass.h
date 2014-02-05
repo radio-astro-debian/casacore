@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#! ========================================================================
-//# $Id: MarshButterworthBandpass.h 21134 2011-10-20 12:34:30Z gervandiepen $
+//# $Id$
 
 #ifndef SCIMATH_MARSHBUTTERWORTHBANDPASS_H
 #define SCIMATH_MARSHBUTTERWORTHBANDPASS_H

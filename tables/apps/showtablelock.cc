@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: showtablelock.cc 21145 2011-11-29 13:30:41Z gervandiepen $
+//# $Id$
 
 #include <tables/Tables/Table.h>
 #include <casa/IO/LockFile.h>

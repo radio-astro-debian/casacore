@@ -23,7 +23,7 @@
 #                          520 Edgemont Road
 #                          Charlottesville, VA 22903-2475 USA
 #
-#   $Id: subsecpag.awk 16316 2003-07-16 03:38:11Z aips2adm $
+#   $Id$
 #
 # awk program for putting out pagenumbers for subsections
 #

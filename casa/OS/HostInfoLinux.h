@@ -1,5 +1,5 @@
 //# HostInfo_linux.h: Linux specific memory, swap, and CPU code.
-//# $Id: HostInfoLinux.h 21022 2011-03-01 10:07:47Z gervandiepen $
+//# $Id$
 
  /*
  **  This is a greatly MODIFIED version of a "top" machine dependent file.

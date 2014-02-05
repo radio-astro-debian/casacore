@@ -24,7 +24,7 @@
 *                            520 Edgemont Road
 *                            Charlottesville, VA 22903-2475 USA
 *
-*     $Id: phasol.f 17791 2004-08-25 02:28:46Z cvsmgr $
+*     $Id$
 *-----------------------------------------------------------------------
 c
 c  This code has been extracted from MIRIAD's selfcal.for routine,

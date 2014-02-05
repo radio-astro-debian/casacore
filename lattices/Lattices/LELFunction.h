@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: LELFunction.h 20508 2009-01-20 11:09:47Z gervandiepen $
+//# $Id$
 
 #ifndef LATTICES_LELFUNCTION_H
 #define LATTICES_LELFUNCTION_H

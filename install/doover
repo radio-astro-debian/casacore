@@ -42,7 +42,7 @@
 #    2:  VERSION file not found
 #
 # Original: 1996/02/29 by Mark Calabretta, ATNF
-# $Id: doover 19989 2007-02-28 10:56:54Z Malte.Marquarding $
+# $Id$
 #=============================================================================
 # Fundamentals.
   if [ "$AIPSPATH" = "" ]

@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: ImageSourceFinder.h 20299 2008-04-03 05:56:44Z gervandiepen $
+//# $Id$
 
 #ifndef IMAGES_IMAGESOURCEFINDER_H
 #define IMAGES_IMAGESOURCEFINDER_H

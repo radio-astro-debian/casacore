@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tHDF5Record.cc 21200 2012-03-20 09:55:47Z gervandiepen $
+//# $Id$
 
 #include <casa/HDF5/HDF5Record.h>
 #include <casa/HDF5/HDF5Group.h>

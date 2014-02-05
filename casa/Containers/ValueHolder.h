@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: ValueHolder.h 20901 2010-06-09 07:23:37Z gervandiepen $
+//# $Id$
 
 
 #ifndef CASA_VALUEHOLDER_H

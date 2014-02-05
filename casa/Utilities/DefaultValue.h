@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: DefaultValue.h 21024 2011-03-01 11:46:18Z gervandiepen $
+//# $Id$
 
 #ifndef CASA_DEFAULTVALUE_H
 #define CASA_DEFAULTVALUE_H

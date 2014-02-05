@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: SDFITSTable.h 18093 2004-11-30 17:51:10Z ddebonis $
+//# $Id$
 
 #ifndef FITS_SDFITSTABLE_H
 #define FITS_SDFITSTABLE_H

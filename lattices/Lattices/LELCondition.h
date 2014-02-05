@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: LELCondition.h 20508 2009-01-20 11:09:47Z gervandiepen $
+//# $Id$
 
 #ifndef LATTICES_LELCONDITION_H
 #define LATTICES_LELCONDITION_H

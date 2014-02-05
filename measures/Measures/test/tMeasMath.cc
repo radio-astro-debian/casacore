@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tMeasMath.cc 19918 2007-02-23 03:29:05Z Malte.Marquarding $
+//# $Id$
 
 //# Includes
 #include <casa/aips.h>

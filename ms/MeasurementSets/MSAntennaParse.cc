@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: MSAntennaParse.cc 20992 2010-11-08 12:14:21Z gervandiepen $
+//# $Id$
 
 #include <ms/MeasurementSets/MSAntennaParse.h>
 #include <ms/MeasurementSets/MSAntennaIndex.h>

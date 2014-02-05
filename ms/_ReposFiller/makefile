@@ -1,4 +1,4 @@
-# $Id: makefile 17683 2004-08-24 20:15:35Z gvandiep $
+# $Id$
 
 # Use the generic AIPS++ class implementation makefile.
 #------------------------------------------------------

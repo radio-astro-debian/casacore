@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: ArrayLogical.h 21130 2011-10-18 07:39:05Z gervandiepen $
+//# $Id$
 
 #ifndef CASA_ARRAYLOGICAL_H
 #define CASA_ARRAYLOGICAL_H

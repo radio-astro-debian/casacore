@@ -24,7 +24,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//#  $Id: MMapfdIO.h 20859 2010-02-03 13:14:15Z gervandiepen $
+//#  $Id$
 
 #ifndef CASA_MMAPFDIO_H
 #define CASA_MMAPFDIO_H

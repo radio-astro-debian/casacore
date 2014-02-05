@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: ImageUtilities.h 21200 2012-03-20 09:55:47Z gervandiepen $
+//# $Id$
 #ifndef IMAGES_IMAGEUTILITIES_H
 #define IMAGES_IMAGEUTILITIES_H
 

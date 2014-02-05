@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tComponentList.cc 19477 2006-06-15 22:32:06Z kgolap $
+//# $Id$
 
 #include <casa/aips.h>
 #include <components/ComponentModels/ComponentList.h>

@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tMedianSmooth.cc 21184 2012-03-12 07:47:11Z gervandiepen $
+//# $Id$
 
 #include <iostream>
 #include <casa/Arrays/Array.h>

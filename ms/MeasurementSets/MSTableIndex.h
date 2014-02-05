@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: MSTableIndex.h 20652 2009-07-06 05:04:32Z Malte.Marquarding $
+//# $Id$
 
 #ifndef MS_MSTABLEINDEX_H
 #define MS_MSTABLEINDEX_H

@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tImageFFT.cc 20615 2009-06-09 02:16:01Z Malte.Marquarding $
+//# $Id$
 // 
 //
 #include <casa/aips.h>
@@ -67,7 +67,7 @@ int main (int argc, const char* argv[])
 try {
 
    Input inputs(1);
-   inputs.version ("$Revision: 20615 $");
+   inputs.version ("$Revision$");
 
 
 // Get inputs

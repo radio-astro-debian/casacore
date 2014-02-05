@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tHDF5.cc 20766 2009-10-06 00:52:29Z Malte.Marquarding $
+//# $Id$
 
 #include <iostream>
 

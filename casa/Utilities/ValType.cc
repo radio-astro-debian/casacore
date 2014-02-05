@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: ValType.cc 20997 2010-11-17 07:05:29Z gervandiepen $
+//# $Id$
 
 #include <casa/Utilities/ValType.h>
 #include <casa/OS/CanonicalConversion.h>

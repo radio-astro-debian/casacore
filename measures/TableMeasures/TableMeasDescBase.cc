@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: TableMeasDescBase.cc 20019 2007-03-13 21:40:09Z gervandiepen $
+//# $Id$
 
 //# Includes
 #include <measures/TableMeasures/TableMeasDescBase.h>

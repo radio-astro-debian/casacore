@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: ExprConeNode.cc 20986 2010-11-03 12:25:37Z gervandiepen $
+//# $Id$
 
 #include <tables/Tables/ExprConeNode.h>
 #include <tables/Tables/TableError.h>

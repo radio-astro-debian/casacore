@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: DataManAccessor.h 21059 2011-04-27 07:12:11Z gervandiepen $
+//# $Id$
 
 #ifndef TABLES_DATAMANACCESSOR_H
 #define TABLES_DATAMANACCESSOR_H

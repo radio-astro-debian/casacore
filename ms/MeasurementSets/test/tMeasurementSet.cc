@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tMeasurementSet.cc 18832 2005-07-11 06:18:46Z gvandiep $
+//# $Id$
 
 //# Includes
 

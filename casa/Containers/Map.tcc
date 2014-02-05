@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: Map.tcc 21159 2011-12-13 02:59:29Z ben.h@bigpond.net.au $
+//# $Id$
 
 #include <casa/Containers/Map.h>
 

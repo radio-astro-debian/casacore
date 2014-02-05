@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: TableCopy.cc 21019 2011-02-10 11:14:30Z gervandiepen $
+//# $Id$
 
 
 //# Includes

@@ -63,7 +63,7 @@
 #       If an environment variable ASSAYPY exists, it is added to PYTHONPATH.
 #
 # Original: 1995/11/01 by Mark Calabretta, ATNF
-# $Id: assay 19989 2007-02-28 10:56:54Z Malte.Marquarding $
+# $Id$
 #=============================================================================
 # Fundamentals.
   if [ "$AIPSPATH" = "" ]

@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: Lorentzian1D.h 21241 2012-04-12 13:37:37Z gervandiepen $
+//# $Id$
 
 #ifndef SCIMATH_LORENTZIAN1D_H
 #define SCIMATH_LORENTZIAN1D_H

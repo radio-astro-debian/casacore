@@ -42,7 +42,7 @@
 *        All others returned by sai.sh.
 *
 * Original: 1997/09/19 by Jeff Uphoff, NRAO
-* $Id: sai.c 16316 2003-07-16 03:38:11Z aips2adm $
+* $Id$
 *---------------------------------------------------------------------------*/
 
 #include <unistd.h>

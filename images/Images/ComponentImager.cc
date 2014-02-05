@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: ComponentImager.cc 21130 2011-10-18 07:39:05Z gervandiepen $
+//# $Id$
 
 #include <images/Images/ComponentImager.h>
 #include <casa/Arrays/ArrayMath.h>

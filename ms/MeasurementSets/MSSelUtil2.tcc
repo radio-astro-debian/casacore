@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: MSSelUtil2.tcc 19996 2007-03-01 00:34:53Z gervandiepen $
+//# $Id$
 
 #include <ms/MeasurementSets/MSSelUtil2.h>
 #include <casa/Arrays/ArrayMath.h>

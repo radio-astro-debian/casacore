@@ -24,7 +24,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//#  $Id: MMapfdIO.cc 20859 2010-02-03 13:14:15Z gervandiepen $
+//#  $Id$
 
 #include <casa/IO/MMapfdIO.h>
 #include <casa/IO/LargeRegularFileIO.h>

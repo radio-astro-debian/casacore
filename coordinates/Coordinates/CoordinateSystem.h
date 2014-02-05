@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: CoordinateSystem.h 21228 2012-04-02 11:58:13Z gervandiepen $
+//# $Id$
 
 
 #ifndef COORDINATES_COORDINATESYSTEM_H

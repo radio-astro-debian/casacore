@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tMVTime.cc 21173 2012-01-12 07:47:21Z gervandiepen $
+//# $Id$
 
 #include <casa/aips.h>
 #include <casa/Utilities/Assert.h>

@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: VanVleck.h 21051 2011-04-20 11:46:29Z gervandiepen $
+//# $Id$
 
 #ifndef SCIMATH_VANVLECK_H
 #define SCIMATH_VANVLECK_H

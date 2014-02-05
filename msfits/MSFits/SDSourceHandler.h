@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: SDSourceHandler.h 19226 2006-01-26 22:13:44Z bgarwood $
+//# $Id$
 
 #ifndef MS_SDSOURCEHANDLER_H
 #define MS_SDSOURCEHANDLER_H

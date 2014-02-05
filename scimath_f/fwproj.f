@@ -24,7 +24,7 @@
 *                            520 Edgemont Road
 *                            Charlottesville, VA 22903-2475 USA
 *
-*     $Id: fwproj.f 17791 2004-08-25 02:28:46Z cvsmgr $
+*     $Id$
 *-----------------------------------------------------------------------
 C
 C Grid a number of visibility records

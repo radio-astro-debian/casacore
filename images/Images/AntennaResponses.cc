@@ -25,7 +25,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: AntennaResponses.cc 21130 2011-10-18 07:39:05Z gervandiepen $
+//# $Id$
 
 //# Includes
 #include <casa/aips.h>

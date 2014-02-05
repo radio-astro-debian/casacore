@@ -24,7 +24,7 @@
 #                          520 Edgemont Road
 #                          Charlottesville, VA 22903-2475 USA
 #
-#   $Id: dvips.sh 16316 2003-07-16 03:38:11Z aips2adm $
+#   $Id$
 #
 # dvips.sh is a dummy script that read the output of mkpsfiles.sh and runs dvips 
 # argument $1 is dvips from the makedefs

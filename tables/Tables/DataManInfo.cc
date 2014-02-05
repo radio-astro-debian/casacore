@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: DataManInfo.cc 21149 2011-11-30 15:14:25Z gervandiepen $
+//# $Id$
 
 
 //# Includes

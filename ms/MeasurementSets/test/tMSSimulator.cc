@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tMSSimulator.cc 20258 2008-02-25 21:16:47Z gervandiepen $
+//# $Id$
 
 #include <ms/MeasurementSets/MSSimulator.h>
 #include <ms/MeasurementSets/MeasurementSet.h>

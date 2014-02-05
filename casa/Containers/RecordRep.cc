@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: RecordRep.cc 20969 2010-09-27 12:45:04Z gervandiepen $
+//# $Id$
 
 #include <casa/Containers/RecordRep.h>
 #include <casa/Containers/BlockIO.h>

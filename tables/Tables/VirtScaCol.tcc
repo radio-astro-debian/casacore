@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: VirtScaCol.tcc 20925 2010-07-05 11:41:34Z gervandiepen $
+//# $Id$
 
 //# Includes
 #include <tables/Tables/VirtScaCol.h>

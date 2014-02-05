@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: NumericTraits2.h 20364 2008-06-30 06:10:38Z gervandiepen $
+//# $Id$
 
 #ifndef SCIMATH_NUMERICTRAITS2_H
 #define SCIMATH_NUMERICTRAITS2_H

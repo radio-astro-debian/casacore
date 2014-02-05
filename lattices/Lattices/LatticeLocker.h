@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: LatticeLocker.h 18093 2004-11-30 17:51:10Z ddebonis $
+//# $Id$
 
 #ifndef LATTICES_LATTICELOCKER_H
 #define LATTICES_LATTICELOCKER_H

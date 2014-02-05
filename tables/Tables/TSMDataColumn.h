@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: TSMDataColumn.h 20859 2010-02-03 13:14:15Z gervandiepen $
+//# $Id$
 
 #ifndef TABLES_TSMDATACOLUMN_H
 #define TABLES_TSMDATACOLUMN_H

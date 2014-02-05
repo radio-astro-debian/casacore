@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: AipsIOCarray.tcc 21051 2011-04-20 11:46:29Z gervandiepen $
+//# $Id$
 
 #include <casa/IO/AipsIOCarray.h>
 #include <casa/Exceptions/Error.h>

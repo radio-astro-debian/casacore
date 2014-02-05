@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: MSTable.tcc 19947 2007-02-27 11:30:08Z Malte.Marquarding $
+//# $Id$
 
 #include <ms/MeasurementSets/MSTable.h>
 #include <ms/MeasurementSets/MSTableImpl.h>

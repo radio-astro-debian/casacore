@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: MSSelectionKeywords.cc 21130 2011-10-18 07:39:05Z gervandiepen $
+//# $Id$
 #include <ms/MeasurementSets/MSSelectionKeywords.h>
 #include <casa/Containers/SimOrdMap.h>
 #include <casa/BasicSL/String.h>

@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: MSSelUtil.h 20838 2009-12-01 10:10:55Z gervandiepen $
+//# $Id$
 
 #ifndef MS_MSSELUTIL_H
 #define MS_MSSELUTIL_H

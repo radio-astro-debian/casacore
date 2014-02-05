@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: SquareMatrix2.cc 19081 2005-11-18 01:10:25Z gmoellen $
+//# $Id$
 
 //# Includes
 #include <scimath/Mathematics/SquareMatrix.h>

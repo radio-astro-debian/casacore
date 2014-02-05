@@ -24,7 +24,7 @@
 *                            520 Edgemont Road
 *                            Charlottesville, VA 22903-2475 USA
 *
-*     $Id: hclean.f 18916 2005-08-31 00:08:44Z kgolap $
+*     $Id$
 *-----------------------------------------------------------------------
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 c

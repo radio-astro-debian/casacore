@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: LogIO.cc 21005 2010-12-08 08:56:59Z gervandiepen $
+//# $Id$
 
 #include <casa/Logging/LogIO.h>
 #include <casa/Logging/LogSink.h>

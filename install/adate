@@ -51,7 +51,7 @@
 #       only transcribes the first two.
 #
 # Original: 1992/06/03 by Mark Calabretta, ATNF
-# $Id: adate 19989 2007-02-28 10:56:54Z Malte.Marquarding $
+# $Id$
 #=============================================================================
 # Set the correct locale.
   LC_TIME=C

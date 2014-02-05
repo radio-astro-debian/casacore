@@ -13,7 +13,7 @@
 #    1:  initialization error
 #
 # Original: 1997/01/29 by Mark Calabretta, ATNF
-# $Id: runtests 17915 2004-10-07 09:32:51Z gvandiep $
+# $Id$
 #-----------------------------------------------------------------------------
 # Fundamentals.
   if [ "$AIPSPATH" = "" ] ; then

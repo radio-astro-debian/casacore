@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tGaussianComponent.cc 19986 2007-02-28 10:27:35Z Malte.Marquarding $
+//# $Id$
 
 #include <casa/aips.h>
 #include <components/ComponentModels/GaussianShape.h>

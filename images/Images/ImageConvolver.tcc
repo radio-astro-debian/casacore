@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: ImageConvolver.tcc 20615 2009-06-09 02:16:01Z Malte.Marquarding $
+//# $Id$
 //   
 #include <images/Images/ImageConvolver.h>
 //

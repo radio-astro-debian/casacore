@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: FunctionalProxy.cc 20824 2009-11-20 04:55:09Z Malte.Marquarding $
+//# $Id$
 
 //# Includes
 #include <scimath/Functionals/FunctionalProxy.h>

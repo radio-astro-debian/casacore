@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: MSTimeDefinitions.h 19343 2006-04-05 22:18:53Z sbhatnag $
+//# $Id$
 
 #ifndef MS_MSTIMEDEFINITIONS_H
 #define MS_MSTIMEDEFINITIONS_H

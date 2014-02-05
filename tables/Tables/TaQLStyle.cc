@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: TaQLStyle.cc 20967 2010-09-27 11:06:03Z gervandiepen $
+//# $Id$
 
 #include <tables/Tables/TaQLStyle.h>
 #include <tables/Tables/TableError.h>

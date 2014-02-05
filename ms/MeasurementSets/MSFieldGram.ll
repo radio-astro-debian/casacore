@@ -24,7 +24,7 @@
                            520 Edgemont Road
                            Charlottesville, VA 22903-2475 USA
 
-$Id: MSFieldGram.ll 21130 2011-10-18 07:39:05Z gervandiepen $
+$Id$
 */
 
 /* yy_unput is not used, so let flex not generate it, otherwise picky

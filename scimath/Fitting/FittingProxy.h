@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: FittingProxy.h 19692 2006-10-11 05:39:32Z mmarquar $
+//# $Id$
 
 #ifndef SCIMATH_FITTINGPROXY_H
 #define SCIMATH_FITTINGPROXY_H

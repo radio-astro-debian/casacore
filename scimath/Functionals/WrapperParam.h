@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: WrapperParam.h 21024 2011-03-01 11:46:18Z gervandiepen $
+//# $Id$
 
 #ifndef SCIMATH_WRAPPERPARAM_H
 #define SCIMATH_WRAPPERPARAM_H

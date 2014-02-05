@@ -30,7 +30,7 @@
 # GNU makefile used to build all of AIPS++.
 #
 # Original: 1992/05/01 by Mark Calabretta, ATNF.
-# $Id: makefile 19989 2007-02-28 10:56:54Z Malte.Marquarding $
+# $Id$
 #=============================================================================
 
 # AIPS++ fundamentals.

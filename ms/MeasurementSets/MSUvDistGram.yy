@@ -24,7 +24,7 @@
                            520 Edgemont Road
                            Charlottesville, VA 22903-2475 USA
 
-    $Id: MSUvDistGram.yy 20266 2008-02-26 00:43:05Z gervandiepen $
+    $Id$
 */
 
 %{

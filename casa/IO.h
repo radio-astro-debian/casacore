@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: IO.h 20615 2009-06-09 02:16:01Z Malte.Marquarding $
+//# $Id$
 
 #ifndef CASA_IO_H
 #define CASA_IO_H

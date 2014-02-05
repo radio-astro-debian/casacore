@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: ExprMathNodeArray.h 21168 2012-01-04 08:11:03Z gervandiepen $
+//# $Id$
 
 #ifndef TABLES_EXPRMATHNODEARRAY_H
 #define TABLES_EXPRMATHNODEARRAY_H

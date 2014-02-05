@@ -107,7 +107,7 @@
 #    3) Environment variables used as temporaries are prefixed with "a_".
 #
 # Original: 1992/03/05 by Mark Calabretta, ATNF.
-# $Id: aipsinit.sh 19989 2007-02-28 10:56:54Z Malte.Marquarding $
+# $Id$
 #=============================================================================
 # The AIPS++ root directory is hardcoded here.
   [ "$a_root" = "" ] && a_root=__AIPSROOT

@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: MVTime.h 21173 2012-01-12 07:47:21Z gervandiepen $
+//# $Id$
 
 #ifndef CASA_MVTIME_H
 #define CASA_MVTIME_H

@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: MSCalEngine.cc 21138 2011-11-21 07:26:44Z gervandiepen $
+//# $Id$
 
 #include <derivedmscal/DerivedMC/MSCalEngine.h>
 #include <tables/Tables/TableRecord.h>

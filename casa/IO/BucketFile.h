@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: BucketFile.h 20859 2010-02-03 13:14:15Z gervandiepen $
+//# $Id$
 
 #ifndef CASA_BUCKETFILE_H
 #define CASA_BUCKETFILE_H

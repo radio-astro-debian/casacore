@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tLSQaips.cc 21008 2010-12-16 08:23:30Z gervandiepen $
+//# $Id$
 
 //# Includes
 #include <casa/aips.h>

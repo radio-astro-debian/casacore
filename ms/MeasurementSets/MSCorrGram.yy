@@ -24,7 +24,7 @@
                            520 Edgemont Road
                            Charlottesville, VA 22903-2475 USA
 
-    $Id: MSCorrGram.yy 19948 2007-02-27 11:53:51Z Malte.Marquarding $
+    $Id$
 */
 
 %{

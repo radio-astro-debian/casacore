@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tFit2D.cc 21130 2011-10-18 07:39:05Z gervandiepen $
+//# $Id$
 
 #include <scimath/Fitting.h>
 #include <lattices/LatticeMath/Fit2D.h>
@@ -57,7 +57,7 @@ int main(int argc, const char *argv[])
 // Inputs
 // 
    Input inputs(1);
-   inputs.version ("$Revision: 21130 $");
+   inputs.version ("$Revision$");
    inputs.create("nmodels", "1", "nmodels"); 
    inputs.create("noise", "0.0001", "Noise");
    inputs.create("major", "10.0", "major");

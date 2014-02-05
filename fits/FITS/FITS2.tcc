@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: FITS2.tcc 19914 2007-02-23 03:04:46Z Malte.Marquarding $
+//# $Id$
 
 #include <fits/FITS/FITS2.h>
 #include <fits/FITS/fits.h>

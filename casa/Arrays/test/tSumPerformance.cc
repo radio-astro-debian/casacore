@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tSumPerformance.cc 20872 2010-03-24 13:28:04Z gervandiepen $
+//# $Id$
 
 #include <casa/Arrays/Array.h>
 #include <casa/BasicSL/Complex.h>

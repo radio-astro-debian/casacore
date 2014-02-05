@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: ExprUDFNode.h 21146 2011-11-30 14:43:25Z gervandiepen $
+//# $Id$
 
 #ifndef TABLES_EXPRUDFNODE_H
 #define TABLES_EXPRUDFNODE_H

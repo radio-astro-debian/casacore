@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: MSPolnParse.h 21024 2011-03-01 11:46:18Z gervandiepen $
+//# $Id$
 
 #ifndef MS_MSPOLNPARSE_H
 #define MS_MSPOLNPARSE_H

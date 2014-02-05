@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: TableMeasOffsetDesc.h 18093 2004-11-30 17:51:10Z ddebonis $
+//# $Id$
 
 #ifndef MEASURES_TABLEMEASOFFSETDESC_H
 #define MEASURES_TABLEMEASOFFSETDESC_H

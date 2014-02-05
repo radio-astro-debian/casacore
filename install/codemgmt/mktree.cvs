@@ -59,7 +59,7 @@
 #    1:  initialization error
 #
 # Original: 1992/03/07 by Mark Calabretta, ATNF
-# $Id: mktree.cvs 19256 2006-02-12 02:38:02Z wyoung $
+# $Id$
 #=============================================================================
 # Get the AIPS++ root directory.
   if [ "$AIPSPATH" = "" ]

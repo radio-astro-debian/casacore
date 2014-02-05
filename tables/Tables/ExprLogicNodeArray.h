@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: ExprLogicNodeArray.h 20652 2009-07-06 05:04:32Z Malte.Marquarding $
+//# $Id$
 
 #ifndef TABLES_EXPRLOGICNODEARRAY_H
 #define TABLES_EXPRLOGICNODEARRAY_H

@@ -42,7 +42,7 @@
 #    1:  initialization error
 #
 # Original: 1996/08/16 by Mark Calabretta, ATNF
-# $Id: cvsmv 17570 2004-07-16 20:21:14Z dschieb $
+# $Id$
 #=============================================================================
 # Fundamentals.
 #  if [ ! "$AIPSPATH" ]

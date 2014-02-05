@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: LSQFit2.tcc 20302 2008-04-14 10:04:11Z wbrouw $
+//# $Id$
 //#
 // This separation of definitions necessary to get pre-compilation of
 // templates done without having duplicate entries problems for

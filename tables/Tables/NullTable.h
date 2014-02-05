@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: NullTable.h 21014 2011-01-06 08:57:49Z gervandiepen $
+//# $Id$
 
 #ifndef TABLES_NULLTABLE_H
 #define TABLES_NULLTABLE_H

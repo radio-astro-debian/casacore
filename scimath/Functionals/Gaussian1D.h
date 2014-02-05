@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: Gaussian1D.h 21024 2011-03-01 11:46:18Z gervandiepen $
+//# $Id$
 
 #ifndef SCIMATH_GAUSSIAN1D_H
 #define SCIMATH_GAUSSIAN1D_H

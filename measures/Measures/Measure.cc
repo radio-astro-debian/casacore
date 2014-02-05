@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: Measure.cc 20615 2009-06-09 02:16:01Z Malte.Marquarding $
+//# $Id$
 
 //# Includes
 #include <measures/Measures/Measure.h>

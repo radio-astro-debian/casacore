@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tInterpolateArray1D.cc 21227 2012-03-30 06:26:14Z gervandiepen $
+//# $Id$
 //# Includes
 
 

@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: PolynomialSpectralElement.h 21241 2012-04-12 13:37:37Z gervandiepen $
+//# $Id$
 
 #ifndef COMPONENTS_POLYNOMIALSPECTRALELEMENT_H
 #define COMPONENTS_POLYNOMIALSPECTRALELEMENT_H

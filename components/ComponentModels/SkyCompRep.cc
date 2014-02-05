@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: SkyCompRep.cc 21229 2012-04-02 12:00:20Z gervandiepen $
+//# $Id$
 
 #include <components/ComponentModels/ComponentShape.h>
 #include <components/ComponentModels/ComponentType.h>

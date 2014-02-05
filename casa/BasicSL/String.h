@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: String.h 21020 2011-03-01 10:06:21Z gervandiepen $
+//# $Id$
 
 #ifndef CASA_STRING_H
 #define CASA_STRING_H

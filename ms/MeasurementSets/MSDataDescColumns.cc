@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: MSDataDescColumns.cc 18093 2004-11-30 17:51:10Z ddebonis $
+//# $Id$
 
 #include <ms/MeasurementSets/MSDataDescColumns.h>
 #include <ms/MeasurementSets/MSDataDescription.h>

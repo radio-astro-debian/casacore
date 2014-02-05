@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: ImageProxy.h 21239 2012-04-05 14:35:49Z gervandiepen $
+//# $Id$
 
 #ifndef IMAGES_IMAGEPROXY_H
 #define IMAGES_IMAGEPROXY_H

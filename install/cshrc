@@ -57,7 +57,7 @@
 #    .login_local
 #
 # Original: 1992/05/01 by Mark Calabretta, ATNF
-# $Id: cshrc 19989 2007-02-28 10:56:54Z Malte.Marquarding $
+# $Id$
 #-----------------------------------------------------------------------------
 # The AIPS++ root directory is hardcoded here.
   setenv AIPSROOT __AIPSROOT

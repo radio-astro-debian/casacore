@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: NNGridder.tcc 20253 2008-02-23 15:15:00Z gervandiepen $
+//# $Id$
 
 #include <scimath/Mathematics/NNGridder.h>
 #include <casa/BasicSL/Constants.h>

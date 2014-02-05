@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#! ========================================================================
-//# $Id: Chebyshev.h 21024 2011-03-01 11:46:18Z gervandiepen $
+//# $Id$
 
 #ifndef SCIMATH_CHEBYSHEV_H
 #define SCIMATH_CHEBYSHEV_H

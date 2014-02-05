@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: tAppInfo.cc 21130 2011-10-18 07:39:05Z gervandiepen $
+//# $Id$
 
 #include <casa/Exceptions/Error.h>
 #include <casa/Arrays/Vector.h>

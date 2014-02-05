@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: CombiParam.tcc 20253 2008-02-23 15:15:00Z gervandiepen $
+//# $Id$
 
 //# Includes
 #include <scimath/Functionals/CombiParam.h>

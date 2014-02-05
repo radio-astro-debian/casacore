@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: FiledesIO.h 20868 2010-03-08 07:50:40Z gervandiepen $
+//# $Id$
 
 #ifndef CASA_FILEDESIO_H
 #define CASA_FILEDESIO_H

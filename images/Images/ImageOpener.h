@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: ImageOpener.h 20410 2008-10-20 09:00:06Z gervandiepen $
+//# $Id$
 
 #ifndef IMAGES_IMAGEOPENER_H
 #define IMAGES_IMAGEOPENER_H

@@ -24,7 +24,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: SSMIndStringColumn.cc 21051 2011-04-20 11:46:29Z gervandiepen $
+//# $Id$
 
 #include <tables/Tables/SSMIndStringColumn.h>
 #include <tables/Tables/Table.h>

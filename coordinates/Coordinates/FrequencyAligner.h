@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: FrequencyAligner.h 20494 2009-01-16 15:29:27Z gervandiepen $
+//# $Id$
 
 #ifndef COORDINATES_FREQUENCYALIGNER_H
 #define COORDINATES_FREQUENCYALIGNER_H

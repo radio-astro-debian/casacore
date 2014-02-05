@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: Block.h 21120 2011-09-01 13:51:56Z gervandiepen $
+//# $Id$
 
 #ifndef CASA_BLOCK_H
 #define CASA_BLOCK_H

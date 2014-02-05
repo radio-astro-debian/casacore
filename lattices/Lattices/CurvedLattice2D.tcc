@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: CurvedLattice2D.tcc 20652 2009-07-06 05:04:32Z Malte.Marquarding $
+//# $Id$
 
 #include <lattices/Lattices/CurvedLattice2D.h>
 #include <lattices/Lattices/SubLattice.h>

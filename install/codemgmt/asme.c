@@ -40,7 +40,7 @@
 * else:  Exit status returned by the command.
 *
 * Original: 1996/03/28 by Mark Calabretta, ATNF
-* $Id: asme.c 16316 2003-07-16 03:38:11Z aips2adm $
+* $Id$
 *---------------------------------------------------------------------------*/
 
 #include <unistd.h>

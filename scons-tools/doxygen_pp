@@ -18,7 +18,7 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#  $Id: doxygen_pp 20751 2009-10-01 06:32:53Z Malte.Marquarding $
+#  $Id$
 
 
 #  Convert multiple C++ "slash-slash" style comment lines

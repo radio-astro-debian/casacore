@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: SDWeatherHandler.h 18700 2005-05-23 07:45:13Z cvsmgr $
+//# $Id$
 
 #ifndef MS_SDWEATHERHANDLER_H
 #define MS_SDWEATHERHANDLER_H

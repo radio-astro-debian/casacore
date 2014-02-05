@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: MSFeedEnums.h 18093 2004-11-30 17:51:10Z ddebonis $
+//# $Id$
 
 #ifndef MS_MSFEEDENUMS_H
 #define MS_MSFEEDENUMS_H

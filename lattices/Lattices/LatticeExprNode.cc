@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: LatticeExprNode.cc 20815 2009-11-12 10:25:02Z gervandiepen $
+//# $Id$
 
 
 #include <lattices/Lattices/LatticeExprNode.h>

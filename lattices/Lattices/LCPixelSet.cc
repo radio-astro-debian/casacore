@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: LCPixelSet.cc 20279 2008-02-29 16:52:56Z gervandiepen $
+//# $Id$
 
 #include <lattices/Lattices/LCPixelSet.h>
 #include <tables/Tables/TableRecord.h>

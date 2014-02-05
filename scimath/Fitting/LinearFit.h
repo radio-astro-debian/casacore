@@ -24,7 +24,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: LinearFit.h 20229 2008-01-29 15:19:06Z gervandiepen $
+//# $Id$
 
 #ifndef SCIMATH_LINEARFIT_H
 #define SCIMATH_LINEARFIT_H

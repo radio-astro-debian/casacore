@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tLCConcatenation.cc 20329 2008-06-06 07:59:22Z gervandiepen $
+//# $Id$
 
 #include <lattices/Lattices/LCConcatenation.h>
 #include <lattices/Lattices/LCBox.h>

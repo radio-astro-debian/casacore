@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: SDFITSHandler.h 18700 2005-05-23 07:45:13Z cvsmgr $
+//# $Id$
 
 #ifndef MS_SDFITSHANDLER_H
 #define MS_SDFITSHANDLER_H

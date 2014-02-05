@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: LinearXform.h 18823 2005-07-07 20:36:33Z ddebonis $
+//# $Id$
 
 #ifndef COORDINATES_LINEARXFORM_H
 #define COORDINATES_LINEARXFORM_H

@@ -1,5 +1,5 @@
 //# HostInfo_irix.h: SGI Irix specific memory, swap, and CPU code.
-//# $Id: HostInfoIrix.h 20739 2009-09-29 01:15:15Z Malte.Marquarding $
+//# $Id$
 
  /*
  **  This is a greatly MODIFIED version of a "top" machine dependent file.

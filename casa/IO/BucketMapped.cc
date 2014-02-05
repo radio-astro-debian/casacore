@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: BucketMapped.cc 20869 2010-03-19 08:31:45Z gervandiepen $
+//# $Id$
 
 //# Includes
 #include <casa/IO/BucketMapped.h>

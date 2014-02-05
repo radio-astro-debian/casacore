@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: MSCorrParse.cc 18534 2005-04-01 20:25:51Z dguo $
+//# $Id$
 
 #include <ms/MeasurementSets/MSCorrParse.h>
 #include <ms/MeasurementSets/MSDataDescIndex.h>

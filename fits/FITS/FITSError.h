@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: FITSError.h 20652 2009-07-06 05:04:32Z Malte.Marquarding $
+//# $Id$
 
 #ifndef FITS_FITSERROR_H
 #define FITS_FITSERROR_H

@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: SDPointingHandler.cc 18702 2005-05-23 08:54:53Z gvandiep $
+//# $Id$
 
 //# Includes
 #include <msfits/MSFits/SDPointingHandler.h>

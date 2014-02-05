@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: ImageProxy.cc 21240 2012-04-06 06:04:23Z gervandiepen $
+//# $Id$
 
 //# Do not use automatic template instantiation.
 #define CACACORE_NO_AUTO_TEMPLATES

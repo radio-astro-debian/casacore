@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: ImageInterface.h 21205 2012-03-21 12:55:04Z gervandiepen $
+//# $Id$
 
 #ifndef IMAGES_IMAGEINTERFACE_H
 #define IMAGES_IMAGEINTERFACE_H

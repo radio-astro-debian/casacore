@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: ArrayLattice.h 20229 2008-01-29 15:19:06Z gervandiepen $
+//# $Id$
 
 #ifndef LATTICES_ARRAYLATTICE_H
 #define LATTICES_ARRAYLATTICE_H

@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: TVecScaCol.tcc 21051 2011-04-20 11:46:29Z gervandiepen $
+//# $Id$
 
 #include <casa/aips.h>
 #include <tables/Tables/TVecScaCol.h>

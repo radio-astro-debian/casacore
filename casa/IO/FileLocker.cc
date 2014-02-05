@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: FileLocker.cc 20853 2010-01-20 14:07:57Z gervandiepen $
+//# $Id$
 
 #include <casa/IO/FileLocker.h>
 #include <casa/BasicSL/String.h>

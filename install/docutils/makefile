@@ -30,7 +30,7 @@
 # GNU makefile used to install AIPS++ documentation utilities.
 #
 # Original: 1994/11/16 by Mark Calabretta, ATNF.
-# $Id: makefile 19758 2006-11-23 04:27:57Z gvandiep $
+# $Id$
 #=============================================================================
 
 # AIPS++ fundamentals.

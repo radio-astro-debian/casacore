@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: MEarthMagnetic.h 20615 2009-06-09 02:16:01Z Malte.Marquarding $
+//# $Id$
 
 #ifndef MEASURES_MEARTHMAGNETIC_H
 #define MEASURES_MEARTHMAGNETIC_H

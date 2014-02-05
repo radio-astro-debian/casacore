@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: BaseTabIter.cc 21051 2011-04-20 11:46:29Z gervandiepen $
+//# $Id$
 
 #include <tables/Tables/BaseTabIter.h>
 #include <tables/Tables/TableIter.h>

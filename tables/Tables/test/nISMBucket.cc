@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: nISMBucket.cc 20860 2010-02-11 12:27:23Z gervandiepen $
+//# $Id$
 
 #include <casa/Arrays/Vector.h>
 #include <casa/Containers/Block.h>

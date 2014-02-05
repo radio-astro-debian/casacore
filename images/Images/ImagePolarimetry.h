@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: ImagePolarimetry.h 19817 2006-12-22 05:24:00Z gvandiep $
+//# $Id$
 
 #ifndef IMAGES_IMAGEPOLARIMETRY_H
 #define IMAGES_IMAGEPOLARIMETRY_H

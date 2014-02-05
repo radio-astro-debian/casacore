@@ -24,7 +24,7 @@
 #                          520 Edgemont Road
 #                          Charlottesville, VA 22903-2475 USA
 #
-#   $Id: mkpsfiles.sh 16316 2003-07-16 03:38:11Z aips2adm $
+#   $Id$
 #
 # This shell script loops through chapter, section and subsection of a .toc file
 # and figures out the start and end page numbers

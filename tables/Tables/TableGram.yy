@@ -24,7 +24,7 @@
                            520 Edgemont Road
                            Charlottesville, VA 22903-2475 USA
 
-    $Id: TableGram.yy 21168 2012-01-04 08:11:03Z gervandiepen $
+    $Id$
 */
 
 /*

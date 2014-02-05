@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: SpectralIndex.h 21229 2012-04-02 12:00:20Z gervandiepen $
+//# $Id$
 
 #ifndef COMPONENTS_SPECTRALINDEX_H
 #define COMPONENTS_SPECTRALINDEX_H

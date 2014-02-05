@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: RegionHandlerHDF5.cc 20652 2009-07-06 05:04:32Z Malte.Marquarding $
+//# $Id$
 
 #include <images/Regions/RegionHandlerHDF5.h>
 #include <images/Regions/ImageRegion.h>

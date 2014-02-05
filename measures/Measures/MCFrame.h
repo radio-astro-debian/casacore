@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: MCFrame.h 19852 2007-02-13 01:54:23Z Malte.Marquarding $
+//# $Id$
 
 #ifndef MEASURES_MCFRAME_H
 #define MEASURES_MCFRAME_H

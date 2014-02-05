@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: tProjection.cc 20491 2009-01-16 08:33:56Z gervandiepen $
+//# $Id$
  
 #include <casa/Arrays/Vector.h>
 #include <casa/Arrays/ArrayLogical.h>

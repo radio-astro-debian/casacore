@@ -22,7 +22,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: ArrayMeasColumn.tcc 21028 2011-03-16 13:40:48Z gervandiepen $
+//# $Id$
 
 //# Includes
 #include <measures/TableMeasures/ArrayMeasColumn.h>

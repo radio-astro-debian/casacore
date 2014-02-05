@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: LSQFit.h 21049 2011-04-13 07:52:48Z gervandiepen $
+//# $Id$
 
 #ifndef SCIMATH_LSQFIT_H
 #define SCIMATH_LSQFIT_H

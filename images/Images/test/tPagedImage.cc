@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tPagedImage.cc 21024 2011-03-01 11:46:18Z gervandiepen $
+//# $Id$
 
 #include <images/Images/PagedImage.h>
 #include <images/Images/ImageInfo.h>

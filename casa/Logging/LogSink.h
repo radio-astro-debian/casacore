@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: LogSink.h 21051 2011-04-20 11:46:29Z gervandiepen $
+//# $Id$
 
 #ifndef CASA_LOGSINK_H
 #define CASA_LOGSINK_H

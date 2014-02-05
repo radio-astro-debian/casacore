@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: MSFieldColumns.cc 21160 2011-12-14 06:45:03Z gervandiepen $
+//# $Id$
 
 #include <ms/MeasurementSets/MSFieldColumns.h>
 #include <casa/Arrays/Array.h>

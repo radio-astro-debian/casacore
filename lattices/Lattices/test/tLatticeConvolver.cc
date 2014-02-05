@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tLatticeConvolver.cc 19963 2007-02-28 03:30:50Z gervandiepen $
+//# $Id$
 
 #include <casa/aips.h>
 #include <casa/Arrays/Vector.h>

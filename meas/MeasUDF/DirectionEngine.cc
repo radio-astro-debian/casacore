@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: DirectionEngine.cc 21169 2012-01-04 08:12:25Z gervandiepen $
+//# $Id$
 
 #include <meas/MeasUDF/DirectionEngine.h>
 #include <tables/Tables/TableRecord.h>

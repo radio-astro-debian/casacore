@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: LargeFiledesIO.h 20868 2010-03-08 07:50:40Z gervandiepen $
+//# $Id$
 
 #ifndef CASA_LARGEFILEDESIO_H
 #define CASA_LARGEFILEDESIO_H

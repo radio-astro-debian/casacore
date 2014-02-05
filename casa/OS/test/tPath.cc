@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tPath.cc 21030 2011-03-16 13:44:34Z gervandiepen $
+//# $Id$
 
 
 #include <casa/OS/Path.h>

@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: HDF5Lattice.tcc 21200 2012-03-20 09:55:47Z gervandiepen $
+//# $Id$
 
 #include <lattices/Lattices/HDF5Lattice.h>
 #include <lattices/Lattices/HDF5LattIter.h>

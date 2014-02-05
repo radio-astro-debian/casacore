@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tFitGaussian.cc 18120 2004-12-06 17:12:04Z wyoung $
+//# $Id$
 
 #include <scimath/Fitting/FitGaussian.h>
 #include <scimath/Functionals/Gaussian1D.h>

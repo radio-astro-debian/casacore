@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: MeasuresProxy.h 20821 2009-11-18 11:30:57Z Malte.Marquarding $
+//# $Id$
 
 #ifndef MEASURES_MEASURESPROXY_H
 #define MEASURES_MEASURESPROXY_H

@@ -51,7 +51,7 @@
 *    5:  Pattern not matched.
 *
 * Original: 1992/03/05 by Mark Calabretta, ATNF
-* $Id: getrc.c 19989 2007-02-28 10:56:54Z Malte.Marquarding $
+* $Id$
 *---------------------------------------------------------------------------*/
 
 #include <stdio.h>

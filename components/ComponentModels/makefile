@@ -1,4 +1,4 @@
-# $Id: makefile 17729 2004-08-24 21:41:23Z cvsmgr $
+# $Id$
 
 # Use the generic AIPS++ class implementation makefile.
 # ------------------------------------------------------

@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: FitGaussian.tcc 20766 2009-10-06 00:52:29Z Malte.Marquarding $
+//# $Id$
 
 #include <scimath/Fitting/FitGaussian.h>
 

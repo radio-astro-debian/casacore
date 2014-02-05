@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: VirtColEng.cc 20926 2010-07-05 11:42:12Z gervandiepen $
+//# $Id$
 
 #include <tables/Tables/VirtColEng.h>
 #include <tables/Tables/DataManError.h>

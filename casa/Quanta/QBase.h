@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: QBase.h 20993 2010-11-08 13:36:32Z gervandiepen $
+//# $Id$
 
 #ifndef CASA_QBASE_H
 #define CASA_QBASE_H

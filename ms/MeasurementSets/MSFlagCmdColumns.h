@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: MSFlagCmdColumns.h 19944 2007-02-27 11:14:34Z Malte.Marquarding $
+//# $Id$
 
 #ifndef MS_MSFLAGCMDCOLUMNS_H
 #define MS_MSFLAGCMDCOLUMNS_H

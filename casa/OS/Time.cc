@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: Time.cc 20734 2009-09-28 23:44:40Z Malte.Marquarding $
+//# $Id$
 
 #include <casa/OS/Time.h>
 #include <casa/Exceptions/Error.h>

@@ -1,4 +1,4 @@
-# $Id: makefile 16996 2004-02-01 17:03:18Z wyoung $
+# $Id$
 
 # Use the generic AIPS++ checkout makefile.
 #------------------------------------------

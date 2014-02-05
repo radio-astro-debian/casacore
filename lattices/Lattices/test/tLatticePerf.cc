@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tLatticePerf.cc 20953 2010-09-16 07:18:01Z gervandiepen $
+//# $Id$
 
 #include <lattices/Lattices/PagedArray.h>
 #include <lattices/Lattices/HDF5Lattice.h>

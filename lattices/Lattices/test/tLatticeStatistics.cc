@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tLatticeStatistics.cc 20652 2009-07-06 05:04:32Z Malte.Marquarding $
+//# $Id$
 // 
 #include <casa/aips.h>
 #include <casa/Arrays/Array.h>

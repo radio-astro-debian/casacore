@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: PGPlotterNull.h 20551 2009-03-25 00:11:33Z Malte.Marquarding $
+//# $Id$
 
 #ifndef GRAPHICS_PGPLOTTERNULL_H
 #define GRAPHICS_PGPLOTTERNULL_H

@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: LogOrigin.h 21159 2011-12-13 02:59:29Z ben.h@bigpond.net.au $
+//# $Id$
 
 #ifndef CASA_LOGORIGIN_H
 #define CASA_LOGORIGIN_H

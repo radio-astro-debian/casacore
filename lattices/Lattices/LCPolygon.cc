@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: LCPolygon.cc 21039 2011-04-06 05:52:01Z gervandiepen $
+//# $Id$
 
 
 #include <lattices/Lattices/LCPolygon.h>

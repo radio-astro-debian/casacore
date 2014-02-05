@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: EclecticFunctionFactory.tcc 19879 2007-02-15 03:52:50Z Malte.Marquarding $
+//# $Id$
 #include <scimath/Functionals/EclecticFunctionFactory.h>
 #include <casa/Arrays/Array.h>
 #include <casa/Containers/Record.h>

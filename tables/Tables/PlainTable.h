@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: PlainTable.h 21051 2011-04-20 11:46:29Z gervandiepen $
+//# $Id$
 
 #ifndef TABLES_PLAINTABLE_H
 #define TABLES_PLAINTABLE_H

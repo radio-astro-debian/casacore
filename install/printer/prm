@@ -36,7 +36,7 @@
 #   -P:  Printer to use.
 #
 # Original: 1992/03/04 by Mark Calabretta, ATNF
-# $Id: prm 16316 2003-07-16 03:38:11Z aips2adm $
+# $Id$
 #=============================================================================
 # Parse arguments.
   JOBS=""

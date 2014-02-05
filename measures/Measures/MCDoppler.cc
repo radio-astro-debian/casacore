@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: MCDoppler.cc 21130 2011-10-18 07:39:05Z gervandiepen $
+//# $Id$
 
 //# Includes
 #include <measures/Measures/MCDoppler.h>

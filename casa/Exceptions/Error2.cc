@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: Error2.cc 21040 2011-04-07 13:26:55Z gervandiepen $
+//# $Id$
 
 #include <casa/Exceptions/Error.h>
 #include <casa/stdlib.h>

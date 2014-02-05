@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tHistAcc.cc 20497 2009-01-19 02:30:07Z Malte.Marquarding $
+//# $Id$
 
 #include <casa/iostream.h>
 #include <casa/Arrays.h>

@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: MDirection.h 21169 2012-01-04 08:12:25Z gervandiepen $
+//# $Id$
 
 #ifndef MEASURES_MDIRECTION_H
 #define MEASURES_MDIRECTION_H

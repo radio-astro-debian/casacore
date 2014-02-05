@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: BasicFITS.h 18736 2005-06-08 04:04:15Z dschieb $
+//# $Id$
 
 #ifndef FITS_BasicFITS_H
 #define FITS_BasicFITS_H

@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: MSIter.cc 21211 2012-03-23 15:00:35Z gervandiepen $
+//# $Id$
 
 #include <ms/MeasurementSets/MSIter.h>
 #include <casa/Arrays/ArrayMath.h>

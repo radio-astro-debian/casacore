@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: MSValidIds.h 18093 2004-11-30 17:51:10Z ddebonis $
+//# $Id$
 
 #ifndef MS_MSVALIDIDS_H
 #define MS_MSVALIDIDS_H

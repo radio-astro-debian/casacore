@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: taql.cc 21168 2012-01-04 08:11:03Z gervandiepen $
+//# $Id$
 
 #include <tables/Tables/TableParse.h>
 #include <tables/Tables/Table.h>

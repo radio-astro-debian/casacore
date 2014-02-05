@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: ImageExprParse.cc 20927 2010-07-05 11:44:27Z gervandiepen $
+//# $Id$
 
 #include <images/Images/ImageExprParse.h>
 #include <images/Images/ImageExprGram.h>

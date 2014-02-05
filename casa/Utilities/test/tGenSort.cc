@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tGenSort.cc 20794 2009-11-05 03:47:24Z Malte.Marquarding $
+//# $Id$
 
 //# Includes
 

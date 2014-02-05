@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tRebinLattice.cc 20652 2009-07-06 05:04:32Z Malte.Marquarding $
+//# $Id$
 
 //# Includes
 
@@ -58,7 +58,7 @@ int main (int argc, const char* argv[])
 try {
 
    Input inputs(1);
-   inputs.version ("$Revision: 20652 $");
+   inputs.version ("$Revision$");
 
 // Get inputs
 

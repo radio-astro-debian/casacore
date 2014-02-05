@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: ArrayMeasColumn.h 20364 2008-06-30 06:10:38Z gervandiepen $
+//# $Id$
 
 #ifndef MEASURES_ARRAYMEASCOLUMN_H
 #define MEASURES_ARRAYMEASCOLUMN_H

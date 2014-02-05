@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: DirectionUDF.cc 21147 2011-11-30 14:45:20Z gervandiepen $
+//# $Id$
 
 #include <meas/MeasUDF/DirectionUDF.h>
 

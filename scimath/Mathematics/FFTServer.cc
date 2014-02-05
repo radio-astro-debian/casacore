@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: FFTServer.cc 20932 2010-07-08 09:06:37Z gervandiepen $
+//# $Id$
 
 #include <scimath/Mathematics/FFTServer.hcc>
 

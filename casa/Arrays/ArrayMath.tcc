@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: ArrayMath.tcc 21195 2012-03-14 08:10:42Z gervandiepen $
+//# $Id$
 
 #include <casa/iostream.h>
 

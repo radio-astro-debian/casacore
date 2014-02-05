@@ -1,4 +1,4 @@
-# $Id: makefile 17902 2004-09-29 14:16:03Z gvandiep $
+# $Id$
 
 XLIBLIST := WCSLIB MIRLIB CFITSIO
 

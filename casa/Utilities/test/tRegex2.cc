@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tRegex2.cc 21199 2012-03-20 09:54:32Z gervandiepen $
+//# $Id$
 
 //# Includes
 

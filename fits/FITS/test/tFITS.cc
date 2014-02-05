@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tFITS.cc 18738 2005-06-08 04:06:15Z dschieb $
+//# $Id$
 
 //# Includes
 

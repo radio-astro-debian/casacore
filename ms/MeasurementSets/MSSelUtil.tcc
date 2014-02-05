@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: MSSelUtil.tcc 19950 2007-02-27 12:25:11Z Malte.Marquarding $
+//# $Id$
 
 #include <ms/MeasurementSets/MSSelUtil.h>
 #include <casa/Arrays/Vector.h>

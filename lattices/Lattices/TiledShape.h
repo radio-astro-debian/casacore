@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: TiledShape.h 19779 2006-12-12 23:20:42Z gvandiep $
+//# $Id$
 
 #ifndef LATTICES_TILEDSHAPE_H
 #define LATTICES_TILEDSHAPE_H

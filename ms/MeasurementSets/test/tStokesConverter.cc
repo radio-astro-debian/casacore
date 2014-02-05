@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: tStokesConverter.cc 20215 2008-01-18 04:11:36Z Malte.Marquarding $
+//# $Id$
 
 #include <casa/Arrays/MaskArrLogi.h>
 #include <casa/Arrays/ArrayIO.h>

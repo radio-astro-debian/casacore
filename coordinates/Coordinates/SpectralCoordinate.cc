@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: SpectralCoordinate.cc 21171 2012-01-04 12:53:30Z gervandiepen $
+//# $Id$
 
 
 

@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: MSMainEnums.h 20505 2009-01-19 14:37:24Z gervandiepen $
+//# $Id$
 
 #ifndef MS_MSMAINENUMS_H
 #define MS_MSMAINENUMS_H

@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tRegex_1.cc 20843 2009-12-11 07:59:36Z gervandiepen $
+//# $Id$
 
 #include <casa/BasicSL/String.h>
 #include <casa/Utilities/Regex.h>

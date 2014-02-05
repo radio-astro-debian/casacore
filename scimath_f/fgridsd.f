@@ -24,7 +24,7 @@
 *                            520 Edgemont Road
 *                            Charlottesville, VA 22903-2475 USA
 *
-*     $Id: fgridsd.f 21225 2012-03-29 22:18:24Z Malte.Marquarding $
+*     $Id$
 *-----------------------------------------------------------------------
 C
 C Grid a number of visibility records: single dish gridding

@@ -6,7 +6,7 @@ C                            National Radio Astronomy Observatory
 C                            520 Edgemont Road
 C                            Charlottesville, VA 22903-2475 USA
 C
-C     $Id: fftpak.f 17793 2004-08-25 02:39:42Z cvsmgr $
+C     $Id$
 C
 C downloaded from http://www.netlib.org/fftpack/ on Nov 1997
 *-----------------------------------------------------------------------

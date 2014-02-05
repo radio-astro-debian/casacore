@@ -24,13 +24,13 @@
 *                            520 Edgemont Road
 *                            Charlottesville, VA 22903-2475 USA
 *
-*     $Id: grd2d.f 17793 2004-08-25 02:39:42Z cvsmgr $
+*     $Id$
 *-----------------------------------------------------------------------
 C
 C	National Radio Astronomy Observatory, Socorro, NM 87801
 C	Software Development Environment (SDE)
 C++
-C $Id: grd2d.f 17793 2004-08-25 02:39:42Z cvsmgr $
+C $Id$
 C
       SUBROUTINE GRD2D (VIS, WT, UVW, NVIS, SCALE, OFFSET, 
      1     ORIGIN, GVIS, PSF, NAXIS1, NAXIS2, GRIDFNU, GRIDFNV, 

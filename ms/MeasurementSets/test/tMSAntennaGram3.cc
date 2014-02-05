@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tMSAntennaGram3.cc 20934 2010-08-17 09:16:24Z gervandiepen $
+//# $Id$
 
 #include <casa/aips.h>
 #include <casa/Utilities/Assert.h>

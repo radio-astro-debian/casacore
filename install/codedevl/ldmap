@@ -176,7 +176,7 @@
 #       names.
 #
 # Original: Mark Calabretta, ATNF
-# $Id: ldmap 18667 2005-05-17 02:06:01Z mcalabre $
+# $Id$
 #-----------------------------------------------------------------------------
 # Parse options.
   S1OPT=

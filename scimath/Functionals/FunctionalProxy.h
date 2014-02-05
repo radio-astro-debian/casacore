@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: FunctionalProxy.h 20824 2009-11-20 04:55:09Z Malte.Marquarding $
+//# $Id$
 
 #ifndef SCIMATH_FUNCTIONALSPROXY_H
 #define SCIMATH_FUNCTIONALSPROXY_H

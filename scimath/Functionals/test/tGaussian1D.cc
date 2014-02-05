@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tGaussian1D.cc 18339 2005-02-01 14:16:22Z wbrouw $
+//# $Id$
 
 #include <scimath/Functionals/Gaussian1D.h>
 

@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: aipsxtype.h 20774 2009-10-08 05:37:06Z Malte.Marquarding $
+//# $Id$
 
 #ifndef CASA_AIPSXTYPE_H
 #define CASA_AIPSXTYPE_H

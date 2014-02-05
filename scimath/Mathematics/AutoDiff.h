@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: AutoDiff.h 21134 2011-10-20 12:34:30Z gervandiepen $
+//# $Id$
 
 #ifndef SCIMATH_AUTODIFF_H
 #define SCIMATH_AUTODIFF_H

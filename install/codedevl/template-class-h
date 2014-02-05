@@ -235,7 +235,7 @@
 //#! name, with version number and date of last change.
 //#! ==========================================================================
 //#
-//# $Id: template-class-h 18067 2004-11-16 18:38:15Z ddebonis $
+//# $Id$
 
 //#! Create an include 'guard', containing your class name in the all
 //#! upper case format implied below.  This prevents multiple inclusion

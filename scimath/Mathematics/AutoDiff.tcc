@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: AutoDiff.tcc 21134 2011-10-20 12:34:30Z gervandiepen $
+//# $Id$
 
 //# Includes
 #include <scimath/Mathematics/AutoDiff.h>

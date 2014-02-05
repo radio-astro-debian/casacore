@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//#   $Id: ProfileFit1D.h 20299 2008-04-03 05:56:44Z gervandiepen $
+//#   $Id$
 
 #ifndef COMPONENTS_PROFILEFIT1D_H
 #define COMPONENTS_PROFILEFIT1D_H

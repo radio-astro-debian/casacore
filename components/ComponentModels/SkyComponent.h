@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: SkyComponent.h 21229 2012-04-02 12:00:20Z gervandiepen $
+//# $Id$
 
 #ifndef COMPONENTS_SKYCOMPONENT_H
 #define COMPONENTS_SKYCOMPONENT_H

@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: findmeastable.cc 21174 2012-01-18 08:35:09Z gervandiepen $
+//# $Id$
 
 #include <measures/Measures/MeasIERS.h>
 #include <tables/Tables/Table.h>

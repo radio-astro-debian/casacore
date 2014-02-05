@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: BitFlagsEngine.h 20839 2009-12-01 10:15:16Z gervandiepen $
+//# $Id$
 
 #ifndef TABLES_BITFLAGSENGINE_H
 #define TABLES_BITFLAGSENGINE_H

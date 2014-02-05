@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: TableRecordRep.h 20969 2010-09-27 12:45:04Z gervandiepen $
+//# $Id$
 
 
 #ifndef TABLES_TABLERECORDREP_H

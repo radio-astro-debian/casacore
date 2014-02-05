@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: MSSummary.cc 21172 2012-01-11 07:11:34Z gervandiepen $
+//# $Id$
 //#
 #include <casa/aips.h>
 #include <casa/Arrays.h>

@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: MS1ToMS2Converter.h 18093 2004-11-30 17:51:10Z ddebonis $
+//# $Id$
 
 #ifndef MS_MS1TOMS2CONVERTER_H
 #define MS_MS1TOMS2CONVERTER_H

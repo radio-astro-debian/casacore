@@ -26,7 +26,7 @@
 #                        520 Edgemont Road
 #                        Charlottesville, VA 22903-2475 USA
 #
-# $Id: UPinfo 17963 2004-10-19 04:32:59Z wbrouw $
+# $Id$
 #
 # The UPinfo script is called as 'source UPinfo' from any of the UP
 # executable scripts to get general data. It is assumed that the name of the

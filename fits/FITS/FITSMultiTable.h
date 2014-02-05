@@ -24,7 +24,7 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //#
-//# $Id: FITSMultiTable.h 20299 2008-04-03 05:56:44Z gervandiepen $
+//# $Id$
 
 #ifndef FITS_FITSMULTITABLE_H
 #define FITS_FITSMULTITABLE_H

@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: LELLattice.tcc 19909 2007-02-23 02:08:02Z Malte.Marquarding $
+//# $Id$
 
 #include <lattices/Lattices/LELLattice.h>
 #include <lattices/Lattices/LELScalar.h>

@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tMSIter.cc 20998 2010-11-17 07:10:12Z gervandiepen $
+//# $Id$
 
 //# Includes
 

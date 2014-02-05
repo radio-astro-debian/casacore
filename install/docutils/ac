@@ -53,7 +53,7 @@
 #    -d lets you give the cvs root in case $CVSROOT is not defined.
 #
 # Original: 2000/04/03 by Ger van Diepen, NFRA
-# $Id: ac 18191 2004-12-23 08:50:20Z gvandiep $
+# $Id$
 #=============================================================================
 
 # Determine the code directory (for CHANGELOG.LAST*).

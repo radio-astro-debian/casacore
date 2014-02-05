@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: TaQLNodeHandler.h 20739 2009-09-29 01:15:15Z Malte.Marquarding $
+//# $Id$
 
 #ifndef TABLES_TAQLNODEHANDLER_H
 #define TABLES_TAQLNODEHANDLER_H

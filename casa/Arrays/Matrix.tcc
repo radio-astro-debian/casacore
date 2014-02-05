@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: Matrix.tcc 21179 2012-03-07 10:28:37Z gervandiepen $
+//# $Id$
 
 #include <casa/Arrays/Matrix.h>
 #include <casa/Arrays/Vector.h>

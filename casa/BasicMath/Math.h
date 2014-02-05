@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: Math.h 21022 2011-03-01 10:07:47Z gervandiepen $
+//# $Id$
 
 #ifndef CASA_MATH_H
 #define CASA_MATH_H

@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: TableRecordRep.cc 20969 2010-09-27 12:45:04Z gervandiepen $
+//# $Id$
 
 #include <tables/Tables/TableRecordRep.h>
 #include <tables/Tables/TableRecord.h>
