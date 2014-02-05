@@ -66,6 +66,9 @@ option (USE_FFTW3 "" NO)
 option (USE_THREADS "" NO)
 option (USE_OPENMP "" NO)
 
+# By default do not use Multi-Arch
+option (LIBRARY_OUTPUT_PATH "" lib)
+
 # Define the compiler flags to be used.
 # Note: -Wshadow and -Wunreachable-code give (too) many warnings.
 # Casacore uses longlong, so no warnings for it.
