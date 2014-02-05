@@ -1,5 +1,5 @@
-lgpl_change_range_c.patch
-set_soversion.patch
-dont_install_testscript_to_bin.patch
-multiarch.patch
-Fix-build-with-gcc-4.7.patch
+0001-Change-license-and-copyright-info-for-range.c.patch
+0002-Set-the-SONAME-of-the-libraries-to-comply-with-the-D.patch
+0003-Don-t-install-the-test-script-measuresdata.csh-to-us.patch
+0004-Use-Mutliarch-compliant-library-install-path.patch
+0005-Fix-build-with-gcc-4.7.patch

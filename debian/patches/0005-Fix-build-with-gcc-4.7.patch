@@ -1,8 +1,18 @@
-Author: John Swinbank <swinbank@transientskp.org>
+From 8d5f2921f381095f7803497975c35a3db5c62305 Mon Sep 17 00:00:00 2001
+From: John Swinbank <swinbank@transientskp.org>
 Date: Wed, 27 Jun 2012 14:54:10 +0200
-Description: Fix build with gcc-4.7
+Subject: Fix build with gcc-4.7
+
 Bug: http://code.google.com/p/casacore/issues/detail?id=51
 Origin: upstream
+---
+ casa/Arrays/IPosition.h                 | 1 +
+ casa/System/Casarc.cc                   | 1 +
+ scimath/Mathematics/ConvolveGridder.tcc | 8 ++++----
+ 3 files changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/casa/Arrays/IPosition.h b/casa/Arrays/IPosition.h
+index e6b7121..d35babd 100644
 --- a/casa/Arrays/IPosition.h
 +++ b/casa/Arrays/IPosition.h
 @@ -34,6 +34,7 @@
@@ -13,6 +23,8 @@ Origin: upstream
  
  namespace casa { //# NAMESPACE CASA - BEGIN
  
+diff --git a/casa/System/Casarc.cc b/casa/System/Casarc.cc
+index a25c6c2..85ac9d3 100644
 --- a/casa/System/Casarc.cc
 +++ b/casa/System/Casarc.cc
 @@ -34,6 +34,7 @@
@@ -23,9 +35,11 @@ Origin: upstream
  
  #define USE_FLOCK 0
  #define CASARC_DEBUG 0
+diff --git a/scimath/Mathematics/ConvolveGridder.tcc b/scimath/Mathematics/ConvolveGridder.tcc
+index 3bf8e83..ee447f5 100644
 --- a/scimath/Mathematics/ConvolveGridder.tcc
 +++ b/scimath/Mathematics/ConvolveGridder.tcc
-@@ -305,11 +305,11 @@
+@@ -305,11 +305,11 @@ Bool ConvolveGridder<Domain, Range>::grid(Array<Range> &gridded,
  				    const Vector<Domain>& p,
  				    const Range& value)
  {
@@ -39,7 +53,7 @@ Origin: upstream
      const IPosition& fs = gridded.shape();
      vector<Int> s(fs.begin(), fs.end());
      switch(loc.nelements()) {
-@@ -345,10 +345,10 @@
+@@ -345,10 +345,10 @@ Bool ConvolveGridder<Domain, Range>::degrid(const Array<Range> &gridded,
  				    const Vector<Domain>& p,
  				    Range& value)
  {
