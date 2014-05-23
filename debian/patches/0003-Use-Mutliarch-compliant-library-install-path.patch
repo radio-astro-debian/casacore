@@ -1,4 +1,4 @@
-From 4f7696ca55b700c730b4ecaa09728d056966cd89 Mon Sep 17 00:00:00 2001
+From 388f677bbde1253d2c7246160cd18771bfacd5d5 Mon Sep 17 00:00:00 2001
 From: Ole Streicher <debian@liska.ath.cx>
 Date: Wed, 5 Feb 2014 09:15:10 +0900
 Subject: Use Mutliarch compliant library install path
@@ -23,10 +23,10 @@ Subject: Use Mutliarch compliant library install path
  16 files changed, 18 insertions(+), 15 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 4c1e318..dc644a6 100644
+index d53bf4c..154a8a6 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -52,6 +52,9 @@ option (USE_FFTW3 "" NO)
+@@ -66,6 +66,9 @@ option (USE_FFTW3 "" NO)
  option (USE_THREADS "" NO)
  option (USE_OPENMP "" NO)
  
@@ -115,7 +115,7 @@ index 6e3716e..1d9603a 100644
  LIBRARY PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
  )
 diff --git a/lattices/CMakeLists.txt b/lattices/CMakeLists.txt
-index 414b5e8..c1a46fb 100644
+index 4a19442..e82cfe9 100644
 --- a/lattices/CMakeLists.txt
 +++ b/lattices/CMakeLists.txt
 @@ -67,7 +67,7 @@ casa_scimath

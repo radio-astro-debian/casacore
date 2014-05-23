@@ -345,7 +345,7 @@ Bool ConvolveGridder<Domain, Range>::degrid(const Array<Range> &gridded,
 				    const Vector<Domain>& p,
 				    Range& value)
 {
-  loc=this->location(loc,p);
+  loc=this->location(loc,p); 
  if(onGrid(loc,supportVec)) {
     Bool del;
     posVec=this->position(posVec, p);

@@ -204,7 +204,7 @@ void TableParseSelect::addTable (Int tabnr, const String& name,
 	}
       }
       if (!foundSH) {
-	table = Table(name);
+	table = Table::openTable(name);
       }
     }
   }
@@ -930,7 +930,7 @@ void TableParseSelect::handleColumn (Int stringType,
         if (!newDtype.empty()  ||  inx >= 0) {
           nrSelExprUsed_p++;
         } else {
-          for (Int i=0; i<nrcol-1; ++i) {
+          for (Int i=0; i<nrcol; ++i) {
             if (str == columnOldNames_p[i]) {
               nrSelExprUsed_p++;
               break;

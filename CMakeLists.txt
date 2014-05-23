@@ -3,14 +3,23 @@
 #
 project(casacore)
 
+cmake_minimum_required (VERSION 2.6.0)
+
 set(PROJECT_VERSION_MAJOR 1)
-set(PROJECT_VERSION_MINOR 5)
+set(PROJECT_VERSION_MINOR 6)
 set(PROJECT_VERSION_PATCH 0)
 set(PROJECT_VERSION_REVISION 1)
-set(PROJECT_VERSION
-"${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
+set(PROJECT_VERSION 
+  "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
 
-SET(CPACK_PACKAGE_NAME "casacore")
+set(CPACK_GENERATOR "DEB")
+set(CPACK_PACKAGE_NAME "casacore")
+set(CPACK_PACKAGE_VERSION "${PROJECT_VERSION}")
+
+set(CPACK_PACKAGE_CONTACT "Malte Marquarding") #required
+set(CPACK_PACKAGE_VENDOR "casacore.googlecode.com")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Astronomical data processing library")
+
 string(TOLOWER "${CPACK_PACKAGE_NAME}" CPACK_PACKAGE_NAME_LOWERCASE) 
 find_program(DPKG_PROGRAM dpkg DOC "dpkg program of Debian-based systems") 
 if(DPKG_PROGRAM) 
@@ -19,20 +28,19 @@ if(DPKG_PROGRAM)
     OUTPUT_VARIABLE CPACK_DEBIAN_PACKAGE_ARCHITECTURE 
     OUTPUT_STRIP_TRAILING_WHITESPACE 
   ) 
-  set(CPACK_PACKAGE_FILE_NAME 
-"${CPACK_PACKAGE_NAME_LOWERCASE}_${PROJECT_VERSION}-${PROJECT_VERSION_REVISION}_${CPACK_DEBIAN_PACKAGE_ARCHITECTURE}")   
+  set( CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME_LOWERCASE}-dev_${PROJECT_VERSION}-${PROJECT_VERSION_REVISION}_${CPACK_DEBIAN_PACKAGE_ARCHITECTURE}")   
 
-else(DPKG_PROGRAM) 
+else() 
   set(CPACK_PACKAGE_FILE_NAME 
 "${CPACK_PACKAGE_NAME_LOWERCASE}_${PROJECT_VERSION}-${PROJECT_VERSION_REVISION}_${CMAKE_SYSTEM_NAME}") 
-endif(DPKG_PROGRAM) 
+endif() 
 
-cmake_minimum_required (VERSION 2.6.1)
-SET(CPACK_GENERATOR "DEB")
-SET(CPACK_PACKAGE_VERSION "1.1.0")
-SET(CPACK_PACKAGE_CONTACT "Malte Marquarding") #required
-SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libcfitsio3, libgfortran3")
-INCLUDE(CPack)
+# debian specific
+set(CPACK_DEBIAN_PACKAGE_NAME "casacore-dev")
+set(CPACK_DEBIAN_PACKAGE_SECTION "science")
+set(CPACK_DEBIAN_PACKAGE_PRIORITY "extra")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "libcfitsio3, libgfortran3")
+include(CPack)
 
 enable_language (Fortran)
 
@@ -40,8 +48,14 @@ set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 # By default build shared libraries
 option (ENABLE_SHARED "" YES)
+option (ENABLE_RPATH "" YES)
 if (ENABLE_SHARED)
     option (BUILD_SHARED_LIBS "" YES)
+    if (ENABLE_RPATH)
+        # Set RPATH to use for installed targets; append linker search path
+        set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+        set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+    endif (ENABLE_RPATH)
 else (ENABLE_SHARED)
     option (BUILD_SHARED_LIBS "" NO)
 endif (ENABLE_SHARED)
@@ -169,12 +183,20 @@ find_package(Pthreads REQUIRED)
 if(CMAKE_COMPILER_IS_GNUCC)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pthread")
 else(CMAKE_COMPILER_IS_GNUCC)
-    message(FATAL_ERROR "${_errmsg} ${CMAKE_C_COMPILER}")
+    if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pthread")
+    else ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+        message(FATAL_ERROR "${_errmsg} ${CMAKE_C_COMPILER}")
+    endif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 endif(CMAKE_COMPILER_IS_GNUCC)
 if(CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 else(CMAKE_COMPILER_IS_GNUCXX)
-    message(FATAL_ERROR "${_errmsg} ${CMAKE_CXX_COMPILER}")
+    if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+    else ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+        message(FATAL_ERROR "${_errmsg} ${CMAKE_CXX_COMPILER}")
+    endif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 endif(CMAKE_COMPILER_IS_GNUCXX)
 if(USE_THREADS)
     add_definitions(-DUSE_THREADS)
@@ -185,14 +207,16 @@ if(USE_OPENMP)
 endif(USE_OPENMP)
 
 # Add the modules to be built.
+add_subdirectory (scons-tools)
 foreach (module ${_modules})
     add_subdirectory (${module})
     set_target_properties(
-      casa_${module}
-      PROPERTIES
+      casa_${module} 
+      PROPERTIES 
           VERSION "${PROJECT_VERSION}"
           SOVERSION "${PROJECT_VERSION_MAJOR}"
-      )
+    )
+	
     if (APPLE)
         if (${module} STREQUAL scimath_f OR ${module} STREQUAL fits OR ${module} STREQUAL mirlib OR ${module} STREQUAL coordinates)
             set_target_properties(casa_${module} PROPERTIES LINK_FLAGS -single_module)

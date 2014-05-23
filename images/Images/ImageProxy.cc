@@ -156,6 +156,7 @@ namespace casa { //# name space casa begins
       }
     }
     switch (value.dataType()) {
+    case TpUChar:
     case TpShort:
     case TpUShort:
     case TpInt:
@@ -203,6 +204,18 @@ namespace casa { //# name space casa begins
       itsImageDComplex (0)
   {
     concatImages (images, axis);
+  }
+
+  ImageProxy::ImageProxy (const CountedPtr<LatticeBase>& image)
+    : itsLattice       (image),
+      itsImageFloat    (0),
+      itsImageDouble   (0),
+      itsImageComplex  (0),
+      itsImageDComplex (0)
+  {
+    if (! itsLattice.null()) {
+      setup();
+    }
   }
 
   ImageProxy::ImageProxy (const ImageProxy& that)

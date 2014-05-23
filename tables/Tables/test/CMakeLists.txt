@@ -31,8 +31,9 @@ tColumnsIndex
 tCompressComplex
 tCompressFloat
 tConcatRows
-tConcatTable2
 tConcatTable
+tConcatTable2
+tConcatTable3
 tExprNode
 tExprNodeSet
 tExprUnitNode
@@ -54,6 +55,7 @@ tRowCopier
 tScalarRecordColumn
 tScaledArrayEngine
 tScaledComplexData
+tSSMAddRemove
 tSSMStringHandler
 tStandardStMan
 tStArrayFile
