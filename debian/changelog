@@ -1,5 +1,9 @@
-casacore (1.5.0-1) UNRELEASED; urgency=low
+casacore (1.6.0-1) UNRELEASED; urgency=low
 
+  [ Ole Streicher ]
   * Initial release. Closes: #686924
+
+  [ Benda Xu ]
+  * Take over packaging.
 
  -- Ole Streicher <debian@liska.ath.cx>  Thu, 06 Sep 2012 09:46:06 +0200
