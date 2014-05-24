@@ -5,5 +5,6 @@ casacore (1.6.0-1) UNRELEASED; urgency=low
 
   [ Benda Xu ]
   * Take over packaging.
+  * Disable install rpath and enable testing.
 
  -- Benda Xu <heroxbd@gentoo.org>  Sat, 24 May 2014 11:46:06 +0900
