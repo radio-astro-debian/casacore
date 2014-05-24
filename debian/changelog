@@ -6,4 +6,4 @@ casacore (1.6.0-1) UNRELEASED; urgency=low
   [ Benda Xu ]
   * Take over packaging.
 
- -- Ole Streicher <debian@liska.ath.cx>  Thu, 06 Sep 2012 09:46:06 +0200
+ -- Benda Xu <heroxbd@gentoo.org>  Sat, 24 May 2014 11:46:06 +0900
