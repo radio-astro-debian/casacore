@@ -1,0 +1,38 @@
+From a75cc462fe4acd7d84e2147e203d574b709aff2d Mon Sep 17 00:00:00 2001
+From: Benda Xu <heroxbd@gentoo.org>
+Date: Tue, 9 Sep 2014 18:00:02 +0900
+Subject: =?UTF-8?q?default=20measures.directory=20to=20/usr/share/casacore?=
+ =?UTF-8?q?/data=20provided=20by=0AAustralia=20Telescope=20National=20Faci?=
+ =?UTF-8?q?lity=20(ATNF)?=
+
+---
+ measures/Measures/MeasIERS.cc  | 2 +-
+ measures/Measures/MeasTable.cc | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/measures/Measures/MeasIERS.cc b/measures/Measures/MeasIERS.cc
+index 374683f..5579ffe 100644
+--- a/measures/Measures/MeasIERS.cc
++++ b/measures/Measures/MeasIERS.cc
+@@ -403,7 +403,7 @@ Bool MeasIERS::findTab(Table& tab, const Table *tabin, const String &rc,
+ 	  if (!Table::isReadable(ldir + name)) {
+ 	    Bool found = False;
+ 	    String mdir;
+-	    if (Aipsrc::find(mdir, "measures.directory")) {
++	    if (Aipsrc::find(mdir, "measures.directory", "/usr/share/casacore/data")) {
+ 	      mdir.trim();
+ 	      Path mpath = Path(mdir);
+ 	      mpath.append(udir);
+diff --git a/measures/Measures/MeasTable.cc b/measures/Measures/MeasTable.cc
+index faf1553..e533773 100644
+--- a/measures/Measures/MeasTable.cc
++++ b/measures/Measures/MeasTable.cc
+@@ -4184,7 +4184,7 @@ Bool MeasTable::AntennaResponsesPath(String &antRespPath, const String &nam) {
+       Bool isValid = False;
+       {
+ 	String mdir;
+-	Aipsrc::find(mdir, "measures.directory");
++	Aipsrc::find(mdir, "measures.directory", "/usr/share/casacore/data");
+ 	mdir.trim();
+ 	Path lPath(mdir);
+ 	lPath.append(antRespPath);
