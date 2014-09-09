@@ -2,7 +2,6 @@ Source: casacore
 Priority: optional
 Maintainer: Debian Science Maintainers <debian-science-maintainers@lists.alioth.debian.org>
 Uploaders: Benda Xu <heroxbd@gentoo.org>
-DM-Upload-Allowed: yes
 Build-Depends: bison,
                cfitsio-dev,
                cmake (>= 1.6.2),
