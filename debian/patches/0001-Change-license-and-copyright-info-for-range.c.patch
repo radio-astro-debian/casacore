@@ -1,4 +1,4 @@
-From fe31047b64545175a9f0f6e56e29061a015edab9 Mon Sep 17 00:00:00 2001
+From ca9da38c26d4712316224a628d94974aba530c19 Mon Sep 17 00:00:00 2001
 From: Ole Streicher <debian@liska.ath.cx>
 Date: Wed, 5 Feb 2014 09:15:06 +0900
 Subject: Change license and copyright info for range.c

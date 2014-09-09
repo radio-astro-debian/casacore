@@ -1,4 +1,4 @@
-From 388f677bbde1253d2c7246160cd18771bfacd5d5 Mon Sep 17 00:00:00 2001
+From 45089912fbff270a661e491da2a30ca93c0325eb Mon Sep 17 00:00:00 2001
 From: Ole Streicher <debian@liska.ath.cx>
 Date: Wed, 5 Feb 2014 09:15:10 +0900
 Subject: Use Mutliarch compliant library install path
@@ -23,7 +23,7 @@ Subject: Use Mutliarch compliant library install path
  16 files changed, 18 insertions(+), 15 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index d53bf4c..154a8a6 100644
+index d1e41b7..cd9f861 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -66,6 +66,9 @@ option (USE_FFTW3 "" NO)
