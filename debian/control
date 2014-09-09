@@ -4,15 +4,16 @@ Maintainer: Debian Science Maintainers <debian-science-maintainers@lists.alioth.
 Uploaders: Benda Xu <heroxbd@gentoo.org>
 Build-Depends: bison,
                libcfitsio-dev,
+               casacore-data,
                cmake (>= 1.6.2),
                debhelper (>= 9),
                doxygen,
-               graphviz,
                flex,
                gfortran,
+               graphviz,
                libblas-dev,
                libfftw3-dev,
-	       liblapack-dev,
+               liblapack-dev,
                libreadline6-dev,
                wcslib-dev
 Standards-Version: 3.9.3
