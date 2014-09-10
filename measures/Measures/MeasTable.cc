@@ -4184,7 +4184,7 @@ Bool MeasTable::AntennaResponsesPath(String &antRespPath, const String &nam) {
       Bool isValid = False;
       {
 	String mdir;
-	Aipsrc::find(mdir, "measures.directory", "/usr/share/casacore/data");
+	Aipsrc::find(mdir, "measures.directory");
 	mdir.trim();
 	Path lPath(mdir);
 	lPath.append(antRespPath);

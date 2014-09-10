@@ -403,7 +403,7 @@ Bool MeasIERS::findTab(Table& tab, const Table *tabin, const String &rc,
 	  if (!Table::isReadable(ldir + name)) {
 	    Bool found = False;
 	    String mdir;
-	    if (Aipsrc::find(mdir, "measures.directory", "/usr/share/casacore/data")) {
+	    if (Aipsrc::find(mdir, "measures.directory")) {
 	      mdir.trim();
 	      Path mpath = Path(mdir);
 	      mpath.append(udir);
