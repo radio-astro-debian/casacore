@@ -10,10 +10,7 @@ endforeach (file)
 
 set (tests
 tRegionHandler
-tRegionManager
-tWCBox
 tWCExtension
-tWCLELMask
 tWCUnion
 )
 
