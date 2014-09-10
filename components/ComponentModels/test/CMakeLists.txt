@@ -1,8 +1,4 @@
 set (tests
-dPointShape
-dSkyCompBase
-dSpectralModel
-dTwoSidedShape
 tComponentList
 tComponentType
 tConstantSpectrum
