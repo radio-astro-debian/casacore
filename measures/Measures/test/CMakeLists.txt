@@ -1,10 +1,7 @@
 set (tests
 dM1950_2000
 dMeasure
-tEarthField
-tEarthMagneticMachine
 tMBaseline
-tMEarthMagnetic
 tMeasComet
 tMeasJPL
 tMeasMath
