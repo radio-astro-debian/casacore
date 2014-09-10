@@ -18,7 +18,6 @@ tMSAntennaGram3
 tMSColumns
 tMSCorrGram
 tMSDataDescBuffer
-tMSDerivedValues
 tMSFieldBuffer
 tMSFieldGram
 tMSIter
@@ -26,7 +25,6 @@ tMSMainBuffer
 tMSPolBuffer
 tMSReader
 tMSScanGram
-tMSSimulator
 tMSSpwGram
 tMSSummary
 tMSTimeGram
