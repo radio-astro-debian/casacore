@@ -1,8 +1,9 @@
-From 431c7534fbc6a13757f8e038da2594af4b7debbb Mon Sep 17 00:00:00 2001
+From 913efa996ed1b5717290fad9affb31d6d406ce9a Mon Sep 17 00:00:00 2001
 From: Benda Xu <heroxbd@gentoo.org>
 Date: Wed, 10 Sep 2014 10:00:43 +0900
-Subject: =?UTF-8?q?disable=20the=20known=20failed=20tests=0AForwarded:=20h?=
- =?UTF-8?q?ttp://code.google.com/p/casacore/issues/detail=3Fid=3D67?=
+Subject: disable the known failed tests
+
+Forwarded: http://code.google.com/p/casacore/issues/detail?id=67
 
 tEarthField, tEarthMagneticMachine, tMEarthMagnetic, tAntennaResponses
 ---
