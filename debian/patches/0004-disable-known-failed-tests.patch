@@ -1,11 +1,12 @@
-From 913efa996ed1b5717290fad9affb31d6d406ce9a Mon Sep 17 00:00:00 2001
+From a1d83e72e7e8cc9e3fea17b7cc3d79c8cf282336 Mon Sep 17 00:00:00 2001
 From: Benda Xu <heroxbd@gentoo.org>
 Date: Wed, 10 Sep 2014 10:00:43 +0900
-Subject: disable the known failed tests
+Subject: disable known failed tests
 
 Forwarded: http://code.google.com/p/casacore/issues/detail?id=67
-
-tEarthField, tEarthMagneticMachine, tMEarthMagnetic, tAntennaResponses
+Description: Testsuite of tEarthField, tEarthMagneticMachine,
+    tMEarthMagnetic are out of date with casacore-data. Data needed
+    for tAntennaResponses is not available.
 ---
  images/Images/test/CMakeLists.txt     | 1 -
  measures/Measures/test/CMakeLists.txt | 3 ---

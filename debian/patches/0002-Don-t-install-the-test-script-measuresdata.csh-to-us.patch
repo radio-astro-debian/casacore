@@ -1,7 +1,9 @@
-From b276c16a82b07b43cb68e13fc0132fa819f15986 Mon Sep 17 00:00:00 2001
+From 736c2555b033fe25b5d2642bddfdee801eb7f8f7 Mon Sep 17 00:00:00 2001
 From: Ole Streicher <debian@liska.ath.cx>
 Date: Wed, 5 Feb 2014 09:15:08 +0900
 Subject: Don't install the test script "measuresdata.csh" to /usr/bin
+
+Forwarded: not-needed
 
  This script is just a test script, so it should go into the examples.
 ---
