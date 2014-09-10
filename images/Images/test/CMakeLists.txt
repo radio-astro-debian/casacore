@@ -78,7 +78,6 @@ dImageMoments
 dImageStatistics
 dImageSummary
 dPagedImage
-tAntennaResponses
 tComponentImager
 tExtendImage
 tFITSExtImage
