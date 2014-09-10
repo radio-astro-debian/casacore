@@ -1,5 +1,4 @@
 set (tests
-tMSDerivedValues
 tMSMetaData
 tMSReader
 tMSSummary
