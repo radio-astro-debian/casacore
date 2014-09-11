@@ -1,6 +1,6 @@
 Source: casacore
 Priority: optional
-Maintainer: Debian Science Maintainers <debian-science-maintainers@lists.alioth.debian.org>
+Maintainer: Debian Astronomy & Astrophysics Maintainers <debian-astro-maintainers@lists.alioth.debian.org>
 Uploaders: Benda Xu <heroxbd@gentoo.org>
 Build-Depends: bison,
                libcfitsio-dev,
@@ -16,11 +16,11 @@ Build-Depends: bison,
                liblapack-dev,
                libreadline6-dev,
                wcslib-dev
-Standards-Version: 3.9.3
+Standards-Version: 3.9.5
 Section: science
 Homepage: http://code.google.com/p/casacore/
-Vcs-Git: git://git.debian.org/git/debian-science/packages/casacore.git
-Vcs-Browser: http://git.debian.org/?p=debian-science/packages/casacore.git
+Vcs-Git: git://git.debian.org/debian-astro/packages/casacore.git
+Vcs-Browser: http://git.debian.org/?p=debian-astro/packages/casacore.git
 
 Package: casacore-dev
 Section: libdevel

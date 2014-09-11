@@ -6,6 +6,8 @@ casacore (1.7.0-1) UNRELEASED; urgency=low
   [ Benda Xu ]
   * Take over packaging.
   * Disable install rpath and enable testing.
-  * new upstream version
+  * New upstream version.
+  * Use --as-needed LDFLAGS to drop unnecessary libraries.
+  * Bump to standard 3.9.5.
 
- -- Benda Xu <heroxbd@gentoo.org>  Tue, 09 Sep 2014 09:52:59 +0900
+ -- Benda Xu <heroxbd@gentoo.org>  Thu, 11 Sep 2014 11:03:45 +0900
