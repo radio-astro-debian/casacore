@@ -2,3 +2,4 @@
 0002-Don-t-install-the-test-script-measuresdata.csh-to-us.patch
 0003-Use-Mutliarch-compliant-library-install-path.patch
 0004-disable-known-failed-tests.patch
+0005-disable-class-graph-generation.patch
