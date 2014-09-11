@@ -13,15 +13,13 @@ override_dh_auto_configure:
 		-DUSE_THREADS=ON -DLIBRARY_OUTPUT_PATH=lib/$(DEB_HOST_GNU_TYPE) \
 		-DDATA_DIR=/usr/share/casacore/data
 
-override_dh_auto_build:
-	dh_auto_build
+override_dh_auto_build-indep:
 	doxygen doxygen.cfg
 	rm -f doc/html/jquery.js
 
-override_dh_auto_install:
-	dh_auto_install
+override_dh_auto_install-indep:
+	dh_installdocs
 	dh_doxygen
 
 override_dh_clean:
 	rm -rf doc/
-	dh_clean
