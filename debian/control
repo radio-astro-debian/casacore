@@ -64,7 +64,7 @@ Description: Common Astronomy Software Applications core library (documentation)
 Package: casacore-tools
 Section: science
 Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}
+Depends: python, ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Description: Tools build with CASA
  The casacore package contains the core libraries of the old AIPS++/CASA
