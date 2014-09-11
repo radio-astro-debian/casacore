@@ -1,0 +1,5 @@
+The class graphs in documentation normally occupying 1GB have been
+removed to save disk space.  If you really need class graphs, please
+obtain the source package, set "CLASS_GRAPH=YES" and run doxygen
+again.
+ -- Benda Xu <heroxbd@gentoo.org>  Thu, 11 Sep 2014 11:03:45 +0900
