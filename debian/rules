@@ -18,6 +18,10 @@ override_dh_auto_build:
 	doxygen doxygen.cfg
 	rm -f doc/html/jquery.js
 
+override_dh_auto_install:
+	dh_auto_install
+	dh_doxygen
+
 override_dh_clean:
 	rm -rf doc/
 	dh_clean
