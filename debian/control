@@ -20,8 +20,8 @@ Build-Depends: bison,
 Standards-Version: 3.9.5
 Section: science
 Homepage: http://code.google.com/p/casacore/
-Vcs-Git: git://git.debian.org/debian-astro/packages/casacore.git
-Vcs-Browser: http://git.debian.org/?p=debian-astro/packages/casacore.git
+Vcs-Git: git://anonscm.debian.org/git/debian-astro/packages/casacore.git
+Vcs-Browser: https://anonscm.debian.org/cgit/debian-astro/packages/casacore.git
 
 Package: casacore-dev
 Section: libdevel
