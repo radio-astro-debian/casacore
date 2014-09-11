@@ -8,7 +8,36 @@ Copyright: 1992-2012 Associated Universities, Inc. Washington DC, USA.
  2010, ESO (in the framework of the ALMA collaboration)
  1988, Free Software Foundation
  1985-2012 Distributed Systems Software (Barry Brachman)
- 2012 Ole Streicher (Debian packaging)
+License: LGPL-2+
+Note: The files install/printer/{range.c,lwf_a.c} document a non-DFSG
+ compatible license. I(Ole Streicher) contacted the author (Barry
+ Brachman <brachman@dss.ca>) and got the permission from him to
+ distribute the file as LGPL-2+ and to remove or change the copyright
+ note in the file. The license change is reported to upstream.
+
+Files: debian/*
+Copyright: 2012 Ole Streicher
+ 2013-2014 Benda Xu <heroxbd@gentoo.org>
+License: GPL-2+
+
+Files: */*/test/* images/Images/ImageReorderer.h
+ install/codedevl/glish-mode.el
+Copyright: 1993-2011 Associated Universities, Inc. Washington DC, USA.,
+ Copyright by ESO (in the framework of the ALMA collaboration)
+ 1996-1998  Jeffrey A. Uphoff, NRAO/AUI.
+ 1987-1994  Free Software Foundation, Inc.
+License: GPL-2+
+
+Files: casa/OS/*.h
+Copyright: 1984, 1989, William LeFebvre, Rice University
+ 1989-1994, William LeFebvre, Northwestern University
+ 1994-1995, William LeFebvre, Argonne National Laboratory
+ 1996 William LeFebvre, Group sys Consulting
+ 2002, 2009 Associated Universities Inc
+License: Free
+  This program may be freely redistributed,
+  but the copyright comment MUST remain intact.
+
 License: LGPL-2+
  This library is free software; you can redistribute it and/or modify it
  under the terms of the GNU Library General Public License as published by
@@ -23,18 +52,7 @@ License: LGPL-2+
  On Debian systems, the full text of the GNU Lesser General Public
  License version 2+ can be found in the file
  `/usr/share/common-licenses/LGPL-2'.
-Note: The files install/printer/{range.c,lwf_a.c} document a non-DFSG
- compatible license. I contacted the author (Barry Brachman <brachman@dss.ca>)
- and got the permission from him to distribute the file as LGPL-2+ and to
- remove or change the copyright note in the file. The license change is
- reported to upstream.
 
-Files: */*/test/* images/Images/ImageReorderer.h
- install/codedevl/glish-mode.el
-Copyright: 1993-2011 Associated Universities, Inc. Washington DC, USA.,
- Copyright by ESO (in the framework of the ALMA collaboration)
- 1996-1998  Jeffrey A. Uphoff, NRAO/AUI.
- 1987-1994  Free Software Foundation, Inc.
 License: GPL-2+
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -49,13 +67,3 @@ License: GPL-2+
  On Debian systems, the full text of the GNU General Public
  License version 2 can be found in the file
  `/usr/share/common-licenses/GPL-2'.
-
-Files: casa/OS/*.h
-Copyright: 1984, 1989, William LeFebvre, Rice University
- 1989-1994, William LeFebvre, Northwestern University
- 1994-1995, William LeFebvre, Argonne National Laboratory
- 1996 William LeFebvre, Group sys Consulting
- 2002, 2009 Associated Universities Inc
-License: Free
-  This program may be freely redistributed,
-  but the copyright comment MUST remain intact.
