@@ -442,7 +442,7 @@ protected:
 // "all moment" vector.
    Vector<Int> selectMoments(MomentsBase<T>& iMom) const;
 
-// Fill the ouput moments array
+// Fill the output moments array
    void setCalcMoments (MomentsBase<T>& iMom,
                         Vector<T>& calcMoments,
                         Vector<Bool>& calcMomentsMask,
