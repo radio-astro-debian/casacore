@@ -303,7 +303,7 @@ void StManArrayFile::put (Int64 fileOff, uInt arrayOff, uInt nr,
             AlwaysAssert (leng_p < Int64(65536)*65536, DataManError);
 	    buf[i] = leng_p;
                 //
-                // Converted the string->lenght into an uInt so
+                // Converted the string->length into an uInt so
                 // the SGI compiler could find the right overloaded function
                 // some problem with string::size_t conversion
                 //
