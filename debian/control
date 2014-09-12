@@ -20,7 +20,7 @@ Build-Depends: bison,
 Standards-Version: 3.9.5
 Section: science
 Homepage: http://code.google.com/p/casacore/
-Vcs-Git: git://anonscm.debian.org/git/debian-astro/packages/casacore.git
+Vcs-Git: git://anonscm.debian.org/debian-astro/packages/casacore.git
 Vcs-Browser: https://anonscm.debian.org/cgit/debian-astro/packages/casacore.git
 
 Package: casacore-dev
@@ -63,7 +63,6 @@ Description: Common Astronomy Software Applications core library (documentation)
  This package contains the API documentation.
 
 Package: casacore-tools
-Section: science
 Architecture: any
 Depends: python, ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
@@ -72,8 +71,15 @@ Description: Tools build with CASA
  package. This split was made to get a better separation of core libraries and
  applications.
  .
- This package contains the tools built with the CASAcore package.
-
+ This package contains the tools built with the CASAcore package:
+ .
+ taql - query language for casacore tables
+ measuresdata - create data tables for measures
+ casacore_assay - show environment
+ imageregrid, imagecalc, showtable, showtablelock, findmeastable,
+ fits2table, imreorder, casahdf5support, msselect, ms2uvfits, 
+ image2fits, imageslice, casacore_floatcheck, etc.
+ 
 Package: libcasa-casa1
 Section: libs
 Architecture: any
