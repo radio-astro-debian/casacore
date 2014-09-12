@@ -1457,7 +1457,7 @@ void MomentCalcBase<T>::yAutoMinMax(T& yMin,
 
 
 
-// Fill the ouput moments array
+// Fill the output moments array
 template<class T>
 void MomentCalcBase<T>::setCalcMoments
                        (MomentsBase<T>& iMom,

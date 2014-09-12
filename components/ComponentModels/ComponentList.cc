@@ -684,7 +684,7 @@ Bool ComponentList::ok() const {
   if (itsList.nelements() < itsNelements) {
     LogIO logErr(LogOrigin("ComponentList", "ok()"));
     logErr << LogIO::SEVERE 
-	   << "The list size is inconsistant with its cached size"
+	   << "The list size is inconsistent with its cached size"
            << LogIO::POST;
      return False;
   }
