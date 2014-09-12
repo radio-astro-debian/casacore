@@ -3,3 +3,4 @@
 0003-Use-Mutliarch-compliant-library-install-path.patch
 0004-disable-known-failed-tests.patch
 0005-disable-class-and-collaboration-graph-generation.patch
+0006-fix-typos.patch

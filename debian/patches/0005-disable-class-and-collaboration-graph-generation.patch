@@ -1,4 +1,4 @@
-From d6ee4be871fd3cd6aff279ea165ac11a8fb7d965 Mon Sep 17 00:00:00 2001
+From 279f81c0698bc28dd79d680dcb6ebb7a37983c98 Mon Sep 17 00:00:00 2001
 From: Benda Xu <heroxbd@gentoo.org>
 Date: Thu, 11 Sep 2014 18:20:44 +0900
 Subject: disable class and collaboration graph generation
