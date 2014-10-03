@@ -15,11 +15,6 @@ Note: The files install/printer/{range.c,lwf_a.c} document a non-DFSG
  distribute the file as LGPL-2+ and to remove or change the copyright
  note in the file. The license change is reported to upstream.
 
-Files: debian/*
-Copyright: 2012 Ole Streicher
- 2013-2014 Benda Xu <heroxbd@gentoo.org>
-License: GPL-2+
-
 Files: */*/test/* images/Images/ImageReorderer.h
  install/codedevl/glish-mode.el
 Copyright: 1993-2011 Associated Universities, Inc. Washington DC, USA.,
@@ -28,15 +23,20 @@ Copyright: 1993-2011 Associated Universities, Inc. Washington DC, USA.,
  1987-1994  Free Software Foundation, Inc.
 License: GPL-2+
 
-Files: casa/OS/*.h
+Files: casa/OS/HostInfo{Darwin,Hpux,Irix,Linux,Osf1,Solaris}.h
 Copyright: 1984, 1989, William LeFebvre, Rice University
  1989-1994, William LeFebvre, Northwestern University
  1994-1995, William LeFebvre, Argonne National Laboratory
  1996 William LeFebvre, Group sys Consulting
- 2002, 2009 Associated Universities Inc
-License: Free
+ 2002 Associated Universities Inc.
+License: freely-redistributable
   This program may be freely redistributed,
   but the copyright comment MUST remain intact.
+
+Files: debian/*
+Copyright: 2012 Ole Streicher
+ 2013-2014 Benda Xu <heroxbd@gentoo.org>
+License: GPL-2+
 
 License: LGPL-2+
  This library is free software; you can redistribute it and/or modify it
