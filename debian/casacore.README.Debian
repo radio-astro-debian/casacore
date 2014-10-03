@@ -1,0 +1,10 @@
+The measures data (named casacore-data) are still being packaged, and
+is not available now.  To use the full functionality of casacore, be
+sure to download measures data as instructed by upstream
+
+    http://code.google.com/p/casacore/wiki/FrequentlyAskedQuestions
+
+into /usr/share/casacore/data/{geodetic,ephemerides} (default) or
+anywhere specified by the casa rc file.
+
+  -- Benda Xu <heroxbd@gentoo.org>, Fri, 3 Oct 2014 16:24:22 +0900
