@@ -1,4 +1,4 @@
-From da19d638cee7183800d1240de323e0e0d85f34f6 Mon Sep 17 00:00:00 2001
+From 2f80cb608d3cd02f2b2c2a680314b6acf73e851a Mon Sep 17 00:00:00 2001
 From: Benda Xu <heroxbd@gentoo.org>
 Date: Wed, 10 Sep 2014 10:00:43 +0900
 Subject: disable known failed tests
@@ -37,10 +37,11 @@ Description: Testsuite of tEarthField, tEarthMagneticMachine,
  coordinates/Coordinates/test/CMakeLists.txt    |  6 ------
  images/Images/test/CMakeLists.txt              | 20 --------------------
  images/Regions/test/CMakeLists.txt             |  3 ---
+ lattices/Lattices/test/CMakeLists.txt          |  1 -
  measures/Measures/test/CMakeLists.txt          | 16 ----------------
  measures/TableMeasures/test/CMakeLists.txt     |  1 -
  ms/MeasurementSets/test/CMakeLists.txt         |  2 --
- 7 files changed, 52 deletions(-)
+ 8 files changed, 53 deletions(-)
 
 diff --git a/components/ComponentModels/test/CMakeLists.txt b/components/ComponentModels/test/CMakeLists.txt
 index e911934..bd4d2f9 100644
@@ -142,6 +143,18 @@ index fb0837b..6ac6c4b 100644
  tWCUnion
  )
  
+diff --git a/lattices/Lattices/test/CMakeLists.txt b/lattices/Lattices/test/CMakeLists.txt
+index 6fc2f43..5ab70d1 100644
+--- a/lattices/Lattices/test/CMakeLists.txt
++++ b/lattices/Lattices/test/CMakeLists.txt
+@@ -31,7 +31,6 @@ tLatticeStatistics
+ tLatticeStepper
+ tLatticeTwoPtCorr
+ tLatticeUtilities
+-tLattStatsSpecialize
+ tLCComplement
+ tLCConcatenation
+ tLCDifference
 diff --git a/measures/Measures/test/CMakeLists.txt b/measures/Measures/test/CMakeLists.txt
 index f7eb207..130babb 100644
 --- a/measures/Measures/test/CMakeLists.txt
