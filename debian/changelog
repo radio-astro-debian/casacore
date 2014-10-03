@@ -8,7 +8,7 @@ casacore (1.7.0-1) UNRELEASED; urgency=low
   * Disable install rpath and enable testing.
   * New upstream version.
   * Use --as-needed LDFLAGS to drop unnecessary libraries.
-  * Bump to standard 3.9.5.
+  * Bump to standard 3.9.6.
   * Disable class graph generation to save disk space.
 
  -- Benda Xu <heroxbd@gentoo.org>  Thu, 11 Sep 2014 11:03:45 +0900

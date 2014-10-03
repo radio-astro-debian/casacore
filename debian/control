@@ -17,7 +17,7 @@ Build-Depends: bison,
                libncurses5-dev,
                libreadline6-dev,
                wcslib-dev
-Standards-Version: 3.9.5
+Standards-Version: 3.9.6
 Section: science
 Homepage: http://code.google.com/p/casacore/
 Vcs-Git: git://anonscm.debian.org/debian-astro/packages/casacore.git
@@ -66,7 +66,7 @@ Package: casacore-tools
 Architecture: any
 Depends: python, ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
-Description: Tools build with CASA
+Description: Tools built with CASA
  The casacore package contains the core libraries of the old AIPS++/CASA
  package. This split was made to get a better separation of core libraries and
  applications.
@@ -196,7 +196,7 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Description: CASA ms library
+Description: CASA MeasurementSet library
  The casacore package contains the core libraries of the old AIPS++/CASA
  package. This split was made to get a better separation of core libraries and
  applications.
