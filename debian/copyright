@@ -10,10 +10,28 @@ Copyright: 1992-2012 Associated Universities, Inc. Washington DC, USA.
  1985-2012 Distributed Systems Software (Barry Brachman)
 License: LGPL-2+
 Note: The files install/printer/{range.c,lwf_a.c} document a non-DFSG
- compatible license. I(Ole Streicher) contacted the author (Barry
+ compatible license. Ole Streicher contacted the author (Barry
  Brachman <brachman@dss.ca>) and got the permission from him to
  distribute the file as LGPL-2+ and to remove or change the copyright
- note in the file. The license change is reported to upstream.
+ note in the file, quoted:
+ .
+ You have my permission to re-release your version of range.c under
+ the LGPL-2 if you prefer.  It is sufficient for me if you either
+ remove the old copyright notice entirely or add a note to the code
+ that the old license has been revoked by the author (me) and changed
+ to the LGPL - whichever you like.  If you want to add a copyright
+ notice, it may read:
+
+     /* Copyright (c) 1985-2012 Distributed Systems Software */
+
+ But I don't require you to add a copyright notice.
+ .
+ [...]
+ .
+ You also have my permission to change the license & copyright for lwf_c.c
+ in the same way as for range.c
+ .
+ The license change is reported to upstream.
 
 Files: */*/test/* images/Images/ImageReorderer.h
  install/codedevl/glish-mode.el
