@@ -1,4 +1,4 @@
-From 876b4dbcca2481f0f0b41524df6ead0e87789b09 Mon Sep 17 00:00:00 2001
+From da19d638cee7183800d1240de323e0e0d85f34f6 Mon Sep 17 00:00:00 2001
 From: Benda Xu <heroxbd@gentoo.org>
 Date: Wed, 10 Sep 2014 10:00:43 +0900
 Subject: disable known failed tests
@@ -7,35 +7,204 @@ Bug: http://code.google.com/p/casacore/issues/detail?id=67
 Description: Testsuite of tEarthField, tEarthMagneticMachine,
     tMEarthMagnetic are out of date with casacore-data. Data needed
     for tAntennaResponses is not available.
----
- images/Images/test/CMakeLists.txt     | 1 -
- measures/Measures/test/CMakeLists.txt | 3 ---
- 2 files changed, 4 deletions(-)
 
+    dImageMoments, dImageStatistics, dImageSummary, tAntennaResponses,
+    tImageAttrHandler, tImageConvolver, tImageEmpty, tImageExpr2Gram,
+    tImageExpr3Gram, tImageFFT, tImageMetaData, tImageRegrid,
+    tImageReorderer, tImageUtilities, tLELSpectralIndex, tPagedImage,
+    tPagedImage2, tRebinImage, tSepImConvolver, tRegionManager,
+    tWCBox, tWCLELMask, dCoordinates, tCoordinateSystem, tCoordinateUtil,
+    tFrequencyAligner, tObsInfo, tSpectralCoordinate  disabled, because
+    geodetic/Observatories is not yet available in casacore-data.
+
+    dTwoSidedShape, dImageHistograms, tMSSimulator, tIAU2000,
+    tVelocityMachine, tParAngleMachine, tMuvw, tMeasure, dMeasure,
+    disabled for missing geodetic/TAI_UTC.
+
+    tMeasJPL disabled for ephemerides/DE200.
+
+    tMSDerivedValues disabled for geodetic/IERSpredict.
+
+    tMeasComet for ephemerides/VGEO.
+
+    tMBaseline for geodetic/IGRF.
+
+    tTableMeasures disabled for
+
+       geodetic/{IERSeop{2000,97},IERSpredict{,2000},TAI_UTC}.
+---
+ components/ComponentModels/test/CMakeLists.txt |  4 ----
+ coordinates/Coordinates/test/CMakeLists.txt    |  6 ------
+ images/Images/test/CMakeLists.txt              | 20 --------------------
+ images/Regions/test/CMakeLists.txt             |  3 ---
+ measures/Measures/test/CMakeLists.txt          | 16 ----------------
+ measures/TableMeasures/test/CMakeLists.txt     |  1 -
+ ms/MeasurementSets/test/CMakeLists.txt         |  2 --
+ 7 files changed, 52 deletions(-)
+
+diff --git a/components/ComponentModels/test/CMakeLists.txt b/components/ComponentModels/test/CMakeLists.txt
+index e911934..bd4d2f9 100644
+--- a/components/ComponentModels/test/CMakeLists.txt
++++ b/components/ComponentModels/test/CMakeLists.txt
+@@ -1,8 +1,4 @@
+ set (tests
+-dPointShape
+-dSkyCompBase
+-dSpectralModel
+-dTwoSidedShape
+ tComponentList
+ tComponentType
+ tConstantSpectrum
+diff --git a/coordinates/Coordinates/test/CMakeLists.txt b/coordinates/Coordinates/test/CMakeLists.txt
+index 5d7e13c..808f3f7 100644
+--- a/coordinates/Coordinates/test/CMakeLists.txt
++++ b/coordinates/Coordinates/test/CMakeLists.txt
+@@ -1,18 +1,12 @@
+ set (tests
+-dCoordinates
+ dRemoveAxes
+ dWorldMap
+ tCoordinate
+-tCoordinateSystem
+-tCoordinateUtil
+ tDirectionCoordinate
+-tFrequencyAligner
+ tGaussianConvert
+ tLinearCoordinate
+ tLinearXform
+-tObsInfo
+ tProjection
+-tSpectralCoordinate
+ tStokesCoordinate
+ tTabularCoordinate
+ )
 diff --git a/images/Images/test/CMakeLists.txt b/images/Images/test/CMakeLists.txt
-index 6ab01a7..8afff03 100644
+index 6ab01a7..4b89559 100644
 --- a/images/Images/test/CMakeLists.txt
 +++ b/images/Images/test/CMakeLists.txt
-@@ -78,7 +78,6 @@ dImageMoments
- dImageStatistics
- dImageSummary
+@@ -72,13 +72,8 @@ endforeach (file)
+ 
+ 
+ set (tests
+-dImageHistograms
+ dImageInterface
+-dImageMoments
+-dImageStatistics
+-dImageSummary
  dPagedImage
 -tAntennaResponses
  tComponentImager
  tExtendImage
  tFITSExtImage
+@@ -86,30 +81,15 @@ tFITSExtImageII
+ tFITSImage
+ tFITSImgParser
+ tHDF5Image
+-tImageAttrHandler
+ tImageConcat
+-tImageConvolver
+ tImageDecomposer
+-tImageEmpty
+-tImageExpr2Gram
+-tImageExpr3Gram
+ tImageExprGram
+ tImageExprParse_addDir
+-tImageFFT
+ tImageInfo
+-tImageMetaData
+ tImagePolarimetry
+-tImageRegrid
+-tImageReorderer
+ tImageSourceFinder
+ tImageStatistics
+-tImageUtilities
+-tLELSpectralIndex
+ tMIRIADImage
+-tPagedImage
+-tPagedImage2
+-tRebinImage
+-tSepImConvolver
+ tSubImage
+ tTempImage
+ )
+diff --git a/images/Regions/test/CMakeLists.txt b/images/Regions/test/CMakeLists.txt
+index fb0837b..6ac6c4b 100644
+--- a/images/Regions/test/CMakeLists.txt
++++ b/images/Regions/test/CMakeLists.txt
+@@ -10,10 +10,7 @@ endforeach (file)
+ 
+ set (tests
+ tRegionHandler
+-tRegionManager
+-tWCBox
+ tWCExtension
+-tWCLELMask
+ tWCUnion
+ )
+ 
 diff --git a/measures/Measures/test/CMakeLists.txt b/measures/Measures/test/CMakeLists.txt
-index f7eb207..7e9c6fb 100644
+index f7eb207..130babb 100644
 --- a/measures/Measures/test/CMakeLists.txt
 +++ b/measures/Measures/test/CMakeLists.txt
-@@ -1,10 +1,7 @@
+@@ -1,21 +1,10 @@
  set (tests
  dM1950_2000
- dMeasure
+-dMeasure
 -tEarthField
 -tEarthMagneticMachine
- tMBaseline
+-tMBaseline
 -tMEarthMagnetic
- tMeasComet
- tMeasJPL
+-tMeasComet
+-tMeasJPL
  tMeasMath
+-tMeasure
+ tMeasureHolder
+-tMuvw
+-tParAngleMachine
+ tRecordTransformable
+ tStokes
+ tUVWMachine
+-tVelocityMachine
+ )
+ 
+ foreach (test ${tests})
+@@ -24,8 +13,3 @@ foreach (test ${tests})
+     add_test (${test} ${CMAKE_SOURCE_DIR}/cmake/cmake_assay ./${test})
+ endforeach (test)
+ 
+-foreach (test tIAU2000)
+-    add_executable (tIAU2000 tIAU2000.cc)
+-    target_link_libraries (tIAU2000 casa_measures sofa)
+-    add_test (${test} ${CMAKE_SOURCE_DIR}/cmake/cmake_assay ./${test})
+-endforeach (test)
+diff --git a/measures/TableMeasures/test/CMakeLists.txt b/measures/TableMeasures/test/CMakeLists.txt
+index 20db6b4..042b8a9 100644
+--- a/measures/TableMeasures/test/CMakeLists.txt
++++ b/measures/TableMeasures/test/CMakeLists.txt
+@@ -1,6 +1,5 @@
+ set (tests
+ tTableQuantum
+-tTableMeasures
+ dVarRefMdirCol
+ )
+ 
+diff --git a/ms/MeasurementSets/test/CMakeLists.txt b/ms/MeasurementSets/test/CMakeLists.txt
+index 1e3a9ec..705dd21 100644
+--- a/ms/MeasurementSets/test/CMakeLists.txt
++++ b/ms/MeasurementSets/test/CMakeLists.txt
+@@ -18,7 +18,6 @@ tMSAntennaGram3
+ tMSColumns
+ tMSCorrGram
+ tMSDataDescBuffer
+-tMSDerivedValues
+ tMSFieldBuffer
+ tMSFieldGram
+ tMSIter
+@@ -26,7 +25,6 @@ tMSMainBuffer
+ tMSPolBuffer
+ tMSReader
+ tMSScanGram
+-tMSSimulator
+ tMSSpwGram
+ tMSSummary
+ tMSTimeGram

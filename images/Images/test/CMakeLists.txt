@@ -72,11 +72,7 @@ endforeach (file)
 
 
 set (tests
-dImageHistograms
 dImageInterface
-dImageMoments
-dImageStatistics
-dImageSummary
 dPagedImage
 tComponentImager
 tExtendImage
@@ -85,30 +81,15 @@ tFITSExtImageII
 tFITSImage
 tFITSImgParser
 tHDF5Image
-tImageAttrHandler
 tImageConcat
-tImageConvolver
 tImageDecomposer
-tImageEmpty
-tImageExpr2Gram
-tImageExpr3Gram
 tImageExprGram
 tImageExprParse_addDir
-tImageFFT
 tImageInfo
-tImageMetaData
 tImagePolarimetry
-tImageRegrid
-tImageReorderer
 tImageSourceFinder
 tImageStatistics
-tImageUtilities
-tLELSpectralIndex
 tMIRIADImage
-tPagedImage
-tPagedImage2
-tRebinImage
-tSepImConvolver
 tSubImage
 tTempImage
 )
