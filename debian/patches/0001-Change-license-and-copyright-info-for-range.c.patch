@@ -1,7 +1,9 @@
-From ca9da38c26d4712316224a628d94974aba530c19 Mon Sep 17 00:00:00 2001
+From 0a50a0a7899b38af53f56a1e4b63f5e77e49bf08 Mon Sep 17 00:00:00 2001
 From: Ole Streicher <debian@liska.ath.cx>
 Date: Wed, 5 Feb 2014 09:15:06 +0900
 Subject: Change license and copyright info for range.c
+
+Bug: http://code.google.com/p/casacore/issues/detail?id=56
 
  The license written in the file is not DFSG compliant. I contacted the
  author (Barry Brachman <brachman@dss.ca>)and got the permission to re-release
