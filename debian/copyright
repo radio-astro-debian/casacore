@@ -21,9 +21,9 @@ Note: The files install/printer/{range.c,lwf_a.c} document a non-DFSG
  that the old license has been revoked by the author (me) and changed
  to the LGPL - whichever you like.  If you want to add a copyright
  notice, it may read:
-
+ .
      /* Copyright (c) 1985-2012 Distributed Systems Software */
-
+ .
  But I don't require you to add a copyright notice.
  .
  [...]
