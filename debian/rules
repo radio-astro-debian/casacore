@@ -17,9 +17,11 @@ override_dh_auto_build-indep:
 	doxygen doxygen.cfg
 	rm -f doc/html/jquery.js
 
-override_dh_auto_install-indep:
-	dh_installdocs
-	dh_doxygen
+override_dh_auto_test-indep override_dh_auto_install-indep:
+
+override_dh_installdocs-indep:
+	dh_installdocs -i
+	dh_doxygen -i
 
 override_dh_clean:
 	rm -rf doc/
