@@ -3,4 +3,8 @@ The class and collaboration graphs in documentation normally occupying
 graphs, please obtain the source package, set "CLASS_GRAPH=YES" and
 "COLLABORATION_GRAPH=YES", and run doxygen again.
 
+The complete online documentation can be found at
+
+    http://www.astron.nl/casacore/trunk/casacore/doc/html
+
  -- Benda Xu <heroxbd@gentoo.org>  Thu, 11 Sep 2014 11:03:45 +0900
