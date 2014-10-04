@@ -41,7 +41,13 @@ Copyright: 1993-2011 Associated Universities, Inc. Washington DC, USA.,
  1987-1994  Free Software Foundation, Inc.
 License: GPL-2+
 
-Files: casa/OS/HostInfo{Darwin,Hpux,Irix,Linux,Osf1,Solaris}.h
+Files:
+ casa/OS/HostInfoDarwin.h
+ casa/OS/HostInfoHpux.h
+ casa/OS/HostInfoIrix.h
+ casa/OS/HostInfoLinux.h
+ casa/OS/HostInfoOsf1.h
+ casa/OS/HostInfoSolaris.h
 Copyright: 1984, 1989, William LeFebvre, Rice University
  1989-1994, William LeFebvre, Northwestern University
  1994-1995, William LeFebvre, Argonne National Laboratory
