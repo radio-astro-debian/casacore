@@ -87,10 +87,9 @@ Description: Tools built with CASA
  .
  taql - query language for casacore tables
  measuresdata - create data tables for measures
- casacore_assay - show environment
  imageregrid, imagecalc, showtable, showtablelock, findmeastable,
- fits2table, imreorder, casahdf5support, msselect, ms2uvfits,
- image2fits, imageslice, casacore_floatcheck, etc.
+ fits2table, imreorder, casahdf5support, msselect,  image2fits, 
+ imageslice, etc.
 
 Package: libcasa-casa1
 Section: libs
