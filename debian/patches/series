@@ -1,5 +1,5 @@
 0001-Change-license-and-copyright-info-for-range.c.patch
-0002-Don-t-install-the-test-script-measuresdata.csh-to-us.patch
+0002-donot-install-test-and-demonstration-executablesu.patch
 0003-Use-Mutliarch-compliant-library-install-path.patch
 0004-disable-known-failed-tests.patch
 0005-disable-class-and-collaboration-graph-generation.patch
