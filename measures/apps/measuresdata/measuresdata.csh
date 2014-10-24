@@ -1,4 +1,4 @@
-#!/bin/tcsh
+#!/usr/bin/tcsh
 # 
 # measuresdata.csh
 # Must be executable. Call it with all defaults or arguments for measuresdata

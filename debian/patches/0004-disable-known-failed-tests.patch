@@ -1,4 +1,4 @@
-From b5f4b07f0ca68a92c5cec2fad04378400ef55df9 Mon Sep 17 00:00:00 2001
+From 247a40dcf3de5f6b4a38de6fad1b571a279fa325 Mon Sep 17 00:00:00 2001
 From: Benda Xu <heroxbd@gentoo.org>
 Date: Wed, 10 Sep 2014 10:00:43 +0900
 Subject: disable known failed tests
