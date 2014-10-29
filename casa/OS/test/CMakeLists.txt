@@ -12,7 +12,6 @@ tMemory
 tMemoryTrace
 tModcompConversion
 tMutex
-tPath
 tPrecTimer
 tTime
 tTimer
