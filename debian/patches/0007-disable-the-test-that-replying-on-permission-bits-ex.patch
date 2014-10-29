@@ -1,0 +1,71 @@
+From cdadb9290591d9d3bc91fbca68b6ea455c00322a Mon Sep 17 00:00:00 2001
+From: Benda Xu <heroxbd@gentoo.org>
+Date: Wed, 29 Oct 2014 10:06:53 +0900
+Subject: disable the test that replying on permission bits exceptions
+
+Bug: https://code.google.com/p/casacore/issues/detail?id=73
+Description: disable the test that replying on permission bits exceptions
+
+They are tBucketFile, tByteIO, tDirectory, tFile, tRegularFile, tSymLink,
+resulting in failure if tested by superuser.
+
+For example, from casa/OS/test/tSymlink.cc
+
+    file.setPermissions (0444);
+    if (doExcp) {
+        try {
+            SymLink symLink1(Path("tSymLink_tmp/isDir/newB"));
+        }
+        catch (AipsError x) {
+            cout << x.getMesg () << endl;                    // cannot create
+        }
+        try {
+            newLink2.create("a");
+        }
+        catch (AipsError x) {
+            cout << x.getMesg () << endl;                    // cannot create
+        }
+    }
+---
+ casa/IO/test/CMakeLists.txt | 2 --
+ casa/OS/test/CMakeLists.txt | 4 ----
+ 2 files changed, 6 deletions(-)
+
+diff --git a/casa/IO/test/CMakeLists.txt b/casa/IO/test/CMakeLists.txt
+index 58f7fed..e1e89c7 100644
+--- a/casa/IO/test/CMakeLists.txt
++++ b/casa/IO/test/CMakeLists.txt
+@@ -3,9 +3,7 @@ tAipsIOCarray
+ tAipsIO
+ tBucketBuffered
+ tBucketCache
+-tBucketFile
+ tBucketMapped
+-tByteIO
+ tByteSink
+ tByteSinkSource
+ tFilebufIO
+diff --git a/casa/OS/test/CMakeLists.txt b/casa/OS/test/CMakeLists.txt
+index 73da285..eefa6b5 100644
+--- a/casa/OS/test/CMakeLists.txt
++++ b/casa/OS/test/CMakeLists.txt
+@@ -2,10 +2,8 @@ set (tests
+ tCanonicalConversion
+ tConversion
+ tDataConversion
+-tDirectory
+ tDirectoryIterator
+ tEnvVar
+-tFile
+ tHostInfo
+ tIBMConversion
+ tLECanonicalConversion
+@@ -14,8 +12,6 @@ tModcompConversion
+ tMutex
+ tPath
+ tPrecTimer
+-tRegularFile
+-tSymLink
+ tTime
+ tTimer
+ tVAXConversion
