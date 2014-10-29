@@ -3,10 +3,8 @@ tCanonicalConversion
 tConversion
 tConversionPerf
 tDataConversion
-tDirectory
 tDirectoryIterator
 tEnvVar
-tFile
 tHostInfo
 tIBMConversion
 tLECanonicalConversion
@@ -16,8 +14,6 @@ tModcompConversion
 tMutex
 tPath
 tPrecTimer
-tRegularFile
-tSymLink
 tTime
 tTimer
 tVAXConversion
