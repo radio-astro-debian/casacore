@@ -10,7 +10,6 @@ tLECanonicalConversion
 tMemory
 tModcompConversion
 tMutex
-tPath
 tPrecTimer
 tTime
 tTimer
