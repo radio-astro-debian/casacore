@@ -4,4 +4,4 @@
 0004-disable-known-failed-tests.patch
 0005-disable-class-and-collaboration-graph-generation.patch
 0006-fix-typos.patch
-0007-disable-the-test-that-replying-on-permission-bits-ex.patch
+0007-disable-the-tests-replying-on-permission-bits-except.patch

@@ -1,10 +1,10 @@
-From cdadb9290591d9d3bc91fbca68b6ea455c00322a Mon Sep 17 00:00:00 2001
+From 06624844e8dd0bae144f81cc7073f02348120362 Mon Sep 17 00:00:00 2001
 From: Benda Xu <heroxbd@gentoo.org>
 Date: Wed, 29 Oct 2014 10:06:53 +0900
-Subject: disable the test that replying on permission bits exceptions
+Subject: disable the tests replying on permission bits exceptions
 
 Bug: https://code.google.com/p/casacore/issues/detail?id=73
-Description: disable the test that replying on permission bits exceptions
+Description: disable the tests on file/directory operations
 
 They are tBucketFile, tByteIO, tDirectory, tFile, tRegularFile, tSymLink,
 resulting in failure if tested by superuser.
