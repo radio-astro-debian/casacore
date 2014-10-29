@@ -2,10 +2,8 @@ set (tests
 tCanonicalConversion
 tConversion
 tDataConversion
-tDirectory
 tDirectoryIterator
 tEnvVar
-tFile
 tHostInfo
 tIBMConversion
 tLECanonicalConversion
@@ -14,8 +12,6 @@ tModcompConversion
 tMutex
 tPath
 tPrecTimer
-tRegularFile
-tSymLink
 tTime
 tTimer
 tVAXConversion
