@@ -1,4 +1,4 @@
-From 6708b649a8bba53e522c45e837e049a1e18fbe7a Mon Sep 17 00:00:00 2001
+From 21f3c0ec852edd4ff1b4474a0f93aa066301f12b Mon Sep 17 00:00:00 2001
 From: Benda Xu <heroxbd@gentoo.org>
 Date: Wed, 29 Oct 2014 16:40:47 +0900
 Subject: disable tPath test

@@ -1,4 +1,4 @@
-From 1bdf229e4355ae946c71d16005bfcf2ff767a0fa Mon Sep 17 00:00:00 2001
+From e4defbca97bef31cb9ba22d1fc3760c95f0738df Mon Sep 17 00:00:00 2001
 From: Ole Streicher <debian@liska.ath.cx>
 Date: Wed, 5 Feb 2014 09:15:10 +0900
 Subject: Use Mutliarch compliant library install path
