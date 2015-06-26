@@ -25,15 +25,15 @@
 //#
 //# $Id$
 
-#include <casa/Arrays/IPosition.h>
-#include <casa/Arrays/ArrayError.h>
-#include <casa/BasicMath/Math.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/Exceptions/Error.h>
-#include <casa/iostream.h>
-#include <casa/sstream.h>
+#include <casacore/casa/Arrays/IPosition.h>
+#include <casacore/casa/Arrays/ArrayError.h>
+#include <casacore/casa/BasicMath/Math.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/Exceptions/Error.h>
+#include <casacore/casa/iostream.h>
+#include <casacore/casa/sstream.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 IPosition::IPosition (uInt length)
 : size_p (length),
@@ -228,6 +228,21 @@ IPosition& IPosition::operator= (ssize_t value)
 	data_p[i] = value;
     }
     return *this;
+}
+
+IPosition IPosition::operator() (const IPosition& axes) const
+{
+  IPosition ipos(axes.nelements());
+  uInt i = 0;
+  for (IPosition::const_iterator iter=axes.begin();
+       iter!=axes.end(); ++iter, ++i) {
+    if (*iter >= Int(size_p)) {
+      throw AipsError("IPosition::operator()(const IPosition&): "
+                      "Axis number must be less than size of current object");
+    }
+    ipos[i] = data_p[*iter];
+  }
+  return ipos;
 }
 
 void IPosition::append (const IPosition& other)
@@ -1147,5 +1162,5 @@ void IPosition::throwIndexError() const
     throw(AipsError("IPosition::operator() - index error"));
 }
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 

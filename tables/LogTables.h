@@ -29,10 +29,12 @@
 #if !defined (AIPS_MODULE_LOGTABLES_H)
 #define AIPS_MODULE_LOGTABLES_H
 
+#include <casacore/casa/aips.h>
+
 // <module>
 //
 // <summary>
-// Logging in AIPS++ tables
+// Logging in Casacore tables
 // </summary>
 
 // <prerequisite>

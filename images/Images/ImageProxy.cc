@@ -28,52 +28,55 @@
 //# Do not use automatic template instantiation.
 #define CACACORE_NO_AUTO_TEMPLATES
 
-#include <casa/aips.h>
-#include <images/Images/ImageProxy.h>
-#include <images/Images/ImageInterface.h>
-#include <images/Images/ImageConcat.h>
-#include <images/Images/ImageFITSConverter.h>
-#include <images/Images/ImageRegrid.h>
-#include <images/Images/ImageSummary.h>
-#include <images/Images/ImageStatistics.h>
-#include <images/Images/ImageOpener.h>
-#include <images/Images/TempImage.h>
-#include <images/Images/ImageExprParse.h>
-#include <images/Images/ImageExpr.h>
-#include <images/Images/PagedImage.h>
-#include <images/Images/HDF5Image.h>
-#include <images/Images/FITSImage.h>
-#include <images/Images/MIRIADImage.h>
-#include <images/Images/ImageUtilities.h>
-#include <lattices/Lattices/LatticeExprNode.h>
-#include <coordinates/Coordinates/CoordinateSystem.h>
-#include <coordinates/Coordinates/CoordinateUtil.h>
-#include <casa/Containers/Record.h>
-#include <casa/Arrays/ArrayMath.h>
-#include <casa/Arrays/ArrayLogical.h>
-#include <casa/BasicSL/String.h>
-#include <casa/Exceptions/Error.h>
-#include <casa/iostream.h>
-#include <casa/sstream.h>
+#include <casacore/casa/aips.h>
+#include <casacore/images/Images/ImageProxy.h>
+#include <casacore/images/Images/ImageInterface.h>
+#include <casacore/images/Images/ImageConcat.h>
+#include <casacore/images/Images/ImageFITSConverter.h>
+#include <casacore/images/Images/ImageRegrid.h>
+#include <casacore/images/Images/ImageSummary.h>
+#include <casacore/images/Images/ImageStatistics.h>
+#include <casacore/images/Images/ImageOpener.h>
+#include <casacore/images/Images/TempImage.h>
+#include <casacore/images/Images/ImageExpr.h>
+#include <casacore/images/Images/PagedImage.h>
+#include <casacore/images/Images/HDF5Image.h>
+#include <casacore/images/Images/FITSImage.h>
+#include <casacore/images/Images/MIRIADImage.h>
+#include <casacore/images/Images/ImageUtilities.h>
+#include <casacore/lattices/LEL/LatticeExprNode.h>
+#include <casacore/coordinates/Coordinates/CoordinateSystem.h>
+#include <casacore/coordinates/Coordinates/CoordinateUtil.h>
+#include <casacore/casa/Containers/Record.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
+#include <casacore/casa/Arrays/ArrayLogical.h>
+#include <casacore/casa/BasicSL/String.h>
+#include <casacore/casa/Exceptions/Error.h>
+#include <casacore/casa/iostream.h>
+#include <casacore/casa/sstream.h>
 #include <vector>
 #include <list>
 
 using namespace std;
 
-namespace casa { //# name space casa begins
+namespace casacore { //# name space casa begins
 
   ImageProxy::ImageProxy()
     : itsImageFloat    (0),
       itsImageDouble   (0),
       itsImageComplex  (0),
-      itsImageDComplex (0)
+      itsImageDComplex (0),
+      itsCoordSys      (0),
+      itsAttrHandler   (0)
   {}
 
   ImageProxy::ImageProxy (LatticeBase* lattice)
     : itsImageFloat    (0),
       itsImageDouble   (0),
       itsImageComplex  (0),
-      itsImageDComplex (0)
+      itsImageDComplex (0),
+      itsCoordSys      (0),
+      itsAttrHandler   (0)
   {
     setup (lattice);
   }
@@ -83,12 +86,15 @@ namespace casa { //# name space casa begins
     : itsImageFloat    (0),
       itsImageDouble   (0),
       itsImageComplex  (0),
-      itsImageDComplex (0)
+      itsImageDComplex (0),
+      itsCoordSys      (0),
+      itsAttrHandler   (0)
   {
     // Register the functions to create a FITSImage or MIRIADImage object.
     FITSImage::registerOpenFunction();
     MIRIADImage::registerOpenFunction();
-    openImage (name, mask, images);
+    LatticeBase* lattice = openImage (name, mask, images);
+    setup (lattice);
   }
 
   ImageProxy::ImageProxy (const ValueHolder& values, const ValueHolder& mask,
@@ -99,7 +105,9 @@ namespace casa { //# name space casa begins
     : itsImageFloat    (0),
       itsImageDouble   (0),
       itsImageComplex  (0),
-      itsImageDComplex (0)
+      itsImageDComplex (0),
+      itsCoordSys      (0),
+      itsAttrHandler   (0)
   {
     if (!overwrite) {
       File file(fileName);
@@ -146,7 +154,9 @@ namespace casa { //# name space casa begins
     : itsImageFloat    (0),
       itsImageDouble   (0),
       itsImageComplex  (0),
-      itsImageDComplex (0)
+      itsImageDComplex (0),
+      itsCoordSys      (0),
+      itsAttrHandler   (0)
   {
     if (!overwrite) {
       File file(fileName);
@@ -186,7 +196,9 @@ namespace casa { //# name space casa begins
     : itsImageFloat    (0),
       itsImageDouble   (0),
       itsImageComplex  (0),
-      itsImageDComplex (0)
+      itsImageDComplex (0),
+      itsCoordSys      (0),
+      itsAttrHandler   (0)
   {
     vector<ImageProxy> images;
     images.reserve (names.size());
@@ -201,7 +213,9 @@ namespace casa { //# name space casa begins
     : itsImageFloat    (0),
       itsImageDouble   (0),
       itsImageComplex  (0),
-      itsImageDComplex (0)
+      itsImageDComplex (0),
+      itsCoordSys      (0),
+      itsAttrHandler   (0)
   {
     concatImages (images, axis);
   }
@@ -211,7 +225,9 @@ namespace casa { //# name space casa begins
       itsImageFloat    (0),
       itsImageDouble   (0),
       itsImageComplex  (0),
-      itsImageDComplex (0)
+      itsImageDComplex (0),
+      itsCoordSys      (0),
+      itsAttrHandler   (0)
   {
     if (! itsLattice.null()) {
       setup();
@@ -223,7 +239,9 @@ namespace casa { //# name space casa begins
       itsImageFloat    (0),
       itsImageDouble   (0),
       itsImageComplex  (0),
-      itsImageDComplex (0)
+      itsImageDComplex (0),
+      itsCoordSys      (0),
+      itsAttrHandler   (0)
   {
     if (! itsLattice.null()) {
       setup();
@@ -233,11 +251,8 @@ namespace casa { //# name space casa begins
   ImageProxy& ImageProxy::operator= (const ImageProxy& that)
   {
     if (this != &that) {
-      itsLattice       = that.itsLattice;
-      itsImageFloat    = 0;
-      itsImageDouble   = 0;
-      itsImageComplex  = 0;
-      itsImageDComplex = 0;
+      close();
+      itsLattice = that.itsLattice;
       if (! itsLattice.null()) {
         setup();
       }
@@ -248,8 +263,8 @@ namespace casa { //# name space casa begins
   ImageProxy::~ImageProxy()
   {}
 
-  void ImageProxy::openImage (const String& name, const String& mask,
-                              const vector<ImageProxy>& images)
+  LatticeBase* ImageProxy::openImage (const String& name, const String& mask,
+                                      const vector<ImageProxy>& images)
   {
     MaskSpecifier maskSp;
     if (!mask.empty()) {
@@ -263,11 +278,19 @@ namespace casa { //# name space casa begins
     for (uInt i=0; i<images.size(); ++i) {
       tempNodes[i] = images[i].makeNode();
     }
-    LatticeBase* lattice = openImageOrExpr (name, maskSp, tempNodes);
-    if (lattice == 0) {
-      throw AipsError ("Image " + name + " cannot be opened");
+    String msg;
+    LatticeBase* lattice = 0;
+    try {
+      lattice = openImageOrExpr (name, maskSp, tempNodes);
+    } catch (const std::exception& x) {
+      msg = x.what();
+      lattice = 0;
     }
-    setup (lattice);
+    if (lattice == 0) {
+      throw AipsError (name + " cannot be opened as image (expression): "
+                       + msg);
+    }
+    return lattice;
   }
 
   LatticeBase* ImageProxy::openImageOrExpr (const String& str,
@@ -276,26 +299,27 @@ namespace casa { //# name space casa begins
   {
     LatticeBase* lattice = ImageOpener::openImage (str, spec);
     if (lattice == 0) {
-      PtrBlock<const ImageRegion*> regions;
-      LatticeExprNode expr = ImageExprParse::command (str, nodes, regions);
-      switch (expr.dataType()) {
-      case TpFloat:
-        lattice = new ImageExpr<Float> (LatticeExpr<Float>(expr), str);
-        break;
-      case TpDouble:
-        lattice = new ImageExpr<Double> (LatticeExpr<Double>(expr), str);
-        break;
-      case TpComplex:
-        lattice = new ImageExpr<Complex> (LatticeExpr<Complex>(expr), str);
-        break;
-      case TpDComplex:
-        lattice = new ImageExpr<DComplex> (LatticeExpr<DComplex>(expr), str);
-        break;
-      default:
-        throw AipsError ("invalid data type of image expression " + str);
-      }
+      lattice = ImageOpener::openExpr (str, nodes);
     }
     return lattice;
+  }
+
+  void ImageProxy::close()
+  {
+    itsLattice       = CountedPtr<LatticeBase>();
+    itsImageFloat    = 0;
+    itsImageDouble   = 0;
+    itsImageComplex  = 0;
+    itsImageDComplex = 0;
+    itsCoordSys      = 0;
+    itsAttrHandler   = 0;
+  }
+
+  void ImageProxy::checkNull() const
+  {
+    if (itsLattice.null()) {
+      throw AipsError ("ImageProxy does not contain an image object");
+    }
   }
 
   LatticeExprNode ImageProxy::makeNode() const
@@ -517,31 +541,37 @@ namespace casa { //# name space casa begins
 
   Bool ImageProxy::isPersistent() const
   {
+    checkNull();
     return itsLattice->isPersistent();
   }
 
   String ImageProxy::name (Bool stripPath) const
   {
+    checkNull();
     return itsLattice->name (stripPath);
   }
 
   IPosition ImageProxy::shape() const
   {
+    checkNull();
     return itsLattice->shape();
   }
 
   uInt ImageProxy::ndim() const
   {
+    checkNull();
     return itsLattice->shape().size();
   }
 
   uInt ImageProxy::size() const
   {
+    checkNull();
     return itsLattice->shape().product();
   }
 
   String ImageProxy::dataType() const
   {
+    checkNull();
     ostringstream ostr;
     ostr << itsLattice->dataType();
     return ostr.str();
@@ -565,21 +595,25 @@ namespace casa { //# name space casa begins
 
   Vector<String> ImageProxy::attrGroupNames() const
   {
+    checkNull();
     return itsAttrHandler->groupNames();
   }
 
   void ImageProxy::createAttrGroup (const String& groupName)
   {
+    checkNull();
     itsAttrHandler->createGroup (groupName);
   }
 
   Vector<String> ImageProxy::attrNames (const String& groupName) const
   {
+    checkNull();
     return itsAttrHandler->openGroup(groupName).attrNames();
   }
 
   uInt ImageProxy::attrNrows (const String& groupName) const
   {
+    checkNull();
     return itsAttrHandler->openGroup(groupName).nrows();
   }
 
@@ -587,24 +621,28 @@ namespace casa { //# name space casa begins
                                    const String& attrName,
                                    uInt rownr) const
   {
+    checkNull();
     return itsAttrHandler->openGroup(groupName).getData (attrName, rownr);
   }
 
   Record ImageProxy::getAttrRow (const String& groupName,
                                  uInt rownr) const
   {
+    checkNull();
     return itsAttrHandler->openGroup(groupName).getDataRow (rownr);
   }
 
   Vector<String> ImageProxy::getAttrUnit(const String& groupName,
                                          const String& attrName) const
   {
+    checkNull();
     return itsAttrHandler->openGroup(groupName).getUnit (attrName);
   }
 
   Vector<String> ImageProxy::getAttrMeas(const String& groupName,
                                          const String& attrName) const
   {
+    checkNull();
     return itsAttrHandler->openGroup(groupName).getMeasInfo (attrName);
   }
 
@@ -615,6 +653,7 @@ namespace casa { //# name space casa begins
                             const Vector<String>& units,
                             const Vector<String>& measInfo)
   {
+    checkNull();
     itsAttrHandler->openGroup(groupName).putData (attrName, rownr, value,
                                                   units, measInfo);
   }
@@ -707,6 +746,7 @@ namespace casa { //# name space casa begins
                               const IPosition& blc,
                               const IPosition& inc)
   {
+    checkNull();
     Array<Bool> maskArr = value.asArrayBool();
     if (! image.hasPixelMask()) {
       // No mask yet.
@@ -728,18 +768,21 @@ namespace casa { //# name space casa begins
 
   Bool ImageProxy::hasLock (Bool writeLock)
   {
+    checkNull();
     return itsLattice->hasLock (writeLock ?
                                 FileLocker::Write : FileLocker::Read);
   }
   
   void ImageProxy::lock (Bool writeLock, Int nattempts)
   {
+    checkNull();
     itsLattice->lock (writeLock ? FileLocker::Write : FileLocker::Read,
                       nattempts);
   }
 
   void ImageProxy::unlock()
   {
+    checkNull();
     itsLattice->unlock();
   }
 
@@ -747,6 +790,14 @@ namespace casa { //# name space casa begins
                                    const IPosition& trc, 
                                    const IPosition& inc,
                                    Bool dropDegenerate)
+  {
+    return subImage2 (blc, trc, inc, dropDegenerate, False);
+  }
+  ImageProxy ImageProxy::subImage2 (const IPosition& blc,
+                                    const IPosition& trc, 
+                                    const IPosition& inc,
+                                    Bool dropDegenerate,
+                                    Bool preserveAxesOrder)
   {
     AxesSpecifier axesSpec(!dropDegenerate);
     IPosition shp = shape();
@@ -756,16 +807,20 @@ namespace casa { //# name space casa begins
                   Slicer::endIsLast);
     if (itsImageFloat) {
       return ImageProxy(new SubImage<Float>(*itsImageFloat, slicer,
-                                            True, axesSpec));
+                                            True, axesSpec,
+                                            preserveAxesOrder));
     } else if (itsImageDouble) {
       return ImageProxy(new SubImage<Double>(*itsImageDouble, slicer,
-                                             True, axesSpec));
+                                             True, axesSpec,
+                                             preserveAxesOrder));
     } else if (itsImageComplex) {
       return ImageProxy(new SubImage<Complex>(*itsImageComplex, slicer,
-                                              True, axesSpec));
+                                              True, axesSpec,
+                                              preserveAxesOrder));
     } else if (itsImageDComplex) {
       return ImageProxy(new SubImage<DComplex>(*itsImageDComplex, slicer,
-                                               True, axesSpec));
+                                               True, axesSpec,
+                                               preserveAxesOrder));
     }
     throw AipsError ("ImageProxy does not contain an image object");
   }
@@ -833,6 +888,7 @@ namespace casa { //# name space casa begins
 
   Record ImageProxy::coordSys() const
   {
+    checkNull();
     Record rec;
     itsCoordSys->save (rec, "x");
     Record& coord = rec.rwSubRecord("x");
@@ -858,6 +914,7 @@ namespace casa { //# name space casa begins
   Vector<Double> ImageProxy::toWorld (const Vector<Double>& pixel,
                                       Bool reverseAxes)
   {
+    checkNull();
     Vector<Double> coord(pixel.size());
     if (!reverseAxes) {
       coord = pixel;
@@ -882,6 +939,7 @@ namespace casa { //# name space casa begins
   Vector<Double> ImageProxy::toPixel (const Vector<Double>& world,
                                       Bool reverseAxes)           
   {                                                               
+    checkNull();
     Vector<Double> coord(world.size());                           
     if (!reverseAxes) {                                           
       coord = world;                                              
@@ -942,6 +1000,7 @@ namespace casa { //# name space casa begins
                            Bool velocity, Bool optical, Int bitpix,
                            Double minpix, Double maxpix) const
   {
+    checkNull();
     Bool ok = False;
     String error ("Currently only float images can be converted to FITS");
     if (itsImageFloat) {
@@ -1033,6 +1092,7 @@ namespace casa { //# name space casa begins
                               const IPosition& newTileShape,
                               const ImageInterface<T>& image) const
   {
+    checkNull();
     ImageInterface<T>* newImage;
     TiledShape tiledShape (makeTiledShape (newTileShape,
                                            image.shape(),
@@ -1072,6 +1132,7 @@ namespace casa { //# name space casa begins
                                  Bool exclude,
                                  Bool robust) const
   {
+    checkNull();
     // Default for cursor is all axes.
     Vector<Int> axesc(axes);
     if (axesc.empty()) {
@@ -1100,6 +1161,7 @@ namespace casa { //# name space casa begins
                                      Bool exclude,
                                      Bool robust) const
   {
+    checkNull();
     ImageStatistics<T> stats(image, False, False);
     // Set cursor axes.
     if (!stats.setAxes(axes)) {
@@ -1223,8 +1285,10 @@ namespace casa { //# name space casa begins
     // axes to be regridded and the input image Coordinate for axes not
     // to be regridded
     LogIO log;
+    set<Coordinate::Type> regridCoords;
     CoordinateSystem cSys =
-      ImageRegrid<T>::makeCoordinateSystem (log, cSysTo, cSysFrom, axes2);
+      ImageRegrid<T>::makeCoordinateSystem (log, regridCoords,
+                                            cSysTo, cSysFrom, axes2);
     if (cSys.nPixelAxes() != outShape.nelements()) {
       throw AipsError("The number of pixel axes in the output shape and "
                       "Coordinate System must be the same");

@@ -26,13 +26,13 @@
 //# $Id$
 
 
-#include <tables/Tables/TableLockData.h>
-#include <tables/Tables/TableError.h>
-#include <casa/Logging/LogIO.h>
+#include <casacore/tables/Tables/TableLockData.h>
+#include <casacore/tables/Tables/TableError.h>
+#include <casacore/casa/Logging/LogIO.h>
 #include <unistd.h>
 
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 TableLockData::TableLockData (const TableLock& lockOptions,
 			      TableLockData::ReleaseCallBack* releaseCallBack,
@@ -57,7 +57,8 @@ void TableLockData::makeLock (const String& name, Bool create,
     //# (to be able to read older tables).
     if (itsLock == 0) {
 	itsLock = new LockFile (name + "/table.lock", interval(), create,
-				True, False, locknr, isPermanent());
+				True, False, locknr, isPermanent(),
+                                option() == NoLocking);
     }
     //# Acquire a lock when permanent locking is in use.
     if (isPermanent()) {
@@ -137,5 +138,5 @@ void TableLockData::release (Bool always)
     }
 }
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 

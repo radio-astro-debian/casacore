@@ -29,21 +29,21 @@
 #ifndef MS_FITSIDITOMS_H
 #define MS_FITSIDITOMS_H
 
-#include <casa/aips.h>
-#include <fits/FITS/hdu.h>
-#include <tables/Tables/Table.h> //
-#include <tables/Tables/TableDesc.h> //
-#include <tables/Tables/TableRecord.h> //
-#include <tables/Tables/TableColumn.h> //
-#include <casa/Containers/SimOrdMap.h> //
-#include <casa/Arrays/Vector.h>
-#include <casa/Arrays/Matrix.h>
-#include <casa/Containers/Block.h>
-#include <casa/Logging/LogIO.h>
-#include <measures/Measures/MFrequency.h>
-#include <ms/MeasurementSets/MeasurementSet.h>
-#include <casa/BasicSL/String.h> 
-namespace casa { //# NAMESPACE CASA - BEGIN
+#include <casacore/casa/aips.h>
+#include <casacore/fits/FITS/hdu.h>
+#include <casacore/tables/Tables/Table.h> //
+#include <casacore/tables/Tables/TableDesc.h> //
+#include <casacore/tables/Tables/TableRecord.h> //
+#include <casacore/tables/Tables/TableColumn.h> //
+#include <casacore/casa/Containers/SimOrdMap.h> //
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Arrays/Matrix.h>
+#include <casacore/casa/Containers/Block.h>
+#include <casacore/casa/Logging/LogIO.h>
+#include <casacore/measures/Measures/MFrequency.h>
+#include <casacore/ms/MeasurementSets/MeasurementSet.h>
+#include <casacore/casa/BasicSL/String.h> 
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 class MSColumns;
 class FitsInput;
@@ -148,9 +148,30 @@ public:
   //void fillFieldTable(Int nField);
   void fillFieldTable();
   
-  //fill the Spectral Window table
+  //fill the Spectral Window table with the content of FREQUENCY
   void fillSpectralWindowTable();
   
+  //fill the optional Correlator Model table with the content of INTERFEROMETER_MODEL
+  Bool fillCorrelatorModelTable();
+
+  //fill the optional SysCal table with the content of SYSTEM_TEMPERATURE
+  Bool fillSysCalTable();
+
+  //fill the optional FlagCmd table with the content of FLAG
+  Bool fillFlagCmdTable();
+
+  //fill the optional Weather table with the content of WEATHER
+  Bool fillWeatherTable();
+
+  //store the information from the GAIN_CURVE table in a calibration table
+  Bool handleGainCurve();
+
+  //store the information from the PHASE-CAL table in a calibration table
+  Bool handlePhaseCal();
+
+  //store the information from the MODEL_COMPS table 
+  Bool handleModelComps();
+
   // fix up the EPOCH MEASURE_REFERENCE keywords
   void fixEpochReferences();
   
@@ -206,7 +227,8 @@ protected:
   // If useTSM is True, the Tiled Storage Manager will be used to store
   // DATA, FLAG and WEIGHT_SPECTRUM
   void setupMeasurementSet(const String& MSFileName, Bool useTSM=True, 
-			   Bool mainTbl=False);
+			   Bool mainTbl=False, 
+			   Bool addCorrMod=False, Bool addSyscal=False);
   
   // Fill the main table from the Primary group data
   void fillMSMainTable(const String& MSFileName, Int& nField, Int& nSpW);
@@ -248,14 +270,15 @@ protected:
   Vector<Bool>   itsgotMSK;
   
   
-  FitsInput &infile_p;
+  ///FitsInput &infile_p;
   String msFile_p;
   Vector<Int> nPixel_p,corrType_p;
   Block<Int> corrIndex_p;
   Matrix<Int> corrProduct_p;
   Vector<String> coordType_p;
   Vector<Double> refVal_p, refPix_p, delta_p; 
-  String array_p,object_p,timsys_p;
+  static String array_p;
+  String object_p,timsys_p;
   Double epoch_p;
   static Double rdate;
   Int nAnt_p;
@@ -263,7 +286,7 @@ protected:
   MFrequency::Types freqsys_p;
   Double restfreq_p;
   LogIO* itsLog;
-  Int nIF_p;
+  ///Int nIF_p;
   Double startTime_p;
   Double lastTime_p;
   Int itsObsType;
@@ -272,6 +295,8 @@ protected:
   static Bool firstMain;
   Bool uv_data_hasWeights_p;
   Bool weightKwPresent_p;
+  Bool weightypKwPresent_p;
+  String weightyp_p;
   Matrix<Float> weightsFromKW_p;
   static SimpleOrderedMap<Int,Int> antIdFromNo;
 
@@ -293,7 +318,7 @@ protected:
 };
  
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif
 

@@ -30,21 +30,19 @@
 #define MEASURES_MDIRECTION_H
 
 //# Includes
-#include <casa/aips.h>
-#include <measures/Measures/MeasBase.h>
-#include <measures/Measures/MeasRef.h>
-#include <casa/Quanta/MVDirection.h>
+#include <casacore/casa/aips.h>
+#include <casacore/measures/Measures/MeasBase.h>
+#include <casacore/measures/Measures/MeasRef.h>
+#include <casacore/casa/Quanta/MVDirection.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
 class MDirection;
 class MCDirection;
 template <class M> class MeasConvert;
 template <class M> class ArrayMeasColumn;
-template <class M> class ROArrayMeasColumn;
 template <class M> class ScalarMeasColumn;
-template <class M> class ROScalarMeasColumn;
 
 //# Typedefs
 
@@ -249,10 +247,8 @@ public:
   typedef MeasRef<MDirection> Ref;
   // Measure Convert (i.e. MDirection::Convert)
   typedef MeasConvert<MDirection> Convert;
-  // Measure table Columns (e.g., MDirection::ROScalarColumn)
-  typedef ROScalarMeasColumn<MDirection> ROScalarColumn;
+  // Measure table Columns (e.g., MDirection::ScalarColumn)
   typedef ScalarMeasColumn<MDirection> ScalarColumn;
-  typedef ROArrayMeasColumn<MDirection> ROArrayColumn;
   typedef ArrayMeasColumn<MDirection> ArrayColumn;
   // Reference enum Types (included originally for gcc 2.95)  
   typedef WHATEVER_SUN_TYPEDEF(MDirection) Types Types;
@@ -392,6 +388,10 @@ public:
     virtual Measure *clone() const;
 // </group>
 
+    // Convert to a String in astronomer-friendly format based on
+    // reference frame
+    String toString() const;
+
 private:
 
 //# Data
@@ -401,7 +401,7 @@ private:
 };
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif
 

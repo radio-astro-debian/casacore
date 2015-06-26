@@ -28,18 +28,18 @@
 #ifndef MS_MSMAINCOLUMNS_H
 #define MS_MSMAINCOLUMNS_H
 
-#include <casa/aips.h>
-#include <measures/Measures/MEpoch.h>
-#include <measures/Measures/Muvw.h>
-#include <measures/Measures/MCEpoch.h>
-#include <measures/Measures/MCuvw.h>
-#include <tables/Tables/ScalarColumn.h>
-#include <tables/Tables/ArrayColumn.h>
-#include <measures/TableMeasures/ScalarMeasColumn.h>
-#include <measures/TableMeasures/ScalarQuantColumn.h>
-#include <measures/TableMeasures/ArrayQuantColumn.h>
+#include <casacore/casa/aips.h>
+#include <casacore/measures/Measures/MEpoch.h>
+#include <casacore/measures/Measures/Muvw.h>
+#include <casacore/measures/Measures/MCEpoch.h>
+#include <casacore/measures/Measures/MCuvw.h>
+#include <casacore/tables/Tables/ScalarColumn.h>
+#include <casacore/tables/Tables/ArrayColumn.h>
+#include <casacore/measures/TableMeasures/ScalarMeasColumn.h>
+#include <casacore/measures/TableMeasures/ScalarQuantColumn.h>
+#include <casacore/measures/TableMeasures/ArrayQuantColumn.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 class MeasurementSet;
 class String;
@@ -173,6 +173,7 @@ public:
     return uvw2Quant_p;}
   const ROArrayColumn<Complex>& videoPoint() const {return videoPoint_p;}
   const ROArrayColumn<Float>& weightSpectrum() const {return weightSpectrum_p;}
+  const ROArrayColumn<Float>& weightSpectrumCorrected() const {return weightSpectrumCorrected_p;}
   // </group>
 
   // Convenience function that returns the number of rows in any of the columns
@@ -235,6 +236,7 @@ private:
   ROArrayColumn<Double> uvw2_p;
   ROArrayColumn<Complex> videoPoint_p;
   ROArrayColumn<Float> weightSpectrum_p;
+  ROArrayColumn<Float> weightSpectrumCorrected_p;
 
   //# columns required for synthesis applications - all optional
   ROArrayColumn<Complex> correctedData_p;
@@ -393,6 +395,7 @@ public:
     return uvw2Quant_p;}
   ArrayColumn<Complex>& videoPoint() {return videoPoint_p;}
   ArrayColumn<Float>& weightSpectrum() {return weightSpectrum_p;}
+  ArrayColumn<Float>& weightSpectrumCorrected() {return weightSpectrumCorrected_p;}
   // </group>
 
   // Read-only access to required columns
@@ -499,6 +502,8 @@ public:
     return ROMSMainColumns::videoPoint();}
   const ROArrayColumn<Float>& weightSpectrum() const {
     return ROMSMainColumns::weightSpectrum();}
+  const ROArrayColumn<Float>& weightSpectrumCorrected() const {
+    return ROMSMainColumns::weightSpectrumCorrected();}
   // </group>
 
   // set the epoch type for the TIME and TIME_CENTROID columns. 
@@ -577,6 +582,7 @@ private:
   ArrayColumn<Double> uvw2_p;
   ArrayColumn<Complex> videoPoint_p;
   ArrayColumn<Float> weightSpectrum_p;
+  ArrayColumn<Float> weightSpectrumCorrected_p;
 
   //# columns required for synthesis applications - all optional
   ArrayColumn<Complex> correctedData_p;
@@ -603,7 +609,7 @@ private:
 };
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif
 

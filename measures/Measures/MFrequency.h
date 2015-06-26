@@ -30,12 +30,12 @@
 #define MEASURES_MFREQUENCY_H
 
 //# Includes
-#include <casa/aips.h>
-#include <measures/Measures/MeasBase.h>
-#include <measures/Measures/MeasRef.h>
-#include <casa/Quanta/MVFrequency.h>
+#include <casacore/casa/aips.h>
+#include <casacore/measures/Measures/MeasBase.h>
+#include <casacore/measures/Measures/MeasRef.h>
+#include <casacore/casa/Quanta/MVFrequency.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
 class MFrequency;
@@ -44,9 +44,7 @@ class MDoppler;
 class MVDoppler;
 template <class M> class MeasConvert;
 template <class M> class ArrayMeasColumn;
-template <class M> class ROArrayMeasColumn;
 template <class M> class ScalarMeasColumn;
-template <class M> class ROScalarMeasColumn;
 
 //# Typedefs
 
@@ -118,6 +116,16 @@ template <class M> class ROScalarMeasColumn;
 //  <li><em>Direction</em> all
 // </ul>
 // <br>
+// To accommodate unknown or invalid frames, the additional reference type
+// <ul>
+//  <li> MFrequency::Undefined
+// </ul>
+// is available. Conversions to/from Undefined are not possible. 
+// If attempted, an exception will be thrown.
+// The name was chosen to be Undefined and not UNDEFINED in order to
+// not collide with the (ugly) WCSLIB macro of the upper case name
+// and in concordance with Stokes::Undefined.
+// <br>
 // An MFrequency can be created from an
 // <linkto class=MDoppler>MDoppler</linkto> (and a rest frequency, (the
 // <linkto class=QC>QC</linkto> class contains at least <src>QC::HI</src>))
@@ -176,6 +184,10 @@ class MFrequency : public MeasBase<MVFrequency, MeasRef<MFrequency> > {
     LGROUP,
     CMB,
     N_Types,
+    Undefined = 64,
+    N_Other,
+    // all extra bits
+    EXTRA = 64,
     // Defaults
     DEFAULT=LSRK,
     // Synonyms
@@ -190,10 +202,8 @@ class MFrequency : public MeasBase<MVFrequency, MeasRef<MFrequency> > {
   typedef MeasRef<MFrequency> Ref;
   // Measure conversion use (i.e. MFrequency::Convert)
   typedef MeasConvert<MFrequency> Convert;
-  // Measure table Columns (e.g., MFrequency::ROScalarColumn)
-  typedef ROScalarMeasColumn<MFrequency> ROScalarColumn;
+  // Measure table Columns (e.g., MFrequency::ScalarColumn)
   typedef ScalarMeasColumn<MFrequency> ScalarColumn;
-  typedef ROArrayMeasColumn<MFrequency> ROArrayColumn;
   typedef ArrayMeasColumn<MFrequency> ArrayColumn;
   // Reference enum Types (included originally for gcc 2.95)  
   typedef WHATEVER_SUN_TYPEDEF(MFrequency) Types Types;
@@ -242,6 +252,11 @@ class MFrequency : public MeasBase<MVFrequency, MeasRef<MFrequency> > {
   // Translate string to reference code
   // <group>
   static Bool getType(MFrequency::Types &tp, const String &in);
+
+  // Throws an exception if the type string is not recognized
+  static MFrequency::Types typeFromString(const String& in);
+
+
   Bool giveMe(MFrequency::Ref &mr, const String &in);
   // </group>
   // Set the offset in the reference (False if non-matching Measure)
@@ -319,6 +334,6 @@ class MFrequency : public MeasBase<MVFrequency, MeasRef<MFrequency> > {
 };
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

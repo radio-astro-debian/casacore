@@ -1,4 +1,4 @@
-//# MatrixMath.cc: The AIPS++ linear algebra functions
+//# MatrixMath.tcc: The Casacore linear algebra functions
 //# Copyright (C) 1994,1995,1996,1998,2001,2002
 //# Associated Universities, Inc. Washington DC, USA.
 //#
@@ -25,14 +25,17 @@
 //#
 //# $Id$
 
-#include <casa/Arrays/MatrixMath.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Arrays/Matrix.h>
-#include <casa/Arrays/ArrayError.h>
-#include <casa/iostream.h>
-#include <casa/math.h>
+#ifndef CASA_MATRIXMATH_TCC
+#define CASA_MATRIXMATH_TCC
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+#include <casacore/casa/Arrays/MatrixMath.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Arrays/Matrix.h>
+#include <casacore/casa/Arrays/ArrayError.h>
+#include <casacore/casa/iostream.h>
+#include <casacore/casa/math.h>
+
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
                                       // the vector dot/scalar/inner product
 template<class T> T innerProduct (const Vector<T> &A, const Vector<T> &B) {
@@ -80,6 +83,18 @@ Vector<T> crossProduct (const Vector<T> &A, const Vector<T> &B) {
   result(1) = A(2)*B(0) - A(0)*B(2);
   result(2) = A(0)*B(1) - A(1)*B(0);
   return result;
+}
+
+template <class T>
+T crossProduct2D (const Vector<T> &A, const Vector<T> &B) {
+                                      // check for correct dimensions
+  if (!A.conform(B)){
+    throw (ArrayConformanceError("crossProduct2D - conform() error."));
+  } else {
+    if (A.nelements() != 2) 
+      throw (ArrayConformanceError("crossProduct2D - Vector not in 2-space"));
+  }
+  return A[0]* B[1] - A[1]*B[0];
 }
 
                                  // matrix multiplication or cayley product
@@ -154,5 +169,7 @@ Matrix<T> directProduct(const  Matrix<T> &A, const Matrix<T> &B) {
     return dpAB;
 }
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
+
+#endif

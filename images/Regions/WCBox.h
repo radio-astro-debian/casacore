@@ -30,14 +30,14 @@
 #define IMAGES_WCBOX_H
 
 //# Includes
-#include <casa/aips.h>
-#include <coordinates/Coordinates/CoordinateSystem.h>
-#include <images/Regions/WCRegion.h>
-#include <lattices/Lattices/RegionType.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Quanta/Quantum.h>
+#include <casacore/casa/aips.h>
+#include <casacore/coordinates/Coordinates/CoordinateSystem.h>
+#include <casacore/images/Regions/WCRegion.h>
+#include <casacore/lattices/LRegions/RegionType.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Quanta/Quantum.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
 class LCRegion;
@@ -364,21 +364,6 @@ public:
    // Return region type.  Returns the class name 
    virtual String type() const;
 
-   // Convert from/to boxit format string
-   String toBoxString() const;
-   static WCBox* fromBoxString(const String&, 
-                               const CoordinateSystem& cSys, String& err);
-
-   // FIXME: refactor to someplace more appropriate
-   // get/set chan extension
-   void setChanExt(const Double, const Double);
-   Bool getChanExt(Double&, Double&);
-
-   // FIXME: refactor to someplace more appropriate
-   // get/set pol extension
-   void setPolExt(const Double, const Double);
-   Bool getPolExt(Double&, Double&);
-
 private:
    Vector<Quantum<Double> > itsBlc;
    Vector<Quantum<Double> > itsTrc;
@@ -401,11 +386,10 @@ private:
                      const Int shape,
                      const Bool isBlc) const;
 
-   static void unitInit();
 };
 
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

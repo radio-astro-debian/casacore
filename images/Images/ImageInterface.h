@@ -30,18 +30,18 @@
 
 
 //# Includes
-#include <casa/aips.h>
-#include <images/Regions/RegionHandler.h>
-#include <images/Images/MaskSpecifier.h>
-#include <images/Images/ImageInfo.h>
-#include <images/Images/ImageAttrHandler.h>
-#include <lattices/Lattices/MaskedLattice.h>
-#include <coordinates/Coordinates/CoordinateSystem.h>
-#include <tables/LogTables/LoggerHolder.h>
-#include <tables/Tables/TableRecord.h>
-#include <casa/Quanta/Unit.h>
+#include <casacore/casa/aips.h>
+#include <casacore/images/Regions/RegionHandler.h>
+#include <casacore/images/Images/MaskSpecifier.h>
+#include <casacore/images/Images/ImageInfo.h>
+#include <casacore/images/Images/ImageAttrHandler.h>
+#include <casacore/lattices/Lattices/MaskedLattice.h>
+#include <casacore/coordinates/Coordinates/CoordinateSystem.h>
+#include <casacore/tables/LogTables/LoggerHolder.h>
+#include <casacore/tables/Tables/TableRecord.h>
+#include <casacore/casa/Quanta/Unit.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
 template <class T> class LatticeIterInterface;
@@ -158,7 +158,7 @@ public:
   // Copy constructor (copy semantics).
   ImageInterface (const ImageInterface& other);
 
-  ~ImageInterface();
+  virtual ~ImageInterface();
 
   // Make a copy of the derived object (reference semantics).
   // <group>
@@ -190,8 +190,6 @@ public:
 
   // Functions to set or replace the coordinate information in the Image
   // Returns False on failure, e.g. if the number of axes do not match.
-  //# NOTE. setCoordinateInfo should be pure virtual with a partial 
-  //# implementation however SGI ntv will not generate it with -no_prelink.
   // <group>
   virtual Bool setCoordinateInfo (const CoordinateSystem& coords);
   const CoordinateSystem& coordinates() const
@@ -360,8 +358,7 @@ protected:
     { log_p = logger; }
 
   // Set the image info variable.
-  void setImageInfoMember (const ImageInfo& imageInfo)
-    { imageInfo_p = imageInfo; }
+  void setImageInfoMember (const ImageInfo& imageInfo);
 
   // Set the coordinate system variable.
   void setCoordsMember (const CoordinateSystem& coords)
@@ -378,6 +375,10 @@ protected:
   // Get access to the region handler.
   RegionHandler* getRegionHandler()
     { return regHandPtr_p; }
+
+  // Get non-const access to the ImageInfo.
+  ImageInfo& rwImageInfo()
+    { return imageInfo_p; }
 
 private:
   // It is the job of the derived class to make these variables valid.
@@ -396,9 +397,9 @@ private:
 
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #ifndef CASACORE_NO_AUTO_TEMPLATES
-#include <images/Images/ImageInterface.tcc>
+#include <casacore/images/Images/ImageInterface.tcc>
 #endif //# CASACORE_NO_AUTO_TEMPLATES
 #endif

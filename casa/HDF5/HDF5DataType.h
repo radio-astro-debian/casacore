@@ -29,12 +29,13 @@
 #define CASA_HDF5DATATYPE_H
 
 //# Includes
-#include <casa/HDF5/HDF5Object.h>
-#include <casa/BasicSL/Complex.h>
-#include <casa/BasicSL/String.h>
-#include <casa/Utilities/DataType.h>
+#include <casacore/casa/aips.h>
+#include <casacore/casa/HDF5/HDF5Object.h>
+#include <casacore/casa/BasicSL/Complex.h>
+#include <casacore/casa/BasicSL/String.h>
+#include <casacore/casa/Utilities/DataType.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
   // <summary>
   // A class representing an HDF5 data type.
@@ -94,7 +95,7 @@ namespace casa { //# NAMESPACE CASA - BEGIN
     // The destructor closes the HDF5 data type object.
     ~HDF5DataType();
 
-    // Get the AIPS++ data type for the given HDF5 data type.
+    // Get the Casacore data type for the given HDF5 data type.
     static DataType getDataType (hid_t);
 
     // Get the HID for the data type in memory.

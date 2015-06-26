@@ -25,14 +25,14 @@
 //#
 //# $Id$
 
-#include <meas/MeasUDF/EpochEngine.h>
-#include <tables/Tables/TableRecord.h>
-#include <tables/Tables/ExprUnitNode.h>
-#include <tables/Tables/ExprNodeSet.h>
-//#include <tables/Tables/ExprNode.h>
-#include <casa/Arrays/ArrayIO.h>
+#include <casacore/meas/MeasUDF/EpochEngine.h>
+#include <casacore/tables/Tables/TableRecord.h>
+#include <casacore/tables/TaQL/ExprUnitNode.h>
+#include <casacore/tables/TaQL/ExprNodeSet.h>
+//#include <casacore/tables/TaQL/ExprNode.h>
+#include <casacore/casa/Arrays/ArrayIO.h>
 
-namespace casa {
+namespace casacore {
 
   EpochEngine::EpochEngine()
     : itsNDim           (-1),
@@ -143,12 +143,12 @@ namespace casa {
     }
     if (colNode) {
       // Try if the column contains measures.
-      const ROTableColumn& tabCol = colNode->getColumn();
+      const TableColumn& tabCol = colNode->getColumn();
       itsShape = tabCol.shapeColumn();
       itsNDim  = tabCol.ndimColumn();
       if (TableMeasDescBase::hasMeasures (tabCol)) {
-        ROArrayMeasColumn<MEpoch> measTmp(tabCol.table(),
-                                          tabCol.columnDesc().name());
+        ArrayMeasColumn<MEpoch> measTmp(tabCol.table(),
+                                        tabCol.columnDesc().name());
         // Get and check the node's refType if it is fixed.
         MEpoch::Types nodeRefType = MEpoch::N_Types;
         if (! (measTmp.measDesc().isRefCodeVariable()  ||

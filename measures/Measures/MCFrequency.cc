@@ -26,14 +26,14 @@
 //# $Id$
 
 //# Includes
-#include <casa/BasicSL/Constants.h>
-#include <measures/Measures/MCFrequency.h>
-#include <casa/Quanta/MVPosition.h>
-#include <casa/Quanta/MVDirection.h>
-#include <measures/Measures/Aberration.h>
-#include <measures/Measures/MeasTable.h>
+#include <casacore/casa/BasicSL/Constants.h>
+#include <casacore/measures/Measures/MCFrequency.h>
+#include <casacore/casa/Quanta/MVPosition.h>
+#include <casacore/casa/Quanta/MVDirection.h>
+#include <casacore/measures/Measures/Aberration.h>
+#include <casacore/measures/Measures/MeasTable.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Statics
 uInt MCFrequency::ToRef_p[N_Routes][3] = {
@@ -80,6 +80,9 @@ void MCFrequency::getConvert(MConvertBase &mc,
   Int iout = outref.getType();
   Int tmp;
   while (iin != iout) {
+    if(iin == MFrequency::Undefined || iout == MFrequency::Undefined)
+      throw(AipsError("Transformations to/from frame \"Undefined\" are not possible."));
+
     tmp = FromTo_p[iin][iout];
     iin = ToRef_p[tmp][1];
     mc.addMethod(tmp);
@@ -361,5 +364,5 @@ void MCFrequency::doFillState (void*) {
   MCBase::makeState(FromTo_p[0], MFrequency::N_Types, N_Routes, ToRef_p);
 }
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 

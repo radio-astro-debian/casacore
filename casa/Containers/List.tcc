@@ -25,10 +25,13 @@
 //#
 //# $Id$
 
-#include <casa/Containers/List.h>
-#include <casa/Containers/IterError.h>
+#ifndef CASA_LIST_TCC
+#define CASA_LIST_TCC
 
-namespace casa { //#Begin casa namespace
+#include <casacore/casa/Containers/List.h>
+#include <casacore/casa/Containers/IterError.h>
+
+namespace casacore { //#Begin casa namespace
 
 template<class t> uInt ListNotice<t>::type() const  {
   return Register(this);
@@ -60,7 +63,7 @@ template<class t> void List<t>::removed(Link<t> *oldl, Link<t> *prev, Link<t> *c
   if (oldl == tail) tail = prev;
 }
 
-template<class t> List<t>::List(const List<t> &other) : head(0), tail(0), length(0) {
+template<class t> List<t>::List(const List<t> &other) : NoticeSource(), head(0), tail(0), length(0) {
     ConstListIter<t> iter(other);
     Link<t> *cur = 0;
     iter.toStart();
@@ -414,3 +417,5 @@ ConstListIter<t> &ListIter<t>::operator=(const ConstListIter<t> *) {
   return *this;}
 
 } //#End casa namespace
+
+#endif

@@ -29,12 +29,12 @@
 #ifndef CASA_STREAMLOGSINK_H
 #define CASA_STREAMLOGSINK_H
 
-#include <casa/aips.h>
-#include <casa/Logging/LogSinkInterface.h>
+#include <casacore/casa/aips.h>
+#include <casacore/casa/Logging/LogSinkInterface.h>
 
-#include <casa/iosfwd.h>
+#include <casacore/casa/iosfwd.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 // <summary>
 // Send log messages to an ostream.
@@ -84,11 +84,11 @@ public:
     // lives at least as long as this sink. If not filter is supplied,
     // <src>NORMAL</src> is used.
     // <group>
-    explicit StreamLogSink(ostream *theStream = 0);
+    explicit StreamLogSink(ostream *theStream = 0, bool deleteStream = false);
     explicit StreamLogSink(LogMessage::Priority filter,
-			   ostream *theStream = 0);
+			   ostream *theStream = 0, bool deleteStream = false);
     explicit StreamLogSink(const LogFilterInterface &filter,
-			   ostream *theStream = 0);
+			   ostream *theStream = 0, bool deleteStream = false);
     // </group>
 
     // Make a copy of <src>other</src>. After copying, both objects will post
@@ -114,9 +114,10 @@ public:
 
 private:
     ostream *stream_p;
+    bool deleteStream;
 };
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

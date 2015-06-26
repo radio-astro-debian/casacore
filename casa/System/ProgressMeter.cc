@@ -28,16 +28,16 @@
 
 
 #include <time.h>
-#include <casa/fstream.h>
-#include <casa/System/ProgressMeter.h>
-#include <casa/BasicSL/String.h>
-#include <casa/Containers/Block.h>
-#include <casa/iostream.h>
-#include <casa/IO/AipsIO.h>
-#include <casa/IO/RegularFileIO.h>
+#include <casacore/casa/fstream.h>
+#include <casacore/casa/System/ProgressMeter.h>
+#include <casacore/casa/BasicSL/String.h>
+#include <casacore/casa/Containers/Block.h>
+#include <casacore/casa/iostream.h>
+#include <casacore/casa/IO/AipsIO.h>
+#include <casacore/casa/IO/RegularFileIO.h>
 #include <math.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 // First implement a simple stderr based progress meter that just prints out
 // 0%....10....20....30....40....50....60....70....80....90....100%
@@ -50,6 +50,7 @@ namespace casa { //# NAMESPACE CASA - BEGIN
 static Block<Double> stderr_min, stderr_max, stderr_last;
 static Block<String> stderr_title;
 static Block<Int> stderr_time;
+static Block<Bool> stderr_startflag;
 const char* ProgressMeter::PROGRESSFILE = "/tmp/xidjapdfs";
 static Int stderr_creation_function(Double min, Double max,
 				    const String &t, const String &,
@@ -62,11 +63,13 @@ static Int stderr_creation_function(Double min, Double max,
     stderr_last.resize(n);
     stderr_title.resize(n);
     stderr_time.resize(n);
+    stderr_startflag.resize(n);
     stderr_min[n-1] = min;
     stderr_max[n-1] = max;
     stderr_last[n-1] = min;
     stderr_title[n-1] = t;
     stderr_time[n-1] = time(0);
+    stderr_startflag[n-1] = False;
     //cerr << "\n0%";
     return n;
 }
@@ -130,7 +133,11 @@ static void stderr_update_function(Int id, Double value)
 			  (stderr_max[id] - stderr_min[id]) * 100.0);
     Int lastpercent = Int((stderr_last[id] - stderr_min[id]) / 
 			  (stderr_max[id] - stderr_min[id]) * 100.0);
-    if (::fabs((stderr_last[id] - stderr_min[id])/stderr_min[id]) <  0.001) cerr << "\n0%";
+    //    if (::fabs((stderr_last[id] - stderr_min[id])/stderr_min[id]) <  0.001) cerr << "\n0%";
+    if (!stderr_startflag[id] && ::fabs((stderr_last[id] - stderr_min[id])/stderr_min[id]) <  0.001) {
+      cerr << "\n0%";
+      stderr_startflag[id] = True;
+    }
     if (percent > lastpercent) {
 	stderr_last[id] = value;
 	// Probably we could do this more efficiently. We need to get all the
@@ -198,7 +205,8 @@ ProgressMeter::ProgressMeter(Double min, Double max,
 
 ProgressMeter::~ProgressMeter()
 {
-    update_count_p++;
+  // Do not update if still 0, otherwise no initialization done in update.
+  if (update_count_p > 0) update_count_p++;
     update(max_p, True);
 }
 
@@ -283,5 +291,5 @@ Double ProgressMeter::max() const
 
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 

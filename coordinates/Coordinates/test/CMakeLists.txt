@@ -8,6 +8,7 @@ tLinearCoordinate
 tLinearXform
 tProjection
 tStokesCoordinate
+tQualityCoordinate
 tTabularCoordinate
 )
 

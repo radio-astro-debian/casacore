@@ -30,11 +30,11 @@
 #define CASA_PATH_H
 
 //# Includes
-#include <casa/aips.h>
-#include <casa/BasicSL/String.h>
+#include <casacore/casa/aips.h>
+#include <casacore/casa/BasicSL/String.h>
 
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 // <summary>
 // Path name of a file
@@ -181,7 +181,7 @@ public:
     // Check if pathname is valid according the POSIX standard.
     // This function checks for
     // double slashes, non-printable characters,pathname length and filename 
-    // lengths, all according to the POSIX-standard.
+    // lenghts, all according to the POSIX-standard.
     Bool isStrictlyPosix() const;
 
     // Return length of path name
@@ -269,6 +269,6 @@ inline const String& Path::originalName() const
 
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

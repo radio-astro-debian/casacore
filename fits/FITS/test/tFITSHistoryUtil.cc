@@ -26,16 +26,16 @@
 //# $Id$
 
 //# Includes
-#include <fits/FITS/FITSHistoryUtil.h>
+#include <casacore/fits/FITS/FITSHistoryUtil.h>
 
-#include <casa/Arrays/Vector.h>
-#include <casa/Exceptions/Error.h>
-#include <fits/FITS/fits.h>
-#include <casa/Logging.h>
-#include <tables/LogTables/LoggerHolder.h>
-#include <casa/Utilities/Assert.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Exceptions/Error.h>
+#include <casacore/fits/FITS/fits.h>
+#include <casacore/casa/Logging.h>
+#include <casacore/tables/LogTables/LoggerHolder.h>
+#include <casacore/casa/Utilities/Assert.h>
 
-#include <casa/namespace.h>
+#include <casacore/casa/namespace.h>
 int main()
 {
     try {	
@@ -47,7 +47,7 @@ int main()
 	message.message("This is another LogMessage stored in the sink to be transfered to FITS");
 	logger.sink().post(message);
 	
-	Vector<String> history;
+	vector<String> history;
 	Bool aipsppFormat = True;
 	uInt nstrings, nread;
 	nstrings = nread = 0;
@@ -65,22 +65,22 @@ int main()
 	}
 	
 	// add some other other history, to a different group
-	Vector<String> otherHistory(3);
-	otherHistory(0) = "I like cats.";
-	otherHistory(1) = "This is a longer history message to see how it handles that sort of thing.";
-	otherHistory(2) = "This is part of the OTHER group.";
+	vector<String> otherHistory(3);
+	otherHistory[0] = "I like cats.";
+	otherHistory[1] = "This is a longer history message to see how it handles that sort of thing.";
+	otherHistory[2] = "This is part of the OTHER group.";
 	FITSHistoryUtil::addHistoryGroup(kwl, otherHistory, 
-					 otherHistory.nelements(), "OTHER");
+					 otherHistory.size(), "OTHER");
 	
 	// and add some things without a group
-	Vector<String> moreHistory(4);
-	moreHistory(0) = "More history.";
-	moreHistory(1) = "Still more history.";
-	moreHistory(2) = "And still more history.";
-	moreHistory(3) = 
+	vector<String> moreHistory(4);
+	moreHistory[0] = "More history.";
+	moreHistory[1] = "Still more history.";
+	moreHistory[2] = "And still more history.";
+	moreHistory[3] =
 	    "And the end of the more history, although this is another long message that should wrap";
 	FITSHistoryUtil::addHistoryGroup(kwl, moreHistory, 
-					 moreHistory.nelements(), "");
+					 moreHistory.size(), "");
 	
 	// now retrieve stuff from kwl
 	Vector<String> stringsOut;
@@ -116,14 +116,14 @@ int main()
 		// line
 		AlwaysAssertExit(n==4);
 	    } else if (groupType == "OTHER") {
-		AlwaysAssertExit(n==otherHistory.nelements());
-		for (uInt i=0;i<otherHistory.nelements();i++) {
-		    AlwaysAssertExit(otherHistory(i) == stringsOut(i));
+		AlwaysAssertExit(n==otherHistory.size());
+		for (uInt i=0;i<otherHistory.size();i++) {
+		    AlwaysAssertExit(otherHistory[i] == stringsOut(i));
 		}
 	    } else {
-		AlwaysAssertExit(n==moreHistory.nelements());
-		for (uInt i=0;i<moreHistory.nelements();i++) {
-		    AlwaysAssertExit(moreHistory(i) == stringsOut(i));
+		AlwaysAssertExit(n==moreHistory.size());
+		for (uInt i=0;i<moreHistory.size();i++) {
+		    AlwaysAssertExit(moreHistory[i] == stringsOut(i));
 		}
 	    }
 	}

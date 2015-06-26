@@ -30,11 +30,11 @@
 
 
 //# Includes
-#include <casa/aips.h>
-#include <casa/BasicSL/String.h>
-#include <casa/Quanta/UnitVal.h>
+#include <casacore/casa/aips.h>
+#include <casacore/casa/BasicSL/String.h>
+#include <casacore/casa/Quanta/UnitVal.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
 
@@ -162,7 +162,7 @@ namespace casa { //# NAMESPACE CASA - BEGIN
 //
 // <example>
 // <srcblock>
-// #include <casa/Quanta.h>
+// #include <casacore/casa/Quanta.h>
 // // check if a string is a valid unit
 // if ( !UnitVal::check("Km") ) { cout << "Invalid unit string " << "Km" << endl;
 // // define some units
@@ -198,7 +198,7 @@ class Unit {
 //   <li> AipsError if illegal unit string
 // </thrown>
 // <group name="constructor">
-    Unit(const String &other);
+    Unit(const std::string &other);
     Unit(const Char *other);
     explicit Unit(Char other);
     Unit(const Char *other, Int len);
@@ -243,6 +243,6 @@ private:
 //# Inline Implementations
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

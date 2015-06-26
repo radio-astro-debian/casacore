@@ -25,24 +25,24 @@
 //#
 //# $Id$
 
-#include <tables/Tables/ColumnDesc.h>
-#include <tables/Tables/ScaColDesc.h>
-#include <tables/Tables/ScaRecordColDesc.h>
-#include <tables/Tables/ArrColDesc.h>
-#include <tables/Tables/SubTabDesc.h>
-#include <tables/Tables/TableRecord.h>
-#include <tables/Tables/TableAttr.h>
-#include <casa/Containers/RecordDesc.h>
-#include <casa/BasicSL/Complex.h>
-#include <casa/Utilities/DataType.h>
-#include <casa/IO/AipsIO.h>
-#include <tables/Tables/TableError.h>
-#include <tables/Tables/TableRecord.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/iostream.h>
+#include <casacore/tables/Tables/ColumnDesc.h>
+#include <casacore/tables/Tables/ScaColDesc.h>
+#include <casacore/tables/Tables/ScaRecordColDesc.h>
+#include <casacore/tables/Tables/ArrColDesc.h>
+#include <casacore/tables/Tables/SubTabDesc.h>
+#include <casacore/tables/Tables/TableRecord.h>
+#include <casacore/tables/Tables/TableAttr.h>
+#include <casacore/casa/Containers/RecordDesc.h>
+#include <casacore/casa/BasicSL/Complex.h>
+#include <casacore/casa/Utilities/DataType.h>
+#include <casacore/casa/IO/AipsIO.h>
+#include <casacore/tables/Tables/TableError.h>
+#include <casacore/tables/Tables/TableRecord.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/iostream.h>
 
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 ColumnDesc::ColumnDesc (const BaseColumnDesc& cold)
 : colPtr_p   (cold.clone()),
@@ -53,8 +53,9 @@ ColumnDesc::ColumnDesc (const ColumnDesc& that)
 : colPtr_p   (that.colPtr_p),
   allocated_p(True)
 {
-    if (colPtr_p != 0)
-	colPtr_p = colPtr_p->clone();
+  if (colPtr_p != 0) {
+      colPtr_p = colPtr_p->clone();
+  }
 }
 
 ColumnDesc::ColumnDesc (BaseColumnDesc* bcdp)
@@ -216,9 +217,13 @@ void ColumnDesc::show() const
 }
 void ColumnDesc::show (ostream& os) const
 {
-    colPtr_p->show (os);
-    os << "   #keywords=" << keywordSet().nfields() << endl;
-    os << keywordSet().description();
+    if (colPtr_p) {
+        colPtr_p->show (os);
+        os << "   #keywords=" << keywordSet().nfields() << endl;
+        os << keywordSet().description();
+    } else {
+        os << "ColumnDesc is empty" << endl;
+    }
 }
 
 
@@ -305,4 +310,4 @@ void ColumnDesc::doRegisterMainCtor (void*)
   unlockedRegisterCtor (std.className(), std.makeDesc);
 }
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END

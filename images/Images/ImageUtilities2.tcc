@@ -1,4 +1,4 @@
-//# ImageUtilities2.cc:  Implement templates functions
+//# ImageUtilities2.tcc:  Implement templates functions
 //# Copyright (C) 1996,1997,1998,1999,2000,2001,2002,2003
 //# Associated Universities, Inc. Washington DC, USA.
 //#
@@ -24,40 +24,114 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //# $Id$
+
+#ifndef IMAGES_IMAGEUTILITIES2_TCC
+#define IMAGES_IMAGEUTILITIES2_TCC
 //
 
-#include <images/Images/ImageUtilities.h>
+#include <casacore/images/Images/ImageUtilities.h>
 
-#include <casa/Arrays/MaskedArray.h>
-#include <coordinates/Coordinates/CoordinateSystem.h>
-#include <coordinates/Coordinates/LinearCoordinate.h>
-#include <coordinates/Coordinates/SpectralCoordinate.h>
-#include <coordinates/Coordinates/TabularCoordinate.h>
-#include <casa/Exceptions/Error.h>
-#include <images/Images/ImageInfo.h>
-#include <images/Images/ImageInterface.h>
-#include <images/Images/TempImage.h>
-#include <images/Images/RebinImage.h>
-#include <images/Images/ImageFit1D.h>
-#include <lattices/Lattices/TiledShape.h>
-#include <lattices/Lattices/TempLattice.h>
-#include <lattices/Lattices/TiledLineStepper.h>
-#include <lattices/Lattices/MaskedLatticeIterator.h>
-#include <components/SpectralComponents/PolynomialSpectralElement.h>
-#include <casa/System/ProgressMeter.h>
-#include <casa/Logging/LogIO.h>
-#include <casa/Quanta/Unit.h>
-#include <casa/Utilities/Assert.h>
+#include <casacore/casa/Arrays/MaskedArray.h>
+#include <casacore/coordinates/Coordinates/CoordinateSystem.h>
+#include <casacore/coordinates/Coordinates/LinearCoordinate.h>
+#include <casacore/coordinates/Coordinates/SpectralCoordinate.h>
+#include <casacore/coordinates/Coordinates/TabularCoordinate.h>
+#include <casacore/casa/Exceptions/Error.h>
+#include <casacore/images/Images/ImageInterface.h>
+#include <casacore/images/Images/ImageOpener.h>
+#include <casacore/images/Images/PagedImage.h>
+#include <casacore/images/Images/SubImage.h>
+#include <casacore/images/Images/TempImage.h>
+#include <casacore/images/Images/RebinImage.h>
+#include <casacore/lattices/Lattices/TiledShape.h>
+#include <casacore/lattices/Lattices/TempLattice.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/tables/LogTables/NewFile.h>
 
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
+
+template <typename T> void ImageUtilities::addDegenerateAxes(
+	LogIO& os, PtrHolder<ImageInterface<T> >& outImage,
+	const ImageInterface<T>& inImage, const String& outFile,
+	Bool direction, Bool spectral, const String& stokes,
+	Bool linear, Bool tabular, Bool overwrite,
+	Bool silent
+) {
+	// Verify output file
+	if (!overwrite && !outFile.empty()) {
+		NewFile validfile;
+		String errmsg;
+		if (!validfile.valueOK(outFile, errmsg)) {
+			ThrowCc(errmsg);
+		}
+	}
+	IPosition shape = inImage.shape();
+	CoordinateSystem cSys = inImage.coordinates();
+	IPosition keepAxes = IPosition::makeAxisPath(shape.nelements());
+
+	uInt nExtra = CoordinateUtil::addAxes (
+		cSys, direction, spectral, stokes,
+		linear, tabular, silent
+	);
+
+	if (nExtra > 0) {
+		uInt n = shape.nelements();
+		shape.resize(n+nExtra,True);
+		for (uInt i=0; i<nExtra; i++) {
+			shape(n+i) = 1;
+		}
+	}
+
+	if (outFile.empty()) {
+		os << LogIO::NORMAL << "Creating (temp)image of shape "
+			<< shape << LogIO::POST;
+		outImage.set(new TempImage<T>(shape, cSys));
+	}
+	else {
+		os << LogIO::NORMAL << "Creating image '" << outFile << "' of shape "
+			<< shape << LogIO::POST;
+		outImage.set(new PagedImage<T>(shape, cSys, outFile));
+	}
+	ImageInterface<T>* pOutImage = outImage.ptr();
+
+	// Generate output masks
+
+	Vector<String> maskNames = inImage.regionNames(RegionHandler::Masks);
+	const uInt nMasks = maskNames.nelements();
+	if (nMasks > 0) {
+		for (uInt i=0; i<nMasks; i++) {
+			pOutImage->makeMask(maskNames(i), True, False, True);
+		}
+	}
+	pOutImage->setDefaultMask(inImage.getDefaultMask());
+
+	// Generate SubImage to copy the data into
+
+	AxesSpecifier axesSpecifier(keepAxes);
+	SubImage<T> subImage(*pOutImage, True, axesSpecifier);
+
+	// Copy masks (directly, can't do via SubImage)
+	if (nMasks > 0) {
+		for (uInt i=0; i<nMasks; i++) {
+			ImageUtilities::copyMask(*pOutImage, inImage, maskNames(i), maskNames(i),
+					axesSpecifier);
+		}
+	}
+	subImage.copyData(inImage);
+	ImageUtilities::copyMiscellaneous(*pOutImage, inImage);
+}
+
 
 template <typename T, typename U> 
 void ImageUtilities::copyMiscellaneous (ImageInterface<T>& out,
-                                        const ImageInterface<U>& in)
+                                        const ImageInterface<U>& in,
+                                        Bool copyImageInfo)
 {
     out.setMiscInfo(in.miscInfo());
-    out.setImageInfo(in.imageInfo());
+    if (copyImageInfo) {
+        out.setImageInfo(in.imageInfo());
+    }
     out.setUnits(in.units());
     out.appendLog(in.logger());
     copyAttributes (out.attrHandler(True), in.roAttrHandler());
@@ -138,182 +212,87 @@ void ImageUtilities::bin (MaskedArray<T>& out, Coordinate& coordOut,
    }
 }
 
-template <typename T> 
-Vector<ImageFit1D<T> > ImageUtilities::fitProfiles (
-	ImageInterface<T>*& pFit, ImageInterface<T>*& pResid,
-    String& xUnit, const ImageInterface<T>& inImage,
-    const uInt axis, const uInt nGauss, const Int poly,
-    const Bool showProgress
+template <typename T, typename U> void ImageUtilities::copyMask (
+	ImageInterface<T>& out,
+	const ImageInterface<U>& in,
+	const String& maskOut, const String& maskIn,
+	const AxesSpecifier outSpec
 ) {
+//
+// Because you can't write to the mask of a SubImage, we pass
+// in an AxesSpecifier to be applied to the output mask.
+// In this way the dimensionality of in and out can be made
+// the same.
+//
+// Get masks
 
-	IPosition inShape = inImage.shape();
-	if (pFit) {
-		AlwaysAssert(inShape.isEqual(pFit->shape()), AipsError);
-	}
-	if (pResid) {
-		AlwaysAssert(inShape.isEqual(pResid->shape()), AipsError);
-	}
-	/*
-	 * the weights image isn't even used, so I'm not sure why it gets
-	 * passed in
-	if (pWeight) {
-		AlwaysAssert(inShape.isEqual(pWeight->shape()), AipsError);
-	}
-	*/
+   ImageRegion iRIn = in.getRegion(maskIn, RegionHandler::Masks);
+   const LCRegion& regionIn = iRIn.asMask();
 
-	// Check axis
+   ImageRegion iROut = out.getRegion(maskOut, RegionHandler::Masks);
+   LCRegion& regionOut = iROut.asMask();
+   SubLattice<Bool> subRegionOut(regionOut, True, outSpec);
 
-	const uInt nDim = inImage.ndim();
-	AlwaysAssert(axis<nDim, AipsError);
+// Copy
 
-	// Progress Meter
-
-	ProgressMeter* pProgressMeter = 0;
-	if (showProgress) {
-		Double nMin = 0.0;
-		Double nMax = 1.0;
-		for (uInt i=0; i<inShape.nelements(); i++) {
-			if (i!=axis) {
-				nMax *= inShape(i);
-			}
-		}
-		ostringstream oss;
-		oss << "Fit profiles on axis " << axis+1;
-		pProgressMeter = new ProgressMeter(nMin, nMax, String(oss),
-				String("Fits"),
-				String(""), String(""),
-				True, max(1,Int(nMax/20)));
-	}
-
-	// Make fitter
-
-	// ImageFit1D<T> fitter (inImage, axis);
-
-	// Get hold of masks
-
-	Lattice<Bool>* pFitMask = 0;
-	if (pFit && pFit->hasPixelMask() && pFit->pixelMask().isWritable()) {
-		pFitMask = &(pFit->pixelMask());
-	}
-	Lattice<Bool>* pResidMask = 0;
-	if (pResid && pResid->hasPixelMask() && pResid->pixelMask().isWritable()) {
-		pResidMask = &(pResid->pixelMask());
-	}
-	//
-	IPosition sliceShape(nDim,1);
-	sliceShape(axis) = inShape(axis);
-	Array<T> failData(sliceShape);
-	failData = 0.0;
-	Array<Bool> failMask(sliceShape);
-	failMask = False;
-	Array<T> resultData(sliceShape);
-	Array<Bool> resultMask(sliceShape);
-
-	// Since we write the fits out to images, fitting in pixel space is fine
-	// FIXME I don't understand the above comment. The fit results (peak, center, fwhm)
-	// certainly
-	// are not written out in this method yet but they are what astronomers want.
-	// I'm switching to image units.
-	// OK so the fitter has problems with polynomials if the abscissa values are much
-	// different from unity so for now callers should be careful of polynomials or
-	// prohibit them althoughter. In the future I'll probably switch back to pixel
-	// units here and force callers to deal with putting results in astronomer
-	// friendly units.
-	// typename ImageFit1D<T>::AbcissaType abcissaType = ImageFit1D<T>::PIXEL;
-
-    String doppler = "";
-	CoordinateSystem csys = inImage.coordinates();
-	ImageUtilities::getUnitAndDoppler(
-		xUnit, doppler, axis, csys
-	);
-	String errMsg;
-	ImageFit1D<Float>::AbcissaType abcissaType;
-
-	if (
-		! ImageFit1D<Float>::setAbcissaState(
-			errMsg, abcissaType, csys, xUnit, doppler, axis
-		)
-	) {
-		throw AipsError(errMsg);
-	}
-
-	PolynomialSpectralElement polyEl(poly);
-
-	IPosition inTileShape = inImage.niceCursorShape();
-	TiledLineStepper stepper (inImage.shape(), inTileShape, axis);
-	RO_MaskedLatticeIterator<Float> inIter(inImage, stepper);
-
-	Bool ok(False);
-	uInt nFail = 0;
-	uInt nConv = 0;
-	uInt nProfiles = 0;
-	Vector<ImageFit1D<T> > fitters(inShape.product()/inShape[axis]);
-	uInt index = 0;
-	for (inIter.reset(); !inIter.atEnd(); inIter++,nProfiles++) {
-		const IPosition& curPos = inIter.position();
-		ImageFit1D<T> fitter(inImage, axis);
-
-		fitter.errorMessage();
-		ok = fitter.setData (curPos, abcissaType, True);
-
-		// Make Gaussian estimate (could try to reuse previous fit as estimate)
-		// Could use some cutoff criteria
-
-		ok = ok ? fitter.setGaussianElements (nGauss) : False;
-		if (ok && poly>=0) {
-			fitter.addElement (polyEl);
-		}
-		if (ok) {
-			try {
-				ok = fitter.fit();                // ok == False means no convergence
-				if (!ok) {
-					nConv++;
-				}
-			} catch (AipsError x) {
-				ok = False;                       // Some other error
-				nFail++;
-			}
-		}
-		fitters[index] = fitter;
-		index++;
-
-		// Evaluate and fill
-		if (ok) {
-			Array<Bool> resultMask = fitter.getTotalMask().reform(sliceShape);
-			if (pFit) {
-				Array<T> resultData = fitter.getFit().reform(sliceShape);
-				pFit->putSlice (resultData, curPos);
-				if (pFitMask) pFitMask->putSlice(resultMask, curPos);
-			}
-			if (pResid) {
-				Array<T> resultData = fitter.getResidual().reform(sliceShape);
-				pResid->putSlice (resultData, curPos);
-				if (pResidMask) pResidMask->putSlice(resultMask, curPos);
-			}
-		} else {
-			if (pFit) {
-				pFit->putSlice (failData, curPos);
-				if (pFitMask) pFitMask->putSlice(failMask, curPos);
-			}
-			if (pResid) {
-				pResid->putSlice (failData, curPos);
-				if (pResidMask) pResidMask->putSlice(failMask, curPos);
-			}
-		}
-		//
-		if (showProgress) pProgressMeter->update(Double(nProfiles));
-	}
-	IPosition outShape = inShape;
-	outShape[axis] = 1;
-	fitters.reform(outShape);
-	delete pProgressMeter;
-	// FIXME remove in favour of log messages
-	cerr << "Number of profiles   = " << nProfiles << endl;
-	cerr << "Number converged     = " << nProfiles - nConv - nFail << endl;
-	cerr << "Number not converged = " << nConv << endl;
-	cerr << "Number failed        = " << nFail << endl;
-	return fitters;
+   LatticeIterator<Bool> maskIter(subRegionOut);
+   for (maskIter.reset(); !maskIter.atEnd(); maskIter++) {
+      subRegionOut.putSlice(regionIn.getSlice(maskIter.position(),
+                            maskIter.cursorShape()),  maskIter.position());
+   }
 }
 
-} //# NAMESPACE CASA - END
+template <typename T> void ImageUtilities::openImage(
+	ImageInterface<T>*& pImage,
+	const String& fileName
+) {
+    ThrowIf(
+		fileName.empty(),
+		"The image filename is empty"
+	);
+	File file(fileName);
+	ThrowIf(
+		! file.exists(),
+		"File '" + fileName + "' does not exist"
+	);
+	LatticeBase* lattPtr = ImageOpener::openImage (fileName);
+    ThrowIf(
+		lattPtr == 0,
+		"Image " + fileName + " cannot be opened; its type is unknown"
+	);
+    T x = 0;
+    ThrowIf(
+        lattPtr->dataType() != whatType(&x),
+        "Logic Error: " + fileName
+        + " has a different data type than the data type of the requested object"
+    );
+	pImage = dynamic_cast<ImageInterface<T> *>(lattPtr);
+	ThrowIf(
+		pImage == 0,
+		"Unrecognized image data type, "
+	    "presently only Float and Complex images are supported"
+	);
+}
 
+template <typename T> void ImageUtilities::openImage(
+	PtrHolder<ImageInterface<T> >& image,
+	const String& fileName
+) {
+   ImageInterface<T>* p = 0;
+   ImageUtilities::openImage(p, fileName);
+   image.set(p);
+}
+
+template <typename T>
+SHARED_PTR<ImageInterface<T> > ImageUtilities::openImage
+(const String& fileName)
+{
+   ImageInterface<T>* p = 0;
+   ImageUtilities::openImage(p, fileName);
+   return SHARED_PTR<ImageInterface<T> > (p);
+}
+
+} //# NAMESPACE CASACORE - END
+
+
+#endif

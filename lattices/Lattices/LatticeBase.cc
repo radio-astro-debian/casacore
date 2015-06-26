@@ -26,15 +26,20 @@
 //# $Id$
 
 
-#include <lattices/Lattices/LatticeBase.h>
-#include <casa/BasicMath/Math.h>
-#include <casa/Exceptions/Error.h>
+#include <casacore/lattices/Lattices/LatticeBase.h>
+#include <casacore/casa/BasicMath/Math.h>
+#include <casacore/casa/Exceptions/Error.h>
 
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 LatticeBase::~LatticeBase()
 {}
+
+String LatticeBase::imageType() const
+{
+  return "Lattice";
+}
 
 Bool LatticeBase::isPersistent() const
 {
@@ -54,6 +59,11 @@ Bool LatticeBase::canReferenceArray() const
 Bool LatticeBase::isWritable() const
 {
   return True;
+}
+
+void LatticeBase::save (const String&) const
+{
+  throw AipsError(imageType() + "::save is not implemented");
 }
 
 Bool LatticeBase::lock (FileLocker::LockType, uInt)
@@ -148,5 +158,5 @@ void LatticeBase::throwBoolMath() const
   throw AipsError ("Operator +=, etc. cannot be used for a Boolean lattice");
 }
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 

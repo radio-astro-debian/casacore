@@ -29,17 +29,18 @@
 #define CASA_QUANTUMHOLDER_H
 
 //# Includes
-#include <casa/aips.h>
-#include <casa/Utilities/PtrHolder.h>
-#include <casa/Utilities/RecordTransformable.h>
-#include <casa/BasicSL/Complexfwd.h>
+#include <casacore/casa/aips.h>
+#include <casacore/casa/Utilities/PtrHolder.h>
+#include <casacore/casa/Utilities/RecordTransformable.h>
+#include <casacore/casa/BasicSL/Complexfwd.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
 class QBase;
 class String;
 class RecordInterface;
+class Record;
 template <class Qtype> class Quantum;
 template <class T> class Vector;
 template <class T> class Array;
@@ -216,6 +217,12 @@ public:
   // Create a record from a Quantum. A False return and an error message is
   // only generated if there is no valid Quantum in the holder.
   virtual Bool toRecord(String &error, RecordInterface &out) const;
+  // this version throws an exception rather than returning false
+  virtual void toRecord(RecordInterface &out) const;
+  // this version throws an exception or returns the result Record.
+  virtual Record toRecord() const;
+
+
   // Return identification
   virtual const String &ident() const;
 
@@ -237,6 +244,6 @@ private:
 };
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

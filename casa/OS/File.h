@@ -29,13 +29,13 @@
 #define CASA_FILE_H
 
 //# Includes
-#include <casa/aips.h>
-#include <casa/OS/Path.h>
-#include <casa/OS/Mutex.h>
-#include <casa/BasicSL/String.h>
+#include <casacore/casa/aips.h>
+#include <casacore/casa/OS/Path.h>
+#include <casacore/casa/OS/Mutex.h>
+#include <casacore/casa/BasicSL/String.h>
 
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 // <summary> 
 // Class to get file information and a base for other file classes.
@@ -251,6 +251,11 @@ public:
     // NOT_CREATABLE - file does not exist and cannot be created.
     FileWriteStatus getWriteStatus() const;
 
+    // Return the filesystem type.
+    // If the file doesn't exsist crawl up the directory tree to
+    // find one that does.
+    String getFSType() const; 
+
 protected:
     // This function is used by <linkto class=RegularFile>RegularFile</linkto> 
     // and <linkto class=Directory>Directory</linkto> to remove all the links
@@ -316,7 +321,33 @@ inline void File::getstat (void* buf) const
 
 
 
+//# The ifdef's below are similar to those in IO/LargeIOFuncDef.h.
+#if !defined(AIPS_NOLARGEFILE)
+# ifdef AIPS_LINUX
+#  if !defined(_LARGEFILE64_SOURCE)
+#   define _LARGEFILE64_SOURCE
+#  endif
+# endif
+#if defined(AIPS_DARWIN) || defined(AIPS_BSD)
+# define fileFSTAT fstat
+# define fileLSTAT lstat
+# define fileSTAT  stat
+# define fileSTATFS  statfs
+#else
+# define fileFSTAT fstat64
+# define fileLSTAT lstat64
+# define fileSTAT  stat64
+# define fileSTATFS  statfs64
+#endif
+#else
+# define fileFSTAT fstat
+# define fileLSTAT lstat
+# define fileSTAT  stat
+# define fileSTATFS  statfs
+#endif
 
-} //# NAMESPACE CASA - END
+
+
+} //# NAMESPACE CASACORE - END
 
 #endif

@@ -25,20 +25,23 @@
 //#
 //# $Id$
 
-#include <casa/iostream.h>
+#ifndef CASA_ARRAYMATH_TCC
+#define CASA_ARRAYMATH_TCC
 
-#include <casa/Arrays/ArrayMath.h>
-#include <casa/Arrays/ArrayUtil.h>
-#include <casa/Arrays/Array.h>
-#include <casa/Arrays/ArrayIter.h>
-#include <casa/Arrays/VectorIter.h>
-#include <casa/Arrays/ArrayError.h>
-#include <casa/BasicMath/Math.h>
-#include <casa/BasicMath/ConvertScalar.h>
-#include <casa/Utilities/GenSort.h>
+#include <casacore/casa/iostream.h>
+
+#include <casacore/casa/Arrays/ArrayMath.h>
+#include <casacore/casa/Arrays/ArrayUtil.h>
+#include <casacore/casa/Arrays/Array.h>
+#include <casacore/casa/Arrays/ArrayIter.h>
+#include <casacore/casa/Arrays/VectorIter.h>
+#include <casacore/casa/Arrays/ArrayError.h>
+#include <casacore/casa/BasicMath/Math.h>
+#include <casacore/casa/BasicMath/ConvertScalar.h>
+#include <casacore/casa/Utilities/GenSort.h>
 #include <algorithm>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 
 template<typename L, typename R, typename RES, typename BinaryOperator>
@@ -351,11 +354,6 @@ template<class T>  T min(const Array<T> &a)
 template<class T>  T max(const Array<T> &a)
     { T Min, Max; minMax(Min, Max, a); return Max; }
 
-template<class T>  void indgen(Array<T> &a) {indgen(a, T(0), T(1));}
-
-template<class T>  void indgen(Array<T> &a, T start) 
-{indgen(a, start, T(1));}
-
 template<class T> void operator+= (Array<T> &left, const T &other)
 {
     arrayTransformInPlace (left, other, std::plus<T>());
@@ -649,7 +647,7 @@ void operator*= (Array<std::complex<T> > &left,
 {
   checkArrayShapes (left, other, "*=");
   arrayTransformInPlace (left, other,
-                         casa::Multiplies<std::complex<T>,T>());
+                         casacore::Multiplies<std::complex<T>,T>());
 }
 
 template<typename T>
@@ -657,7 +655,7 @@ void operator*= (Array<std::complex<T> > &left,
                  const T &other)
 {
   arrayTransformInPlace (left, other,
-                         casa::Multiplies<std::complex<T>,T>());
+                         casacore::Multiplies<std::complex<T>,T>());
 }
 
 // <thrown>
@@ -669,7 +667,7 @@ void operator/= (Array<std::complex<T> > &left,
 {
   checkArrayShapes (left, other, "/=");
   arrayTransformInPlace (left, other,
-                         casa::Divides<std::complex<T>,T>());
+                         casacore::Divides<std::complex<T>,T>());
 }
 
 template<typename T>
@@ -677,7 +675,7 @@ void operator/= (Array<std::complex<T> > &left,
                  const T &other)
 {
   arrayTransformInPlace (left, other,
-                         casa::Divides<std::complex<T>,T>());
+                         casacore::Divides<std::complex<T>,T>());
 }
 
 // <thrown>
@@ -690,7 +688,7 @@ Array<std::complex<T> > operator*(const Array<std::complex<T> > &left,
   checkArrayShapes (left, other, "*");
   Array<std::complex<T> > result(left.shape());
   arrayContTransform (left, other, result,
-                      casa::Multiplies<std::complex<T>,T>());
+                      casacore::Multiplies<std::complex<T>,T>());
   return result;
 }
 
@@ -704,7 +702,7 @@ Array<std::complex<T> > operator/(const Array<std::complex<T> > &left,
   checkArrayShapes (left, other, "/");
   Array<std::complex<T> > result(left.shape());
   arrayContTransform (left, other, result,
-                      casa::Divides<std::complex<T>,T>());
+                      casacore::Divides<std::complex<T>,T>());
   return result;
 }
 
@@ -714,7 +712,7 @@ Array<std::complex<T> > operator* (const Array<std::complex<T> > &left,
 {
   Array<std::complex<T> > result(left.shape());
   arrayContTransform (left, other, result,
-                      casa::Multiplies<std::complex<T>,T>());
+                      casacore::Multiplies<std::complex<T>,T>());
   return result;
 }
 
@@ -724,7 +722,7 @@ Array<std::complex<T> > operator/ (const Array<std::complex<T> > &left,
 {
   Array<std::complex<T> > result(left.shape());
   arrayContTransform (left, other, result,
-                      casa::Divides<std::complex<T>,T>());
+                      casacore::Divides<std::complex<T>,T>());
   return result;
 }
 
@@ -734,7 +732,7 @@ Array<std::complex<T> > operator*(const std::complex<T> &left,
 {
   Array<std::complex<T> > result(other.shape());
   arrayContTransform (left, other, result,
-                      casa::Multiplies<std::complex<T>,T>());
+                      casacore::Multiplies<std::complex<T>,T>());
   return result;
 }
 
@@ -744,7 +742,7 @@ Array<std::complex<T> > operator/(const std::complex<T> &left,
 {
   Array<std::complex<T> > result(other.shape());
   arrayContTransform (left, other, result,
-                      casa::Divides<std::complex<T>,T>());
+                      casacore::Divides<std::complex<T>,T>());
   return result;
 }
 
@@ -793,7 +791,7 @@ template<class T> void max(Array<T> &result, const Array<T> &a,
 {
     checkArrayShapes (a, b, "max");
     checkArrayShapes (a, result, "max");
-    arrayTransform (a, b, result, casa::Max<T>());
+    arrayTransform (a, b, result, casacore::Max<T>());
 }
 
 // <thrown>
@@ -804,7 +802,7 @@ template<class T> void min(Array<T> &result, const Array<T> &a,
 {
     checkArrayShapes (a, b, "min");
     checkArrayShapes (a, result, "min");
-    arrayTransform (a, b, result, casa::Min<T>());
+    arrayTransform (a, b, result, casacore::Min<T>());
 }
 
 template<class T> Array<T> max(const Array<T> &a, const Array<T> &b)
@@ -828,7 +826,7 @@ template<class T> void max(Array<T> &result, const Array<T> &a,
 			   const T &b)
 {
     checkArrayShapes (a, result, "max");
-    arrayTransform (a, b, result, casa::Max<T>());
+    arrayTransform (a, b, result, casacore::Max<T>());
 }
 
 // <thrown>
@@ -838,7 +836,7 @@ template<class T> void min(Array<T> &result, const Array<T> &a,
 			   const T &b)
 {
     checkArrayShapes (a, result, "min");
-    arrayTransform (a, b, result, casa::Min<T>());
+    arrayTransform (a, b, result, casacore::Min<T>());
 }
 
 template<class T> Array<T> max(const Array<T> &a, const T &b)
@@ -875,107 +873,107 @@ void indgen(Array<T> &a, T start, T inc)
 
 template<class T> Array<T> cos(const Array<T> &a)
 {
-    return arrayTransformResult (a, casa::Cos<T>());
+    return arrayTransformResult (a, casacore::Cos<T>());
 }
 
 template<class T> Array<T> cosh(const Array<T> &a)
 {
-    return arrayTransformResult (a, casa::Cosh<T>());
+    return arrayTransformResult (a, casacore::Cosh<T>());
 }
 
 template<class T> Array<T> exp(const Array<T> &a)
 {
-    return arrayTransformResult (a, casa::Exp<T>());
+    return arrayTransformResult (a, casacore::Exp<T>());
 }
 
 template<class T> Array<T> log(const Array<T> &a)
 {
-    return arrayTransformResult (a, casa::Log<T>());
+    return arrayTransformResult (a, casacore::Log<T>());
 }
 
 template<class T> Array<T> log10(const Array<T> &a)
 {
-    return arrayTransformResult (a, casa::Log10<T>());
+    return arrayTransformResult (a, casacore::Log10<T>());
 }
 
 template<class T> Array<T> sin(const Array<T> &a)
 {
-    return arrayTransformResult (a, casa::Sin<T>());
+    return arrayTransformResult (a, casacore::Sin<T>());
 }
 
 template<class T> Array<T> sinh(const Array<T> &a)
 {
-    return arrayTransformResult (a, casa::Sinh<T>());
+    return arrayTransformResult (a, casacore::Sinh<T>());
 }
 
 template<class T> Array<T> sqrt(const Array<T> &a)
 {
-    return arrayTransformResult (a, casa::Sqrt<T>());
+    return arrayTransformResult (a, casacore::Sqrt<T>());
 }
 
 template<class T> Array<T> square(const Array<T> &a)
 {
-    return arrayTransformResult (a, casa::Sqr<T>());
+    return arrayTransformResult (a, casacore::Sqr<T>());
 }
 
 template<class T> Array<T> cube(const Array<T> &a)
 {
-    return arrayTransformResult (a, casa::Pow3<T>());
+    return arrayTransformResult (a, casacore::Pow3<T>());
 }
 
 template<class T> Array<T> acos(const Array<T> &a)
 {
-    return arrayTransformResult (a, casa::Acos<T>());
+    return arrayTransformResult (a, casacore::Acos<T>());
 }
 
 template<class T> Array<T> asin(const Array<T> &a)
 {
-    return arrayTransformResult (a, casa::Asin<T>());
+    return arrayTransformResult (a, casacore::Asin<T>());
 }
 
 template<class T> Array<T> atan(const Array<T> &a)
 {
-    return arrayTransformResult (a, casa::Atan<T>());
+    return arrayTransformResult (a, casacore::Atan<T>());
 }
 
 template<class T> Array<T> ceil(const Array<T> &a)
 {
-    return arrayTransformResult (a, casa::Ceil<T>());
+    return arrayTransformResult (a, casacore::Ceil<T>());
 }
 
 template<class T> Array<T> fabs(const Array<T> &a)
 {
-    return arrayTransformResult (a, casa::Abs<T>());
+    return arrayTransformResult (a, casacore::Abs<T>());
 }
 
 template<class T> Array<T> abs(const Array<T> &a)
 {
-    return arrayTransformResult (a, casa::Abs<T>());
+    return arrayTransformResult (a, casacore::Abs<T>());
 }
 
 template<class T> Array<T> floor(const Array<T> &a)
 {
-    return arrayTransformResult (a, casa::Floor<T>());
+    return arrayTransformResult (a, casacore::Floor<T>());
 }
 
 template<class T> Array<T> round(const Array<T> &a)
 {
-    return arrayTransformResult (a, casa::Round<T>());
+    return arrayTransformResult (a, casacore::Round<T>());
 }
 
 template<class T> Array<T> sign(const Array<T> &a)
 {
-    return arrayTransformResult (a, casa::Sign<T>());
+    return arrayTransformResult (a, casacore::Sign<T>());
 }
 
 template<class T> Array<T> tan(const Array<T> &a)
 {
-    return arrayTransformResult (a, casa::Tan<T>());
+    return arrayTransformResult (a, casacore::Tan<T>());
 }
 
 template<class T> Array<T> tanh(const Array<T> &a)
 {
-    return arrayTransformResult (a, casa::Tanh<T>());
+    return arrayTransformResult (a, casacore::Tanh<T>());
 }
 
 // <thrown>
@@ -984,18 +982,18 @@ template<class T> Array<T> tanh(const Array<T> &a)
 template<class T> Array<T> pow(const Array<T> &a, const Array<T> &b)
 {
     checkArrayShapes (a, b, "pow");
-    return arrayTransformResult (a, b, casa::Pow<T>());
+    return arrayTransformResult (a, b, casacore::Pow<T>());
 }
 
 template<class T> Array<T> pow(const T &a, const Array<T> &b)
 {
-    return arrayTransformResult (a, b, casa::Pow<T>());
+    return arrayTransformResult (a, b, casacore::Pow<T>());
 }
 
 template<class T> Array<T> pow(const Array<T> &a, const Double &b)
 {
     Array<T> result(a.shape());
-    arrayContTransform (a, b, result, casa::Pow<T,Double>());
+    arrayContTransform (a, b, result, casacore::Pow<T,Double>());
     return result;
 }
 
@@ -1005,17 +1003,17 @@ template<class T> Array<T> pow(const Array<T> &a, const Double &b)
 template<class T> Array<T> atan2(const Array<T> &a, const Array<T> &b)
 {
     checkArrayShapes (a, b, "atan2");
-    return arrayTransformResult (a, b, casa::Atan2<T>());
+    return arrayTransformResult (a, b, casacore::Atan2<T>());
 }
 
 template<class T> Array<T> atan2(const T &a, const Array<T> &b)
 {
-    return arrayTransformResult (a, b, casa::Atan2<T>());
+    return arrayTransformResult (a, b, casacore::Atan2<T>());
 }
 
 template<class T> Array<T> atan2(const Array<T> &a, const T &b)
 {
-    return arrayTransformResult (a, b, casa::Atan2<T>());
+    return arrayTransformResult (a, b, casacore::Atan2<T>());
 }
 
 // <thrown>
@@ -1024,17 +1022,17 @@ template<class T> Array<T> atan2(const Array<T> &a, const T &b)
 template<class T> Array<T> fmod(const Array<T> &a, const Array<T> &b)
 {
     checkArrayShapes (a, b, "fmod");
-    return arrayTransformResult (a, b, casa::Fmod<T>());
+    return arrayTransformResult (a, b, casacore::Fmod<T>());
 }
 
 template<class T> Array<T> fmod(const T &a, const Array<T> &b)
 {
-    return arrayTransformResult (a, b, casa::Fmod<T>());
+    return arrayTransformResult (a, b, casacore::Fmod<T>());
 }
 
 template<class T> Array<T> fmod(const Array<T> &a, const T &b)
 {
-    return arrayTransformResult (a, b, casa::Fmod<T>());
+    return arrayTransformResult (a, b, casacore::Fmod<T>());
 }
 
 
@@ -1090,8 +1088,8 @@ template<class T> T variance(const Array<T> &a, T mean)
 			 "elements"));
     }
     T sum = a.contiguousStorage() ?
-      std::accumulate(a.cbegin(), a.cend(), T(), casa::SumSqrDiff<T>(mean)) :
-      std::accumulate(a.begin(),  a.end(),  T(), casa::SumSqrDiff<T>(mean));
+      std::accumulate(a.cbegin(), a.cend(), T(), casacore::SumSqrDiff<T>(mean)) :
+      std::accumulate(a.begin(),  a.end(),  T(), casacore::SumSqrDiff<T>(mean));
     return T(sum/(1.0*a.nelements() - 1));
 }
 
@@ -1153,8 +1151,8 @@ template<class T> T avdev(const Array<T> &a, T mean)
 			 "element"));
     }
     T sum = a.contiguousStorage() ?
-      std::accumulate(a.cbegin(), a.cend(), T(), casa::SumAbsDiff<T>(mean)) :
-      std::accumulate(a.begin(),  a.end(),  T(), casa::SumAbsDiff<T>(mean));
+      std::accumulate(a.cbegin(), a.cend(), T(), casacore::SumAbsDiff<T>(mean)) :
+      std::accumulate(a.begin(),  a.end(),  T(), casacore::SumAbsDiff<T>(mean));
     return T(sum/(1.0*a.nelements()));
 }
 
@@ -1168,8 +1166,8 @@ template<class T> T rms(const Array<T> &a)
 			 "element"));
     }
     T sum = a.contiguousStorage() ?
-      std::accumulate(a.cbegin(), a.cend(), T(), casa::SumSqr<T>()) :
-      std::accumulate(a.begin(),  a.end(),  T(), casa::SumSqr<T>());
+      std::accumulate(a.cbegin(), a.cend(), T(), casacore::SumSqr<T>()) :
+      std::accumulate(a.begin(),  a.end(),  T(), casacore::SumSqr<T>());
     return T(sqrt(sum/(1.0*a.nelements())));
 }
 
@@ -1230,6 +1228,29 @@ template<class T> T median(const Array<T> &a, Block<T> &tmp, Bool sorted,
 // <thrown>
 //    </item> ArrayError
 // </thrown>
+template<class T> T madfm(const Array<T> &a, Block<T> &tmp, Bool sorted,
+                          Bool takeEvenMean, Bool inPlace)
+{
+    T med = median(a, tmp, sorted, takeEvenMean, inPlace);
+    Array<T> atmp;
+    if (inPlace  &&  a.contiguousStorage()) {
+      atmp.reference (a);   // remove constness
+    } else {
+      // A copy of a has been made to tmp.
+      // Using it saves making another copy.
+      AlwaysAssert (a.size() == tmp.size(), AipsError);
+      atmp.reference (Array<T>(a.shape(), tmp.storage(), SHARE));
+    }
+    T* aptr = atmp.data();
+    for (size_t i=0; i<atmp.size(); ++i) {
+      aptr[i] = std::abs(aptr[i] - med);
+    }
+    return median(atmp, tmp, False, takeEvenMean, True);
+}
+
+// <thrown>
+//    </item> ArrayError
+// </thrown>
 template<class T> T fractile(const Array<T> &a, Block<T>& tmp, Float fraction,
 			     Bool sorted, Bool inPlace)
 {
@@ -1256,7 +1277,7 @@ template<class T> T fractile(const Array<T> &a, Block<T>& tmp, Float fraction,
       }
     }
     T* data = const_cast<T*>(storage);
-    size_t n2 = uInt((nelem - 1) * Double(fraction));
+    size_t n2 = uInt((nelem - 1) * Double(fraction) + 0.01);
     if (!sorted) {
 	// If the array is small, it is faster to fully sort it.
 	if (nelem > 20) {
@@ -1272,13 +1293,36 @@ template<class T> T fractile(const Array<T> &a, Block<T>& tmp, Float fraction,
     return fracval;
 }
 
+// <thrown>
+//    </item> ArrayError
+// </thrown>
+template<class T> T interFractileRange(const Array<T> &a, Block<T> &tmp,
+                                       Float fraction,
+                                       Bool sorted, Bool inPlace)
+{
+  AlwaysAssert (fraction>0  &&  fraction<0.5, AipsError);
+  T hex1, hex2;
+  hex1 = fractile(a, tmp, fraction, sorted, inPlace);
+  if (inPlace  &&  a.contiguousStorage()) {  
+    hex2 = fractile(a, tmp, 1-fraction, sorted, inPlace);
+  } else {
+    // In this case a copy of a has been made to tmp.
+    // Using it saves making another copy.
+    AlwaysAssert (a.size() == tmp.size(), AipsError);
+    Array<T> atmp(a.shape(), tmp.storage(), SHARE);
+    hex2 = fractile(atmp, tmp, 1-fraction, sorted, inPlace);
+  }
+  return (hex2 - hex1);
+}
+
+
 template<typename T>
 Array<std::complex<T> > makeComplex(const Array<T> &left, const Array<T>& right)
 {
   checkArrayShapes (left, right, "makeComplex");
   Array<std::complex<T> > res(left.shape());
   arrayContTransform (left, right, res,
-                      casa::MakeComplex<T,T,std::complex<T> >());
+                      casacore::MakeComplex<T,T,std::complex<T> >());
   return res;
 }
 
@@ -1287,14 +1331,14 @@ void setReal(Array<C> &carray, const Array<R> &rarray)
 {
   checkArrayShapes (carray, rarray, "setReal");
   // Cannot be done in place, because imag is taken from second operand.
-  arrayTransform (rarray, carray, carray, casa::MakeComplexImag<R,C,C>());
+  arrayTransform (rarray, carray, carray, casacore::MakeComplexImag<R,C,C>());
 }
 
 template<typename C, typename R>
 void setImag(Array<C> &carray, const Array<R> &rarray)
 {
   checkArrayShapes (carray, rarray, "setImag");
-  arrayTransformInPlace (carray, rarray, casa::MakeComplexReal<C,R,C>());
+  arrayTransformInPlace (carray, rarray, casacore::MakeComplexReal<C,R,C>());
 }
 
 
@@ -1328,4 +1372,6 @@ template<class T, class U> void convertArray(Array<T> &to,
     }
 }
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
+
+#endif

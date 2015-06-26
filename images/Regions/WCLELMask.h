@@ -30,13 +30,14 @@
 #define IMAGES_WCLELMASK_H
 
 //# Includes
-#include <images/Regions/WCRegion.h>
-#include <lattices/Lattices/RegionType.h>
-#include <coordinates/Coordinates/CoordinateSystem.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Quanta/Quantum.h>
+#include <casacore/casa/aips.h>
+#include <casacore/images/Regions/WCRegion.h>
+#include <casacore/lattices/LRegions/RegionType.h>
+#include <casacore/coordinates/Coordinates/CoordinateSystem.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Quanta/Quantum.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
 class LCRegion;
@@ -164,7 +165,8 @@ public:
 
   // Return region type.  Returns the class name 
   virtual String type() const;
- 
+
+  const ImageExpr<Bool>* getImageExpr() const {return itsImageExpr;}
 
 private:
   // Process the command.
@@ -184,6 +186,6 @@ private:
 
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

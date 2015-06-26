@@ -30,11 +30,11 @@
 
 
 //# Includes
-#include <casa/aips.h>
-#include <casa/Quanta/Quantum.h>
-#include <casa/iosfwd.h>
+#include <casacore/casa/aips.h>
+#include <casacore/casa/Quanta/Quantum.h>
+#include <casacore/casa/iosfwd.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
 class String;
@@ -147,7 +147,9 @@ class Time;
 //	(i.e. <src>(A|B, prec)</src>), or an explicit cast:
 //	<src>((MVTime::formatTypes)(A|B))</src>, or make use of
 //	the provided <src>TIME[_CLEAN][_NO_H[M]]</src> and
-//	<src>ANGLE[_CLEAN][_NO_D[M]]</src>.</note>
+//	<src>ANGLE[_CLEAN][_NO_D[M]]</src>.
+//      </note>
+//
 //	The modifiers can be:
 //	<ul>
 //	 <li> <src>MVTime::CLEAN</src> to suppress leading or trailing
@@ -282,6 +284,7 @@ class MVTime {
 	FITS			= TIME+2048,
 	LOCAL			= 4096,
         USE_SPACE               = 8192,
+        ALPHA                   = 16384,
         BOOST                   = DMY + USE_SPACE,
 	NO_H 			= NO_D,
 	NO_HM 			= NO_DM,
@@ -297,7 +300,7 @@ class MVTime {
 	TIME_CLEAN_NO_HM	= TIME + CLEAN + NO_HM,
 	YMD_ONLY		= YMD + NO_TIME,
 	MOD_MASK		= CLEAN + NO_DM + DAY + NO_TIME + DIG2 +
-                                  LOCAL + USE_SPACE
+                                  LOCAL + USE_SPACE + ALPHA
     };
 
 //# Local structure
@@ -360,10 +363,8 @@ class MVTime {
   // Make res time Quantity from string. The String version will accept
   // a time/angle Quantity as well. The chk checks for eos
   // <group>
-  static Bool read(Quantity &res, const String &in);
-  static Bool read(Quantity &res, MUString &in);
-  static Bool read(Quantity &res, const String &in, Bool chk);
-  static Bool read(Quantity &res, MUString &in, Bool chk);
+  static Bool read(Quantity &res, const String &in, Bool chk=True);
+  static Bool read(Quantity &res, MUString &in, Bool chk=True);
   // </group>
 // Get value of date/time (MJD) in given units
 // <group>
@@ -457,6 +458,6 @@ inline Bool operator==(const MVTime &lh, const MVTime &rh)
 
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

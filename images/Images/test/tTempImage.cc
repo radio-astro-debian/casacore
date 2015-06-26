@@ -25,24 +25,29 @@
 //#
 //# $Id$
 
-#include <images/Images/TempImage.h>
-#include <images/Images/SubImage.h>
-#include <images/Images/ImageInfo.h>
-#include <coordinates/Coordinates/CoordinateUtil.h>
-#include <lattices/Lattices/TempLattice.h>
-#include <lattices/Lattices/LatticeIterator.h>
-#include <casa/Arrays/Array.h>
-#include <casa/Arrays/ArrayMath.h>
-#include <casa/Arrays/ArrayLogical.h>
-#include <casa/Arrays/IPosition.h>
-#include <casa/Quanta/QLogical.h>
-#include <casa/Utilities/COWPtr.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/Exceptions/Error.h>
-#include <casa/iostream.h>
+#include <casacore/images/Images/TempImage.h>
+#include <casacore/images/Images/SubImage.h>
+#include <casacore/images/Images/ImageInfo.h>
+#include <casacore/coordinates/Coordinates/CoordinateUtil.h>
+#include <casacore/lattices/Lattices/TempLattice.h>
+#include <casacore/lattices/Lattices/LatticeIterator.h>
+#include <casacore/casa/Arrays/Array.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
+#include <casacore/casa/Arrays/ArrayLogical.h>
+#include <casacore/casa/Arrays/ArrayIO.h>
+#include <casacore/casa/Arrays/IPosition.h>
+#include <casacore/casa/Quanta/QLogical.h>
+#include <casacore/casa/IO/AipsIO.h>
+#include <casacore/casa/IO/CanonicalIO.h>
+#include <casacore/casa/IO/MemoryIO.h>
+#include <casacore/casa/Utilities/COWPtr.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/Exceptions/Error.h>
+#include <casacore/casa/iostream.h>
 
+#include <casacore/casa/namespace.h>
 
-#include <casa/namespace.h>
+// Write and check the image.
 void doIt (TempImage<Int>& scratch)
 {
   IPosition shape(3,1);    
@@ -118,16 +123,83 @@ void doIt (TempImage<Int>& scratch)
   AlwaysAssertExit (scratch.units() == Unit("Jy"));
   // Test info handling.
   ImageInfo info = scratch.imageInfo();
-  AlwaysAssertExit (info.restoringBeam().nelements()==0);
-  Quantum<Double> a1(10.0,Unit("arcsec"));
-  Quantum<Double> a2(8.0,Unit("arcsec"));
-  Quantum<Double> a3(-45.0,Unit("deg"));
-  info.setRestoringBeam(a1, a2, a3);
+  AlwaysAssertExit (info.restoringBeam().isNull());
+  Quantity a1(10.0,Unit("arcsec"));
+  Quantity a2(8.0,Unit("arcsec"));
+  Quantity a3(-45.0,Unit("deg"));
+  info.setRestoringBeam(GaussianBeam(a1, a2, a3));
   scratch.setImageInfo(info);
   info = scratch.imageInfo();
-  AlwaysAssertExit (info.restoringBeam()(0)==a1);
-  AlwaysAssertExit (info.restoringBeam()(1)==a2);
-  AlwaysAssertExit (info.restoringBeam()(2)==a3);
+  AlwaysAssertExit (info.restoringBeam().getMajor()==a1);
+  AlwaysAssertExit (info.restoringBeam().getMinor()==a2);
+  AlwaysAssertExit (info.restoringBeam().getPA()==a3);
+}
+
+// Stream, unstream, and check the image.
+void streamImage (ImageInterface<Int>& img)
+{
+  MemoryIO membuf;
+  CanonicalIO canio (&membuf);
+  AipsIO os (&canio);
+  // Write the image.
+  os.putstart("Image", 1);
+  {
+    Record rec;
+    String msg;
+    AlwaysAssertExit (img.toRecord(msg, rec));
+    os <<  rec;
+                      }
+  os << img.get();
+  os << img.isMasked();
+  if (img.isMasked()) {
+    os << img.getMask();
+  }
+  os.putend();
+  // Get the image back.
+  TempImage<Int> scratch;
+  os.setpos (0);
+  AlwaysAssertExit (os.getstart("Image") == 0);
+  {
+    Record rec;
+    String msg;
+    os >> rec;
+    AlwaysAssertExit (scratch.fromRecord(msg, rec));
+  }
+  {
+    Array<Int> arr;
+    os >> arr;
+    scratch.put (arr);
+  }
+  Bool isMasked;
+  os >> isMasked;
+  if (isMasked) {
+    Array<Bool> mask;
+    os >> mask;
+    scratch.attachMask (ArrayLattice<Bool>(mask));
+  }
+  // Check the result.
+  AlwaysAssertExit (scratch.getAt(IPosition(3,7)) == 7);
+  scratch.putAt (0, IPosition(3,7));
+  AlwaysAssertExit (allEQ(scratch.get(), 0));
+  /*  // Check the mask.
+  AlwaysAssertExit (scratch.isMasked());
+  AlwaysAssertExit (scratch.hasPixelMask());
+  AlwaysAssertExit (scratch.pixelMask().isWritable());
+  Array<Bool> tm1;
+  scratch.getMaskSlice (tm1, IPosition(3,1), IPosition(3,6));
+  tm1(IPosition(3,6)) = False;
+  AlwaysAssertExit (allEQ (tm1, True));
+  */
+  // Test other info.
+  AlwaysAssertExit (scratch.units() == Unit("Jy"));
+  // Test info handling.
+  Quantity a1(10.0,Unit("arcsec"));
+  Quantity a2(8.0,Unit("arcsec"));
+  Quantity a3(-45.0,Unit("deg"));
+  ImageInfo info = scratch.imageInfo();
+  AlwaysAssertExit (info.restoringBeam().getMajor()==a1);
+  AlwaysAssertExit (info.restoringBeam().getMinor()==a2);
+  AlwaysAssertExit (info.restoringBeam().getPA()==a3);
 }
 
 void testTempCloseDelete()
@@ -149,12 +221,9 @@ void testTempCloseDelete()
   for (Int k=0; k < nchan ; ++k){
     blc(3)=k; trc(3)=k;
     Slicer sl(blc, trc, Slicer::endIsLast);
-    cout<<'a'<<endl;
     SubImage<Float> imSub(tIm, sl, True);
-    cout<<'b'<<endl;
     goodplane += Float(k);
     imSub.put(goodplane);
-    cout<<'c'<<endl;
   }
 
   LatticeExprNode LEN = max( tIm );
@@ -179,8 +248,38 @@ int main()
       AlwaysAssertExit (! small.isPaged());
       doIt (small);
     }
+    {
+    	// per hyper-plane beam support
+    	TempImage<Int> temp((
+    		TiledShape(IPosition(4,64, 64, 4, 16))),
+    		CoordinateUtil::defaultCoords4D()
+    	);
+    	ImageInfo info = temp.imageInfo();
+    	Quantity maj(5, "arcsec");
+    	Quantity min(3, "arcsec");
+    	Quantity pa(30, "deg");
+    	info.setAllBeams(16, 4, GaussianBeam());
+    	try {
+    		temp.setImageInfo(info);
+    	}
+    	catch (AipsError x) {
+    		cout << "Exception thrown as expected: "
+    			<< x.getMesg() << endl;
+    	}
+    	info.setBeam(0, 0, maj, min, pa);
+    	try {
+    		temp.setImageInfo(info);
+    	}
+    	catch (AipsError x) {}
+    	for (uInt i=0; i<4; i++) {
+    		for (uInt j=0; j<16; j++) {
+    			info.setBeam(j, i, maj, min, pa);
+    		}
+    	}
+    	AlwaysAssert(temp.setImageInfo(info), AipsError);
+    }
     testTempCloseDelete();
-  } catch (AipsError x) {
+  } catch (AipsError& x) {
     cerr << x.getMesg() << endl;
     cout << "FAIL" << endl;
     return 1;

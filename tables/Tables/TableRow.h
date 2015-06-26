@@ -29,16 +29,16 @@
 #define TABLES_TABLEROW_H
 
 //# Includes
-#include <casa/aips.h>
-#include <tables/Tables/Table.h>
-#include <tables/Tables/TableRecord.h>
-#include <casa/Containers/Block.h>
-#include <casa/BasicSL/String.h>
+#include <casacore/casa/aips.h>
+#include <casacore/tables/Tables/Table.h>
+#include <casacore/tables/Tables/TableRecord.h>
+#include <casacore/casa/Containers/Block.h>
+#include <casacore/casa/BasicSL/String.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
-class ROTableColumn;
+class TableColumn;
 template<class T> class Vector;
 
 
@@ -151,13 +151,13 @@ public:
     // Its TableRecord will contain all columns except columns with
     // datatype TpOther (i.e. non-standard data types).
     // <br>
-    // When the flag <src>storedColumnsOnly</src> is True, only the
+    // If the flag <src>storedColumnsOnly</src> is True, only the
     // columns actually stored by a storage manager will be selected.
-    // This is useful when the contents of an entire row has to be copied.
+    // This is useful when the contents of an entire row have to be copied.
     // Virtual columns are calculated on-the-fly (often using stored columns),
     // thus it makes no sense to copy their data.
     // <note role=caution>
-    //  When the table contains columns with large arrays, it may
+    //  If the table contains columns with large arrays, it may
     //  be better not to use this constructor. Each get will read in
     //  all data in the row, thus also the large data array(s).
     //  In that case it is better to use the constructor which
@@ -193,7 +193,7 @@ public:
 
     // Get the number of the last row read.
     // -1 is returned when no Table is attached or no row has been read yet.
-    Int rowNumber() const;
+    Int64 rowNumber() const;
 
     // Get a vector consisting of all columns names.
     // This can, for instance, be used to construct a TableRow object
@@ -217,7 +217,7 @@ protected:
     // Copy that object to this object.
     // The writable flag determines if writable or readonly
     // TableColumn objects will be created.
-    void copy (const ROTableRow& that, Bool writable);
+    void copy (const ROTableRow& that);
 
     // Create the record, column, and field objects
     // for all columns in the table.
@@ -248,11 +248,11 @@ protected:
     TableRecord* itsRecord;
     //# The table used.
     Table        itsTable;
-    //# The following block is actually a Block<ROTableColumn*>.
+    //# The following block is actually a Block<TableColumn*>.
     //# However, using void* (and appropriate casts) saves on template
     //# instantiations.
     Block<void*> itsTabCols;
-    //# The following block is actually a Block<(RO)Scalar/ArrayColumn<T>>.
+    //# The following block is actually a Block<Scalar/ArrayColumn<T>>.
     Block<void*> itsColumns;
     //# The following block is actually a block of RecordFieldPtr<T>*.
     //# These are used for fast access to the record.
@@ -262,11 +262,10 @@ protected:
     //# A cache for itsRecord.nfields()
     uInt         itsNrused;
     //# The last rownr read (-1 is nothing read yet).
-    //# This is via a pointer to keep the get function const.
-    Int*         itsLastRow;
+    mutable Int64 itsLastRow;
     //# A switch to indicate that the last row has to be reread.
     //# This is the case when it has been put after being read.
-    Bool*        itsReread;
+    mutable Bool  itsReread;
 
 private:
     // Initialize the object.
@@ -281,11 +280,11 @@ private:
     // When skipOther is True, columns with a non-standard data type
     // will be silently skipped.
     void addColumnToDesc (RecordDesc& description,
-			  const ROTableColumn& column, Bool skipOther);
+			  const TableColumn& column, Bool skipOther);
 
     // Make the required objects. These are the TableRecord and for
     // each column a TableColumn and RecordFieldPtr.
-    void makeObjects (const RecordDesc& description, Bool writable);
+    void makeObjects (const RecordDesc& description);
 
     // Delete all objects.
     void deleteObjects();
@@ -404,13 +403,13 @@ public:
     // Its TableRecord will contain all columns except columns with
     // datatype TpOther and columns which are not writable.
     // <br>
-    // When the flag <src>storedColumnsOnly</src> is True, only the
+    // If the flag <src>storedColumnsOnly</src> is True, only the
     // columns actually stored by a storage manager will be selected.
-    // This is useful when the contents of an entire row has to be copied.
+    // This is useful when the contents of an entire row have to be copied.
     // Virtual columns are calculated on-the-fly (often using stored columns),
     // thus it makes no sense to copy their data.
     // <note role=caution>
-    //  When the table contains columns with large arrays, it may
+    //  If the table contains columns with large arrays, it may
     //  be better not to use this constructor. Each get will read in
     //  all data in the row, thus also the large data array(s).
     //  In that case it is better to use the next constructor which
@@ -504,9 +503,9 @@ inline const Table& ROTableRow::table() const
 {
     return itsTable;
 }
-inline Int ROTableRow::rowNumber() const
+inline Int64 ROTableRow::rowNumber() const
 {
-    return *itsLastRow;
+    return itsLastRow;
 }
 inline const TableRecord& ROTableRow::record() const
 {
@@ -527,6 +526,6 @@ inline void TableRow::put (uInt rownr)
 
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

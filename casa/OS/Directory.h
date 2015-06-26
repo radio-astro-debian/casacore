@@ -29,11 +29,11 @@
 #define CASA_DIRECTORY_H
 
 //# Includes
-#include <casa/aips.h>
-#include <casa/OS/Path.h>
-#include <casa/OS/File.h>
+#include <casacore/casa/aips.h>
+#include <casacore/casa/OS/Path.h>
+#include <casacore/casa/OS/File.h>
    
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 template<class T> class Vector;
 class Regex;
@@ -223,6 +223,9 @@ public:
     // Return the total size  of everything in the Directory. If the Directory
     // does not exist, an exception will be thrown.
     virtual Int64 size() const;
+
+    //Check if a directory is mounted via NFS or not.
+    Bool isNFSMounted() const;
     
 private:
     // Check if the path defines a directory.
@@ -252,6 +255,6 @@ inline uInt Directory::freeSpaceInMB() const
 
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

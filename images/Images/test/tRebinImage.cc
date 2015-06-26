@@ -26,24 +26,24 @@
 //# $Id$
 
 //# Includes
-#include <casa/Inputs/Input.h>
-#include <casa/Containers/Block.h>
-#include <coordinates/Coordinates/CoordinateSystem.h>
-#include <coordinates/Coordinates/CoordinateUtil.h>
-#include <images/Images/TempImage.h>
-#include <images/Images/SubImage.h>
-#include <images/Images/PagedImage.h>
-#include <images/Images/RebinImage.h>
-#include <images/Regions/ImageRegion.h>
-#include <lattices/Lattices/TiledShape.h>
-#include <lattices/Lattices/LatticeUtilities.h>
-#include <casa/Logging/LogIO.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/iostream.h>
+#include <casacore/casa/Inputs/Input.h>
+#include <casacore/casa/Containers/Block.h>
+#include <casacore/coordinates/Coordinates/CoordinateSystem.h>
+#include <casacore/coordinates/Coordinates/CoordinateUtil.h>
+#include <casacore/images/Images/TempImage.h>
+#include <casacore/images/Images/SubImage.h>
+#include <casacore/images/Images/PagedImage.h>
+#include <casacore/images/Images/RebinImage.h>
+#include <casacore/images/Regions/ImageRegion.h>
+#include <casacore/lattices/Lattices/TiledShape.h>
+#include <casacore/lattices/Lattices/LatticeUtilities.h>
+#include <casacore/casa/Logging/LogIO.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/iostream.h>
 
 
 
-#include <casa/namespace.h>
+#include <casacore/casa/namespace.h>
 int main (int argc, const char* argv[])
 {
 
@@ -113,7 +113,8 @@ try {
       ImageInterface<Float>* pImOut = 0;
       if (save) {
          pImOut = new PagedImage<Float>(shapeOut, cSysOut, String("outFile"));
-      } else {
+      }
+      else {
          pImOut = new TempImage<Float>(shapeOut, cSysOut, maxMBInMemory);
       }
       cerr << "Nice shapes = " << rebinner.niceCursorShape() << pImOut->niceCursorShape() << endl;
@@ -122,18 +123,46 @@ try {
 
 // Do it
 
-      LogIO os(LogOrigin("tRebinImage", "main()", WHERE));
+      LogIO os(LogOrigin("tRebinImage", __FUNCTION__, WHERE));
       LatticeUtilities::copyDataAndMask (os, *pImOut, rebinner, False);
       delete pImOut;
     }
-//
+   {
+	   // verify a spectral axis cannot be regridded if the image has multiple beams
+	   CoordinateSystem csys = CoordinateUtil::defaultCoords3D();
+	   TiledShape ts(IPosition(3, 10, 10, 10));
+	   TempImage<Float> image(ts, csys);
+	   ImageInfo info = image.imageInfo();
+	   info.setAllBeams(10, 1,
+                            GaussianBeam(Quantity(4, "arcsec"),
+                                         Quantity(2, "arcsec"),
+                                         Quantity(0, "deg")));
+ 	   cout << "has multip beams " << info.hasMultipleBeams() << endl;
+	   image.setImageInfo(info);
+
+	   // rebin non spectral axes should work
+	   IPosition axes(3, 2, 2, 1);
+	   RebinImage<Float> rb(image, axes);
+	   axes[2] = 2;
+	   Bool exception = False;
+	   try {
+		   RebinImage<Float> rb1(image, axes);
+	   }
+	   catch (AipsError& x) {
+		   cout << "Exception thrown as expected: " << x.getMesg() << endl;
+		   exception = True;
+	   }
+	   AlwaysAssert(exception, AipsError);
+   }
     delete pIm;
 
 } catch (AipsError x) {
      cerr << "aipserror: error " << x.getMesg() << endl;
+     cout << "FAIL" << endl;
      return 1;
 } 
 
+cout << "OK" << endl;
 return 0;
 
 }

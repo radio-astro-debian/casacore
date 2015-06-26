@@ -28,11 +28,11 @@
 #ifndef CASA_ARRAYPOSITER_H
 #define CASA_ARRAYPOSITER_H
 
-#include <casa/aips.h>
+#include <casacore/casa/aips.h>
 //# Change the following to a forward declare?
-#include <casa/Arrays/IPosition.h>
+#include <casacore/casa/Arrays/IPosition.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
 class ArrayBase;
@@ -113,10 +113,9 @@ public:
     // iteration step returns a cursor (containing the data of axis 1).
     // During the iteration axis 2 will vary most rapidly (as it was
     // given first).
-    // Iterate over the given axes in the given order.
-    // The cursor axes are the remaining axes.
-    // E.g. for a shape of [3,4,5,6] and iterAxes [3,1], the cursor size
-    // is [3,5] (axes 0 and 2), while the iteration is fastest for axis 3.
+    // <br>E.g. for a shape of [3,4,5,6] and cursor axes [2,0], the cursor size
+    // is [3,5] (axes 0 and 2), while the iteration is done over axes 1 and 3
+    // (1 the fastest varying one).
     ArrayPositionIterator(const IPosition &shape,
 			  const IPosition &axes,
 			  Bool axesAreCursor=True);
@@ -203,6 +202,6 @@ inline Bool ArrayPositionIterator::pastEnd() const
 }
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

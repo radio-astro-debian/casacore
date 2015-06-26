@@ -25,14 +25,14 @@
 //#
 //# $Id$
 
-#include <meas/MeasUDF/PositionEngine.h>
-#include <measures/Measures/MeasTable.h>
-#include <tables/Tables/TableRecord.h>
-#include <tables/Tables/ExprUnitNode.h>
-#include <tables/Tables/ExprNodeSet.h>
-#include <casa/Arrays/ArrayUtil.h>
+#include <casacore/meas/MeasUDF/PositionEngine.h>
+#include <casacore/measures/Measures/MeasTable.h>
+#include <casacore/tables/Tables/TableRecord.h>
+#include <casacore/tables/TaQL/ExprUnitNode.h>
+#include <casacore/tables/TaQL/ExprNodeSet.h>
+#include <casacore/casa/Arrays/ArrayUtil.h>
 
-namespace casa {
+namespace casacore {
 
   PositionEngine::PositionEngine()
     : itsNDim      (-1),
@@ -292,12 +292,12 @@ namespace casa {
     }
     if (colNode) {
       // Try if the column contains measures.
-      const ROTableColumn& tabCol = colNode->getColumn();
+      const TableColumn& tabCol = colNode->getColumn();
       itsShape = tabCol.shapeColumn();
       itsNDim  = tabCol.ndimColumn();
       if (TableMeasDescBase::hasMeasures (tabCol)) {
-        ROArrayMeasColumn<MPosition> measTmp(tabCol.table(),
-                                             tabCol.columnDesc().name());
+        ArrayMeasColumn<MPosition> measTmp(tabCol.table(),
+                                           tabCol.columnDesc().name());
         // Get and check the node's refType if it is fixed.
         MPosition::Types nodeRefType = MPosition::N_Types;
         if (! (measTmp.measDesc().isRefCodeVariable()  ||

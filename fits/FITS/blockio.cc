@@ -25,12 +25,12 @@
 //#
 //# $Id$
 //
-# include <casa/sstream.h>
-# include <fits/FITS/blockio.h>
-# include <casa/string.h>
+# include <casacore/casa/sstream.h>
+# include <casacore/fits/FITS/blockio.h>
+# include <casacore/casa/string.h>
 #include <unistd.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //======================================================================================
     void BlockIO::errmsg(IOErrs e, const char *s) { 
@@ -176,6 +176,11 @@ namespace casa { //# NAMESPACE CASA - BEGIN
 	    }
 
 	    fits_clear_Fptr( fptr->Fptr, status);  // clear Fptr address 
+            // iobuffer was added with version 3.181...
+            // cfitsio 3.03-3.14 do not have this...
+            // However, something like CFITSIO_VERSION 3.03 is greek to CPP.
+            // So assume that by 1-Apr-2015 all sites use a sufficiently new cfitsio.
+            free((fptr->Fptr)->iobuffer);          // free memory for I/O buffers
 	    free((fptr->Fptr)->headstart);         // free memory for headstart array 
 	    free((fptr->Fptr)->filename);          // free memory for the filename
 	    (fptr->Fptr)->filename = 0;
@@ -347,5 +352,5 @@ namespace casa { //# NAMESPACE CASA - BEGIN
 			     FITSErrorHandler errhandler) :
 	BlockIO(f,r,n,errhandler) { }
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 

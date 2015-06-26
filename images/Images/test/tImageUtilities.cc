@@ -1,4 +1,3 @@
-
 //# tImageUtilities.cc: Test program for the static ImageUtilities functions
 //# Copyright (C) 2001,2002,2003
 //# Associated Universities, Inc. Washington DC, USA.
@@ -26,34 +25,35 @@
 //#
 //# $Id$
 
-#include <casa/Arrays/IPosition.h>
-#include <casa/Arrays/ArrayMath.h>
-#include <casa/Arrays/ArrayLogical.h>
-#include <casa/Arrays/ArrayIO.h>
-#include <casa/Arrays/MaskedArray.h>
-#include <coordinates/Coordinates/CoordinateSystem.h>
-#include <coordinates/Coordinates/LinearCoordinate.h>
-#include <coordinates/Coordinates/CoordinateUtil.h>
-#include <coordinates/Coordinates/SpectralCoordinate.h>
-#include <images/Images/ImageUtilities.h>
-#include <images/Images/PagedImage.h>
-#include <images/Images/ImageFITSConverter.h>
-#include <images/Images/TempImage.h>
-#include <images/Images/ImageOpener.h>
-#include <lattices/Lattices/PagedArray.h>
-#include <lattices/Lattices/ArrayLattice.h>
-#include <lattices/Lattices/LatticeUtilities.h>
-#include <casa/Logging/LogIO.h>
-#include <casa/Logging/LogOrigin.h>
-#include <casa/OS/RegularFile.h>
-#include <casa/OS/Directory.h>
-#include <casa/IO/RegularFileIO.h>
-#include <casa/Quanta/Quantum.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/Utilities/PtrHolder.h>
-#include <casa/iostream.h>
+#include <casacore/casa/Arrays/IPosition.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
+#include <casacore/casa/Arrays/ArrayLogical.h>
+#include <casacore/casa/Arrays/ArrayIO.h>
+#include <casacore/casa/Arrays/MaskedArray.h>
+#include <casacore/casa/Quanta/QLogical.h>
 
-#include <casa/namespace.h>
+#include <casacore/coordinates/Coordinates/CoordinateSystem.h>
+#include <casacore/coordinates/Coordinates/LinearCoordinate.h>
+#include <casacore/coordinates/Coordinates/CoordinateUtil.h>
+#include <casacore/coordinates/Coordinates/SpectralCoordinate.h>
+#include <casacore/images/Images/ImageUtilities.h>
+#include <casacore/images/Images/PagedImage.h>
+#include <casacore/images/Images/ImageFITSConverter.h>
+#include <casacore/images/Images/TempImage.h>
+#include <casacore/images/Images/ImageOpener.h>
+#include <casacore/lattices/Lattices/PagedArray.h>
+#include <casacore/lattices/Lattices/ArrayLattice.h>
+#include <casacore/lattices/Lattices/LatticeUtilities.h>
+#include <casacore/casa/Logging/LogIO.h>
+#include <casacore/casa/Logging/LogOrigin.h>
+#include <casacore/casa/OS/RegularFile.h>
+#include <casacore/casa/OS/Directory.h>
+#include <casacore/casa/IO/RegularFileIO.h>
+#include <casacore/casa/Quanta/Quantum.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/iostream.h>
+
+#include <casacore/casa/namespace.h>
 void doOpens()
 {
    Directory dir("tImageUtilities_tmp");
@@ -71,10 +71,14 @@ void doOpens()
       ImageFITSConverter::ImageToFITS(error, img, name2,
 				      64, True, True, -32, 1, -1,
 				      True);
-//
+
       {
          PtrHolder<ImageInterface<Float> > im;
-         ImageUtilities::openImage(im, name1, os);
+         ImageUtilities::openImage(im, name1);
+      }
+      {
+         CountedPtr<ImageInterface<Float> > im;
+         im = ImageUtilities::openImage<Float>(name1);
       }
       {
          PtrHolder<ImageInterface<Float> > im;
@@ -89,7 +93,7 @@ void doOpens()
 
 void doTypes()
 {
-   LogIO os(LogOrigin("tImageUtilities", "doTypes()", WHERE));
+   LogIO os(LogOrigin("tImageUtilities", __FUNCTION__, WHERE));
    os << "Image Type test" << LogIO::POST;
 //
    Directory dir("tImageUtilities_tmp");
@@ -166,6 +170,15 @@ void listWorld (const Vector<Quantum<Double> >& wPars)
            << ", " << wPars(4) << endl;
    }
 }
+
+void listWorld (const GaussianBeam& wPars)
+{
+   cerr << "World" << endl;
+   if (! wPars.isNull()){
+      cerr << "  Major, minor, pa = " << wPars.getMajor()
+    		<< ", " << wPars.getMinor() << ", " << wPars.getPA() << endl;
+   }
+}
    
 void listPixel(const Vector<Double>& pPars)
 {
@@ -189,7 +202,6 @@ void doConversions()
    {
       CoordinateSystem cSys = CoordinateUtil::defaultCoords2D();
       cerr << "inc = " << cSys.increment() << endl;
-      const Vector<String>& units = cSys.worldAxisUnits();
       IPosition pixelAxes(2, 0, 1);
       IPosition worldAxes(2, 0, 1);
 //
@@ -197,54 +209,12 @@ void doConversions()
       Vector<Double> pixel = cSys.referencePixel().copy();
       pixel += 10.0;
       cSys.toWorld(world, pixel);
-//
-      Vector<Quantum<Double> > wPars(5);
-
-// Position
-
-      wPars(0).setValue(world(worldAxes(0)));
-      wPars(0).setUnit(units(worldAxes(0)));
-      wPars(1).setValue(world(worldAxes(1)));
-      wPars(1).setUnit(units(worldAxes(1)));
-
-// Shape
-
-      wPars(2).setValue(20.0);
-      wPars(2).setUnit(Unit(String("arcmin")));
-      wPars(3).setValue(10.0);
-      wPars(3).setUnit(Unit(String("arcmin")));
-      wPars(4).setValue(70.0);
-      wPars(4).setUnit(Unit(String("deg")));
-
-// Convert to pixel
-
-      Vector<Double> pPars;
-      ImageUtilities::worldWidthsToPixel (os, pPars, wPars, cSys, pixelAxes);
-
-// Back to world
-
-      Vector<Double> pPars2(5);
-      pPars2(0) = pixel(pixelAxes(0));
-      pPars2(1) = pixel(pixelAxes(1));
-      for (uInt i=0; i<3; i++) {
-         pPars2(i+2) = pPars(i);
-      }
-      Vector<Quantum<Double> > wPars2;
-      ImageUtilities::pixelWidthsToWorld (os, wPars2, pPars2, cSys, pixelAxes);     
-//
-      listWorld(wPars);
-      listPixel(pPars);
-      listWorld(wPars2);
-//
-      for (uInt i=0; i<wPars.nelements(); i++) {
-//         AlwaysAssert(wPars(i)==wPars2(i), AipsError);
-      }
    }
 }
 
 void doBin()
 {
-   LogOrigin lor("tImageUtilities", "doBins()", WHERE);
+   LogOrigin lor("tImageUtilities", __FUNCTION__, WHERE);
    LogIO os(lor);
    os << "Binning Tests" << LogIO::POST;
 //
@@ -270,138 +240,13 @@ void doBin()
    AlwaysAssert(allEQ(maOut.getMask(),True), AipsError);
 }
 
-void doFits()
-{
-   LogOrigin lor("tImageUtilities", "doFits()", WHERE);
-   LogIO os(lor);
-   os << "Fitting Tests" << LogIO::POST;
-//
-   uInt n = 64;
-   IPosition shape(1,n);
-
-// Fill data with simple polynomial
-
-   Array<Bool> mask(shape);
-   mask = True;
-//
-   IPosition pos(1);
-   Array<Float> data(shape);
-   for (uInt i=0; i<n; i++) {
-      pos(0) = i;
-      data(pos) = 2 + 3*i;
-   }
-
-// Make input Image
-
-   LinearCoordinate lC(2);
-   CoordinateSystem cSys;
-   cSys.addCoordinate(lC);
-//
-   IPosition imShape(2,n,20);
-   TiledShape tShape(imShape);
-   TempImage<Float> im(tShape, cSys);
-
-// Replicate data array
-
-   Slicer sl (IPosition(2,0,0), imShape, Slicer::endIsLength);
-   LatticeUtilities::replicate (im, sl, data);
-
-// Attach mask
-
-   ArrayLattice<Bool> maskLat(imShape);
-   maskLat.set(True);
-   im.attachMask(maskLat);
-//
-   ImageInterface<Float>* pWeight = 0;
-
-// Make output images
-
-   ImageInterface<Float>* pFit = 0;
-   pFit = new TempImage<Float>(tShape, cSys);
-   ImageInterface<Float>* pResid = 0;
-   pResid = new TempImage<Float>(tShape, cSys);
-//
-   uInt axis = 0;
-   uInt nGauss = 0;
-   Int poly = 1;
-   String xUnit;
-   ImageUtilities::fitProfiles(pFit, pResid, xUnit, im,
-                               axis, nGauss, poly, True);
-   if (pWeight) delete pWeight;
-
-// Check results.
-
-   Double tol = 1.0e-6;
-   uInt ny = imShape(1);
-   IPosition pos2(2,0,0);
-   IPosition sliceShape(2,imShape(0), 1);
-   if (pFit) {
-      for (uInt j=0; j<ny; j++) {
-         pos2(1) = j;
-         Array<Float> data2 = pFit->getSlice(pos2, sliceShape,True);
-         AlwaysAssert(allNear(data2,data2,tol), AipsError);
-//
-         Array<Bool> mask2 = pFit->getMaskSlice(pos2, sliceShape,True);
-         AlwaysAssert(allEQ(mask2,True), AipsError);
-      }
-      delete pFit;
-   }
-//
-   if (pResid) {
-      Float one(1.0);
-      for (uInt j=0; j<ny; j++) {
-         pos2(1) = j;
-         Vector<Float> data2 = pResid->getSlice(pos2, sliceShape,True);
-         AlwaysAssert(allNear(data2+one,one,tol), AipsError);
-//
-         Array<Bool> mask2 = pResid->getMaskSlice(pos2, sliceShape,True);
-         AlwaysAssert(allEQ(mask2,True), AipsError);
-      }
-      delete pResid;
-   }
-}
-
-void doDeconvolveFromBeam() {
-	LogOrigin lor("tImageUtilities", "doDeconvolveFromBeam()", WHERE);
-	LogIO os(lor);
-	Quantity maj(5, "arcsec");
-	Quantity min(5, "arcsec");
-	Quantity pa(0, "deg");
-	Bool fitSuccess = False;
-	Vector<Quantity> beam(3);
-	beam[0] = Quantity(4, "arcsec");
-	beam[1] = Quantity(4, "arcsec");
-	beam[2] = Quantity(0, "deg");
-
-	Bool isPointSource = ImageUtilities::deconvolveFromBeam(maj, min, pa, fitSuccess, os, beam);
-	AlwaysAssert(! isPointSource, AipsError);
-	AlwaysAssert(fitSuccess, AipsError);
-	AlwaysAssert(maj.getValue("arcsec") == 3, AipsError);
-	AlwaysAssert(min.getValue("arcsec") == 3, AipsError);
-	AlwaysAssert(pa.getValue("deg") == 0, AipsError);
-
-	// make beam larger than the source so the fit fails
-	beam[0] = Quantity(6, "arcsec");
-	beam[1] = Quantity(6, "arcsec");
-	beam[2] = Quantity(0, "deg");
-
-	isPointSource = ImageUtilities::deconvolveFromBeam(maj, min, pa, fitSuccess, os, beam);
-	AlwaysAssert(! fitSuccess, AipsError);
-
-	// TODO test for point source, I can't figure out how to actually set parameters so the method
-	// returns true
-}
-  
 int main()
 {
   try {
-    doFits();
     doBin();
     doTypes();
     doOpens();
-    doDeconvolveFromBeam();
-//    doConversions();
-  } catch (AipsError& x) {
+  } catch (const AipsError& x) {
     cout << "Unexpected exception: " << x.getMesg() << endl;
     return 1;
   }

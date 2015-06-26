@@ -30,15 +30,16 @@
 
 
 //# Includes
-#include <casa/aips.h>
-#include <tables/Tables/TableInfo.h>
-#include <tables/Tables/TableDesc.h>
-#include <casa/Utilities/Compare.h>
-#include <casa/Utilities/CountedPtr.h>
-#include <casa/BasicSL/String.h>
-#include <casa/IO/FileLocker.h>
+#include <casacore/casa/aips.h>
+#include <casacore/tables/Tables/TableInfo.h>
+#include <casacore/tables/Tables/TableDesc.h>
+#include <casacore/tables/Tables/StorageOption.h>
+#include <casacore/casa/Utilities/Compare.h>
+#include <casacore/casa/Utilities/CountedPtr.h>
+#include <casacore/casa/BasicSL/String.h>
+#include <casacore/casa/IO/FileLocker.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
 class RefTable;
@@ -120,6 +121,9 @@ public:
 
     // Is the table stored in big or little endian format?
     virtual Bool asBigEndian() const = 0;
+
+    // Get the storage option used for the table.
+    virtual const StorageOption& storageOption() const = 0;
 
     // Is the table in use (i.e. open) in another process?
     // If <src>checkSubTables</src> is set, it is also checked if
@@ -332,11 +336,13 @@ public:
     virtual DataManager* findDataManager (const String& name,
                                           Bool byColumn) const = 0;
 
-    // Select rows using the given expression.
-    BaseTable* select (const TableExprNode&, uInt maxRow);
+    // Select rows using the given expression (which can be null).
+    // Skip first <src>offset</src> matching rows.
+    // Return at most <src>maxRow</src> matching rows.
+    BaseTable* select (const TableExprNode&, uInt maxRow, uInt offset);
 
-    // Select maxRow rows. maxRow=0 means all.
-    BaseTable* select (uInt maxRow);
+    // Select maxRow rows and skip first offset rows. maxRow=0 means all.
+    BaseTable* select (uInt maxRow, uInt offset);
 
     // Select rows using a vector of row numbers.
     BaseTable* select (const Vector<uInt>& rownrs);
@@ -462,6 +468,10 @@ public:
     void checkRowNumber (uInt rownr) const
         { if (rownr >= nrrow_p + nrrowToAdd_p) checkRowNumberThrow (rownr); }
 
+    // Get the table's trace-id.
+    int traceId() const
+        { return itsTraceId; }
+
 
 protected:
     uInt           nrlink_p;            //# #references to this table
@@ -474,6 +484,7 @@ protected:
     Bool           delete_p;            //# True = delete when destructed
     TableInfo      info_p;              //# Table information (type, etc.)
     Bool           madeDir_p;           //# True = table dir has been created
+    int            itsTraceId;          //# table-id for TableTrace tracing
 
 
     // Do the callback for scratch tables (if callback is set).
@@ -567,6 +578,6 @@ private:
 
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

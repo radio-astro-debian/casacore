@@ -29,14 +29,18 @@
 #ifndef CASA_BASICSL_H
 #define CASA_BASICSL_H
 
-#include <casa/BasicSL/Complexfwd.h>
-#include <casa/BasicSL/Complex.h>
-#include <casa/BasicSL/Constants.h>
-#include <casa/BasicSL/IComplex.h>
-#include <casa/BasicSL/RegexBase.h>
-#include <casa/BasicSL/String.h>
+#include <casacore/casa/aips.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+#include <casacore/casa/BasicSL/Complexfwd.h>
+#include <casacore/casa/BasicSL/Complex.h>
+#include <casacore/casa/BasicSL/Constants.h>
+#include <casacore/casa/BasicSL/IComplex.h>
+#include <casacore/casa/BasicSL/RegexBase.h>
+#include <casacore/casa/BasicSL/String.h>
+#include <casacore/casa/BasicSL/STLIO.h>
+#include <casacore/casa/BasicSL/STLMath.h>
+
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 // <module>
 //
@@ -72,6 +76,8 @@ namespace casa { //# NAMESPACE CASA - BEGIN
 //  <li> Class <linkto class=String:description>
 //       String</linkto>
 //       for handling character strings.
+//  <li> STLMath.h has some functions doing math on std::vector objects.
+//  <li> STLIO.h has some functions showing a container on std::ostream or LogIO.
 // </ul>
 //
 // <note role=tip> You may want to look at the individual header files
@@ -88,7 +94,7 @@ namespace casa { //# NAMESPACE CASA - BEGIN
 // </module>
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif
 

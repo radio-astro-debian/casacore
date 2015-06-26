@@ -30,21 +30,22 @@
 #ifndef COORDINATES_SPECTRALCOORDINATE_H
 #define COORDINATES_SPECTRALCOORDINATE_H
 
-#include <casa/aips.h>
-#include <casa/Arrays/Vector.h>
-#include <coordinates/Coordinates/Coordinate.h>
-#include <coordinates/Coordinates/ObsInfo.h>
-#include <measures/Measures/MFrequency.h>
-#include <measures/Measures/MDoppler.h>
-#include <measures/Measures/MDirection.h>
-#include <measures/Measures/MPosition.h>
-#include <measures/Measures/MEpoch.h>
-#include <casa/Quanta/Quantum.h>
+#include <casacore/casa/aips.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/coordinates/Coordinates/Coordinate.h>
+#include <casacore/coordinates/Coordinates/ObsInfo.h>
+#include <casacore/measures/Measures/MFrequency.h>
+#include <casacore/measures/Measures/MDoppler.h>
+#include <casacore/measures/Measures/MDirection.h>
+#include <casacore/measures/Measures/MPosition.h>
+#include <casacore/measures/Measures/MEpoch.h>
+#include <casacore/casa/Quanta/Quantum.h>
+#include <casacore/casa/Utilities/PtrHolder.h>
 
 #include <wcslib/wcs.h>
 
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 
 class TabularCoordinate;
@@ -136,7 +137,16 @@ template<class T> class Quantum;
 class SpectralCoordinate : public Coordinate
 {
 public:
-    // Default constructor.    It is equivalent to doing
+	 enum SpecType { // taken from the FITS spectral coordinate type codes
+		 FREQ,
+		 VRAD,
+		 VOPT,
+		 BETA,
+		 WAVE,
+		 AWAV
+	 };
+
+	 // Default constructor.    It is equivalent to doing
     // SpectralCoordinate(MFrequency::TOPO, 0.0, 1.0, 0.0)
     SpectralCoordinate();
 
@@ -327,6 +337,9 @@ public:
     //
     Bool setWavelengthUnit (const String& waveUnit=String("mm"));
     String wavelengthUnit () const {return waveUnit_p;};
+    //
+    Bool setNativeType (const SpectralCoordinate::SpecType spcType);
+    SpectralCoordinate::SpecType nativeType() const {return nativeType_p;}
 
     // </group>
     // Functions to convert to velocity (uses the current active
@@ -357,7 +370,7 @@ public:
     // according to Greisen et al., 2006, A&A, 464, 746.
     // If airwavelength is used there is an error of the order of 1E-9.
     // Argument must be in micrometers!  
-    static Double refractiveIndex(const Double& lambda_um);
+    //static Double refractiveIndex(const Double& lambda_um);
     // </group>
 
     // Functions to convert from velocity (uses the current active
@@ -427,7 +440,14 @@ public:
     // conversion machines.  
     // <group>
     MFrequency::Types frequencySystem(Bool showConversion=False) const;
-    void  setFrequencySystem(MFrequency::Types type);
+    void setFrequencySystem(MFrequency::Types type, Bool verbose=True);
+
+    // Transform the SpectralCoordinate to a different native reference frame
+    // keeping the conversion layer as is
+    Bool transformFrequencySystem(MFrequency::Types type, 
+				  const MEpoch& epoch,
+                                  const MPosition& position,
+				  const MDirection& direction);
     // </group>
 
     // Report the value of the requested attribute.
@@ -511,7 +531,7 @@ public:
                           uInt worldAxis,
                           Bool isAbsolute=True,
                           Bool showAsAbsolute=True,
-                          Int precision=-1) const;
+                          Int precision=-1, Bool usePrecForFixed=False) const;
 
     // Set the default formatter unit (which is initialized to empty).  Must 
     // be consistent with Hz or km/s.  
@@ -523,20 +543,21 @@ public:
     Bool setFormatUnit (const String& unit);
     // </group>
 
-    // Convert to and from a FITS header record.  When writing the FITS record,
+    // Convert to FITS header record.  When writing the FITS record,
     // the fields "ctype, crval, crpix", and "cdelt" must already be created. Other header
     // words are created as needed.  Use <src>oneRelative=True</src> to
     // convert zero-relative SpectralCoordinate pixel coordinates to 
     // one-relative FITS coordinates, and vice-versa.  If <src>preferVelocity=True</src>
     // the primary axis type will be velocity, if <src>preferWavelength=True</src> it will
-    // be wavelength, else frequency.  For a velocity axis,
-    // if <src>opticalVelDef=False</src>, the radio velocity definition will be used,
-    // else optical definition.
+    // be wavelength, else frequency. For a velocity axis, if <src>opticalVelDef=False</src>,
+    // the radio velocity definition will be used, else optical definition. Similarly for a
+    // wavelength axis, if <src>airWaveDef=True</src> air wavelength will be used, the
+    // default is vacuum wavelength.
     //<group>
     void toFITS(RecordInterface &header, uInt whichAxis, 
 		LogIO &logger, Bool oneRelative=True,
 		Bool preferVelocity=True, Bool opticalVelDef=True,
-		Bool preferWavelength=False) const;
+		Bool preferWavelength=False, Bool airWaveDef=False) const;
 
 // Old interface.  Handled by wcs in new interface in FITSCoordinateUtil.cc
 //    static Bool fromFITSOld(SpectralCoordinate &out, String &error,
@@ -555,14 +576,23 @@ public:
     static SpectralCoordinate* restore(const RecordInterface &container,
                                        const String &fieldName);
 
+    // Convert from String to spectral type and vice versa.
+    static Bool specTypetoString(String &stypeString, const SpecType &specType);
+    static Bool stringtoSpecType(SpecType &specType, const String &stypeString);
+
     // Make a copy of the SpectralCoordinate using new. The caller is responsible for calling
     // delete.
     virtual Coordinate* clone() const;
 
+    ostream& print(ostream& os) const;
+
+    // is this a tabular coordinate?
+    Bool isTabular() const;
+
 private:
 
-    TabularCoordinate* pTabular_p;                     // Tabular coordinate OR
-    mutable ::wcsprm wcs_p;                              // wcs structure is used 
+    SPtrHolder<TabularCoordinate> _tabular;            // Tabular coordinate OR
+    mutable ::wcsprm wcs_p;                            // wcs structure is used 
     Double to_hz_p;                                    // Convert from current world units to Hz
     Double to_m_p;                                     // Convert from current wavelength units to m
 //
@@ -579,6 +609,7 @@ private:
     String velUnit_p;                              // Velocity unit
 //
     String waveUnit_p;                             // Wavelength unit for conversions between world & wavelength
+    SpectralCoordinate::SpecType nativeType_p;     // The native spectral type
 //
     Unit unit_p;                                   // World axis unit
     String axisName_p;                             // The axis name
@@ -661,9 +692,13 @@ private:
    Bool wcsSave (RecordInterface& rec, const wcsprm& wcs,
                  const String& fieldName) const;
 
+   void _setTabulatedFrequencies(const Vector<Double>& freqs);
+
 };
 
-} //# NAMESPACE CASA - END
+ostream &operator<<(ostream &os, const SpectralCoordinate& spcoord);
+
+} //# NAMESPACE CASACORE - END
 
 
 #endif

@@ -25,12 +25,15 @@
 //#
 //# $Id$
 
-#include <casa/Arrays/ArrayUtil.h>
-#include <casa/Arrays/ArrayError.h>
-#include <casa/Utilities/Copy.h>
+#ifndef CASA_ARRAYUTIL_TCC
+#define CASA_ARRAYUTIL_TCC
+
+#include <casacore/casa/Arrays/ArrayUtil.h>
+#include <casacore/casa/Arrays/ArrayError.h>
+#include <casacore/casa/Utilities/Copy.h>
 
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 template<class T>
 Array<T> concatenateArray (const Array<T>& left, const Array<T>& right)
@@ -121,5 +124,83 @@ Array<T> reorderArray (const Array<T>& array,
   return result;
 }
 
-} //# NAMESPACE CASA - END
 
+
+template<class T>
+Array<T> reverseArray (const Array<T>& array, uInt axis, Bool alwaysCopy)
+{
+  const IPosition& shape = array.shape();
+  if (axis >= shape.size()) {
+    throw AipsError(
+                    String(__FUNCTION__)
+                    + ": axis number is higher than number of axes in the array"
+                    );
+  }
+  Bool nothingToDo = shape[axis] == 1;
+  if (nothingToDo) {
+    if (alwaysCopy) {
+      return array.copy();
+    }
+    return array;
+  }
+  Bool deletein, deleteout;
+  const T *indata = array.getStorage(deletein);
+  Array<T> result(shape);
+  T *outdata = result.getStorage(deleteout);
+  uInt outerProduct = 1;
+  uInt innerProduct = 1;
+  for (uInt i=0; i<shape.size(); i++) {
+    if (i<axis) {
+      innerProduct *= shape[i];
+    } else if (i>axis) {
+      outerProduct *= shape[i];
+    }
+  }
+  for (uInt j=0; j<outerProduct; ++j) {
+    uInt idx = shape[axis]*innerProduct*j;
+    for (Int k=0; k<shape[axis]; ++k) {
+      objcopy (outdata + idx + innerProduct*(shape[axis] - k - 1),
+               indata + idx + innerProduct*k,
+               innerProduct);
+    }
+  }
+  array.freeStorage(indata, deletein);
+  result.putStorage(outdata, deleteout);
+  return result;
+}
+
+template<class T>
+Array<T> reverseArray (const Array<T>& array, const IPosition& reversedAxes,
+                       Bool alwaysCopy)
+{
+  const IPosition& shape = array.shape();
+  Bool nothingToDo = True;
+  for (uInt i=0; i<reversedAxes.size(); i++) {
+    if (reversedAxes[i] >= Int(shape.size())) {
+      throw AipsError(String(__FUNCTION__)
+                      + ": axis number "
+                      + String::toString(reversedAxes[i])
+                      + " is higher than number of axes in the array"
+                      );
+    }
+    if (shape[reversedAxes[i]] > 1) {
+      nothingToDo = False;
+      break;
+    }
+  }
+  if (nothingToDo) {
+    if (alwaysCopy) {
+      return array.copy();
+    }
+    return array;
+  }
+  Array<T> result = array.copy();
+  for (uInt i=0; i<reversedAxes.size(); ++i) {
+    result = reverseArray(result, reversedAxes[i], alwaysCopy);
+  }
+  return result;
+}
+
+} //# NAMESPACE CASACORE - END
+
+#endif

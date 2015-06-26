@@ -27,14 +27,14 @@
 
 //# Includes
 
-#include <casa/Arrays/MatrixMath.h>
-#include <casa/Arrays/ArrayMath.h>
-#include <casa/Arrays/ArrayLogical.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/iostream.h>
+#include <casacore/casa/Arrays/MatrixMath.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
+#include <casacore/casa/Arrays/ArrayLogical.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/iostream.h>
 
 
-#include <casa/namespace.h>
+#include <casacore/casa/namespace.h>
 int main()
 {
   try {
@@ -63,6 +63,17 @@ int main()
     Matrix<DComplex> indc(3,3), outdc(3,3);
     convertArray(indc, ind); convertArray(outdc, outd);
     AlwaysAssertExit(allNearAbs(transpose(indc), outdc, 0.00001));
+
+
+    Vector<Double> a(2, 2);
+    Vector<Double> b(2, 3);
+    AlwaysAssertExit(crossProduct2D(a, b) == 0);
+    a[0] = -2;
+    AlwaysAssertExit(crossProduct2D(a, b) == -12);
+    b[1] = -5;
+    AlwaysAssertExit(crossProduct2D(a, b) == 4);
+
+
 
   } catch(AipsError x) {
     cout << "Caught exception : " << x.getMesg() << endl;

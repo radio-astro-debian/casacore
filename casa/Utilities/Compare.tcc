@@ -25,9 +25,12 @@
 //#
 //# $Id$
 
-#include <casa/Utilities/Compare.h>
+#ifndef CASA_COMPARE_TCC
+#define CASA_COMPARE_TCC
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+#include <casacore/casa/Utilities/Compare.h>
+
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 template<class T>
 ObjCompare<T>::~ObjCompare()
@@ -53,5 +56,54 @@ DataType ObjCompare<T>::dataType() const
     return whatType ((T*)0);
 }
 
-} //# NAMESPACE CASA - END
 
+template<typename T>
+CompareIntervalInt<T>::CompareIntervalInt(Int64 interval, Int64 start)
+  : itsInterval(interval), itsStart(start)
+{}
+
+template<typename T>
+CompareIntervalInt<T>::~CompareIntervalInt()
+{}
+
+template<typename T>
+int CompareIntervalInt<T>::comp(const void * obj1, const void * obj2) const
+{
+  Int64 v1 = *static_cast<const T*>(obj1);
+  Int64 v2 = *static_cast<const T*>(obj2);
+  // Shortcut if values are equal.
+  if (v1 == v2) return 0;
+  // The times are binned in bins with a width of itsInterval.
+  Int64 t1 = (v1-itsStart) / itsInterval;
+  Int64 t2 = (v2-itsStart) / itsInterval;
+  return (t1==t2  ?  0 : (t1<t2 ? -1 : 1));
+}
+
+
+template<typename T>
+CompareIntervalReal<T>::CompareIntervalReal(Double interval, Double start)
+  : itsInterval(interval), itsStart(start)
+{}
+
+template<typename T>
+CompareIntervalReal<T>::~CompareIntervalReal()
+{}
+
+template<typename T>
+int CompareIntervalReal<T>::comp(const void * obj1, const void * obj2) const
+{
+  T v1 = *static_cast<const T*>(obj1);
+  T v2 = *static_cast<const T*>(obj2);
+  // Shortcut if values are equal.
+  if (v1 == v2) return 0;
+  // The times are binned in bins with a width of interval_p.
+  Double t1 = std::floor((v1 - itsStart) / itsInterval);
+  Double t2 = std::floor((v2 - itsStart) / itsInterval);
+  return (t1==t2  ?  0 : (t1<t2 ? -1 : 1));
+}
+
+
+} //# NAMESPACE CASACORE - END
+
+
+#endif

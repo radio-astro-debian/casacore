@@ -29,11 +29,12 @@
 #define CASA_HDF5RECORD_H
 
 //# Includes
-#include <casa/HDF5/HDF5Object.h>
-#include <casa/HDF5/HDF5DataType.h>
-#include <casa/Containers/Record.h>
+#include <casacore/casa/aips.h>
+#include <casacore/casa/HDF5/HDF5Object.h>
+#include <casacore/casa/HDF5/HDF5DataType.h>
+#include <casacore/casa/Containers/Record.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
   // <summary>
   // A class to write/read a record into HDF5.
@@ -59,8 +60,8 @@ namespace casa { //# NAMESPACE CASA - BEGIN
   // <ul>
   //  <li> When writing the record, it first deletes all attributes of the group
   //   to be sure that the group's attributes only contain the record.
-  //  <li> An AIPS++ Record is a recursive structure, so it is written as nested
-  //   groups. The name of a subgroup is the name of the subrecord.
+  //  <li> A Casacore Record is a recursive structure, so it is written as
+  //   nested groups. The name of a subgroup is the name of the subrecord.
   // <li> HDF5 cannot deal with empty arrays. Therefore they are written as
   //   a special compound type holding the rank and type of the empty array.
   // <li> HDF5 cannot hold empty fixed length strings. This is solved by
@@ -69,7 +70,7 @@ namespace casa { //# NAMESPACE CASA - BEGIN
   // </synopsis> 
 
   // <motivation>
-  // Record is a very important class in AIPS++ images, so it has to be
+  // Record is a very important class in Casacore images, so it has to be
   // possible to read and write them from/to HDF5.
   // </motivation>
 

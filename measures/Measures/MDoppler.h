@@ -30,21 +30,19 @@
 #define MEASURES_MDOPPLER_H
 
 //# Includes
-#include <casa/aips.h>
-#include <measures/Measures/MeasBase.h>
-#include <measures/Measures/MeasRef.h>
-#include <casa/Quanta/MVDoppler.h>
+#include <casacore/casa/aips.h>
+#include <casacore/measures/Measures/MeasBase.h>
+#include <casacore/measures/Measures/MeasRef.h>
+#include <casacore/casa/Quanta/MVDoppler.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
 class MDoppler;
 class MCDoppler;
 template <class M> class MeasConvert;
 template <class M> class ArrayMeasColumn;
-template <class M> class ROArrayMeasColumn;
 template <class M> class ScalarMeasColumn;
-template <class M> class ROScalarMeasColumn;
 template <class T> class Vector;
 template <class T> class Quantum;
 
@@ -168,10 +166,8 @@ class MDoppler : public MeasBase<MVDoppler, MeasRef<MDoppler> > {
   typedef MeasRef<MDoppler> Ref;
   // Measure Convert (i.e. MDoppler::Convert)
   typedef MeasConvert<MDoppler> Convert;
-  // Measure table Columns (e.g., MDoppler::ROScalarColumn)
-  typedef ROScalarMeasColumn<MDoppler> ROScalarColumn;
+  // Measure table Columns (e.g., MDoppler::ScalarColumn)
   typedef ScalarMeasColumn<MDoppler> ScalarColumn;
-  typedef ROArrayMeasColumn<MDoppler> ROArrayColumn;
   typedef ArrayMeasColumn<MDoppler> ArrayColumn;
   // Reference enum Types (included originally for gcc 2.95)  
   typedef WHATEVER_SUN_TYPEDEF(MDoppler) Types Types;
@@ -281,6 +277,6 @@ class MDoppler : public MeasBase<MVDoppler, MeasRef<MDoppler> > {
 };
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

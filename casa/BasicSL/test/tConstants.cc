@@ -1,4 +1,4 @@
-//# tConstants.cc: This program tests the AIPS++ C (constants) class
+//# tConstants.cc: This program tests the Casacore C (constants) class
 //# Copyright (C) 1993,1994,1995,2001
 //# Associated Universities, Inc. Washington DC, USA.
 //#
@@ -27,10 +27,10 @@
 
 //# Includes
 
-#include <casa/iostream.h>
-#include <casa/BasicSL/Constants.h>
+#include <casacore/casa/iostream.h>
+#include <casacore/casa/BasicSL/Constants.h>
 
-#include <casa/namespace.h>
+#include <casacore/casa/namespace.h>
 
 int main()
 {

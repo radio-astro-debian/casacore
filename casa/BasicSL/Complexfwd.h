@@ -30,23 +30,21 @@
 
 //# Includes
 
-#include <casa/aips.h>
+#include <casacore/casa/aips.h>
 
 // <summary> Forward declaration complex classes</summary>
 // <reviewed reviewer="UNKNOWN" date="before2004/08/25" tests="" demos="">
 // </reviewed>
 // <synopsis>
 // The Complexfwd.h include file can be used where a forward declaration
-// of the aips++ complex classes could suffice (cf the system's iosfwd).
+// of the Casacore complex classes could suffice (cf the system's iosfwd).
 // </synopsis>
 
 // <group name=Complexfwd>
 
-namespace std {
-  template<class T> class complex;
-}
+#include <complex>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 typedef std::complex<Float>  Complex;
 typedef std::complex<Double> DComplex;
@@ -54,6 +52,6 @@ typedef std::complex<Double> DComplex;
 class IComplex;
 // </group>
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

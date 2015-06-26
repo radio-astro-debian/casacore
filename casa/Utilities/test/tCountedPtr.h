@@ -33,10 +33,11 @@
 
 
 //# Includes
-#include <casa/aips.h>
-#include <casa/iostream.h>
+#include <casacore/casa/aips.h>
+#include <casacore/casa/iostream.h>
+#include <casacore/casa/BasicSL/String.h>
 
-#include <casa/namespace.h>
+#include <casacore/casa/namespace.h>
 // <summary>
 // Example class for test of CountedPtr class
 // </summary>
@@ -57,13 +58,23 @@
 
 
 class myobj {
-    const char *store;
+protected:
+    String store;
 public:
     myobj(const char *str) : store(str) { 
 	cout << "myobj(" << store << ") ctor" << endl;
     }
-    ~myobj() { cout << "myobj(" << store << ") dtor" << endl;}
-    const char *name() const { return store; }
+    virtual ~myobj() { cout << "myobj(" << store << ") dtor" << endl;}
+    virtual String name() const { return store; }
+};
+
+class myobj1 :public myobj {
+public:
+    myobj1(const char *str) : myobj(str) { 
+	cout << " myobj1(" << store << ") ctor" << endl;
+    }
+    virtual ~myobj1() { cout << " myobj1(" << store << ") dtor" << endl;}
+    virtual String name() const { return "myobj1_" + store; }
 };
 
 

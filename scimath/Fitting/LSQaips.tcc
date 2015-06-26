@@ -1,4 +1,4 @@
-//# LSQaips.cc: Interface for aips++ Vectors in least squares fitting
+//# LSQaips.cc: Interface for Casacore Vectors in least squares fitting
 //# Copyright (C) 1998,1999,2000,2001,2004,2006
 //# Associated Universities, Inc. Washington DC, USA.
 //#
@@ -25,12 +25,15 @@
 //#
 //# $Id$
 
-//# Includes
-#include <scimath/Fitting/LSQaips.h>
-#include <casa/Arrays/Array.h>
-#include <casa/Arrays/IPosition.h>
+#ifndef SCIMATH_LSQAIPS_TCC
+#define SCIMATH_LSQAIPS_TCC
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+//# Includes
+#include <casacore/scimath/Fitting/LSQaips.h>
+#include <casacore/casa/Arrays/Array.h>
+#include <casacore/casa/Arrays/IPosition.h>
+
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Constructors
 
@@ -64,5 +67,7 @@ Bool LSQaips::solveLoop(uInt &nRank,
 
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
+
+#endif

@@ -30,13 +30,13 @@
 #define MEASURES_MUVW_H
 
 //# Includes
-#include <casa/aips.h>
-#include <measures/Measures/MeasBase.h>
-#include <measures/Measures/MDirection.h>
-#include <measures/Measures/MeasRef.h>
-#include <casa/Quanta/MVuvw.h>
+#include <casacore/casa/aips.h>
+#include <casacore/measures/Measures/MeasBase.h>
+#include <casacore/measures/Measures/MDirection.h>
+#include <casacore/measures/Measures/MeasRef.h>
+#include <casacore/casa/Quanta/MVuvw.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
 class Muvw;
@@ -44,9 +44,7 @@ class MCuvw;
 class MDirection;
 template <class M> class MeasConvert;
 template <class M> class ArrayMeasColumn;
-template <class M> class ROArrayMeasColumn;
 template <class M> class ScalarMeasColumn;
-template <class M> class ROScalarMeasColumn;
 
 //# Typedefs
 
@@ -168,10 +166,8 @@ public:
   typedef MeasRef<Muvw> Ref;
   // MeasConvert use (i.e. Muvw::Convert)
   typedef MeasConvert<Muvw> Convert;
-  // Measure table Columns (e.g., Muvw::ROScalarColumn)
-  typedef ROScalarMeasColumn<Muvw> ROScalarColumn;
+  // Measure table Columns (e.g., Muvw::ScalarColumn)
   typedef ScalarMeasColumn<Muvw> ScalarColumn;
-  typedef ROArrayMeasColumn<Muvw> ROArrayColumn;
   typedef ArrayMeasColumn<Muvw> ArrayColumn;
   // Reference enum Types (included originally for gcc 2.95)  
   typedef WHATEVER_SUN_TYPEDEF(Muvw) Types Types;
@@ -282,6 +278,6 @@ public:
 };
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

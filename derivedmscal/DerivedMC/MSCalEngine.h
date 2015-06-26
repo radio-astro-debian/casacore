@@ -29,18 +29,19 @@
 #define DERIVEDMSCAL_MSCALENGINE_H
 
 //# Includes
-#include <tables/Tables/Table.h>
-#include <tables/Tables/ScalarColumn.h>
-#include <measures/Measures/MDirection.h>
-#include <measures/Measures/MPosition.h>
-#include <measures/Measures/MEpoch.h>
-#include <measures/Measures/MBaseline.h>
-#include <measures/Measures/MeasConvert.h>
-#include <measures/TableMeasures/ScalarMeasColumn.h>
-#include <casa/vector.h>
-#include <casa/stdmap.h>
+#include <casacore/casa/aips.h>
+#include <casacore/tables/Tables/Table.h>
+#include <casacore/tables/Tables/ScalarColumn.h>
+#include <casacore/measures/Measures/MDirection.h>
+#include <casacore/measures/Measures/MPosition.h>
+#include <casacore/measures/Measures/MEpoch.h>
+#include <casacore/measures/Measures/MBaseline.h>
+#include <casacore/measures/Measures/MeasConvert.h>
+#include <casacore/measures/TableMeasures/ScalarMeasColumn.h>
+#include <casacore/casa/vector.h>
+#include <casacore/casa/stdmap.h>
 
-namespace casa {
+namespace casacore {
 
 // <summary>
 // Engine to calculate derived MS values
@@ -183,12 +184,12 @@ private:
   Int                         itsLastFieldId;  //# id of the field last used
   Int                         itsLastAntId;    //# -1 is array position used
   Double                      itsLastTime;
-  ROScalarColumn<Int>         itsAntCol[2];    //# ANTENNA1 and ANTENNA2
-  ROScalarColumn<Int>         itsFeedCol[2];   //# FEED1 and FEED2
-  ROScalarColumn<Int>         itsFieldCol;     //# FIELD_ID
-  ROScalarColumn<Double>      itsTimeCol;      //# TIME
-  ROScalarMeasColumn<MEpoch>  itsTimeMeasCol;  //# TIME as Measure
-  ROScalarColumn<Int>         itsCalCol;       //# CAL_DESC_ID
+  ScalarColumn<Int>           itsAntCol[2];    //# ANTENNA1 and ANTENNA2
+  ScalarColumn<Int>           itsFeedCol[2];   //# FEED1 and FEED2
+  ScalarColumn<Int>           itsFieldCol;     //# FIELD_ID
+  ScalarColumn<Double>        itsTimeCol;      //# TIME
+  ScalarMeasColumn<MEpoch>    itsTimeMeasCol;  //# TIME as Measure
+  ScalarColumn<Int>           itsCalCol;       //# CAL_DESC_ID
   map<string,int>             itsCalMap;       //# map of MS name to index
   vector<Int>                 itsCalIdMap;     //# map of calId to index
   MPosition                   itsArrayPos;

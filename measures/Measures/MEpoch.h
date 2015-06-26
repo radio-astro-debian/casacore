@@ -30,21 +30,19 @@
 #define MEASURES_MEPOCH_H
 
 //# Includes
-#include <casa/aips.h>
-#include <measures/Measures/MeasBase.h>
-#include <measures/Measures/MeasRef.h>
-#include <casa/Quanta/MVEpoch.h>
+#include <casacore/casa/aips.h>
+#include <casacore/measures/Measures/MeasBase.h>
+#include <casacore/measures/Measures/MeasRef.h>
+#include <casacore/casa/Quanta/MVEpoch.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
 class MEpoch;
 class MCEpoch;
 template <class M> class MeasConvert;
 template <class M> class ArrayMeasColumn;
-template <class M> class ROArrayMeasColumn;
 template <class M> class ScalarMeasColumn;
-template <class M> class ROScalarMeasColumn;
 
 //# Typedefs
 
@@ -72,10 +70,10 @@ template <class M> class ROScalarMeasColumn;
 // <example>
 // Convert (with all steps explicit) a UTC to an IAT time.
 // <srcblock>
-//	#include <measures/Measures.h>
-//	#include <measures/Measures/MEpoch.h>
-//	#include <measures/Measures/MCEpoch.h>
-//      #include <casa/logging/LogIO.h>
+//	#include <casacore/measures/Measures.h>
+//	#include <casacore/measures/Measures/MEpoch.h>
+//	#include <casacore/measures/Measures/MCEpoch.h>
+//      #include <casacore/casa/logging/LogIO.h>
 //      
 //	cout << "TAI for UTC = MJD(50237.29): " <<
 //		MEpoch::Convert(MEpoch(MVEpoch(Quantity(50237.29, "d")),
@@ -158,10 +156,8 @@ public:
   typedef MeasRef<MEpoch> Ref;
   // Measure Convert (i.e. MEpoch::Convert)
   typedef MeasConvert<MEpoch> Convert;
-  // Measure table Columns (e.g., MEpoch::ROScalarColumn)
-  typedef ROScalarMeasColumn<MEpoch> ROScalarColumn;
+  // Measure table Columns (e.g., MEpoch::ScalarColumn)
   typedef ScalarMeasColumn<MEpoch> ScalarColumn;
-  typedef ROArrayMeasColumn<MEpoch> ROArrayColumn;
   typedef ArrayMeasColumn<MEpoch> ArrayColumn;
   // Reference enum Types (included originally for gcc 2.95)  
   typedef WHATEVER_SUN_TYPEDEF(MEpoch) Types Types;
@@ -261,6 +257,6 @@ private:
 };
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

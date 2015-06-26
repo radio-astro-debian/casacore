@@ -28,17 +28,17 @@
 #ifndef MS_MSANTENNACOLUMNS_H
 #define MS_MSANTENNACOLUMNS_H
 
-#include <casa/aips.h>
-#include <measures/Measures/MPosition.h>
-#include <measures/Measures/MCPosition.h>
-#include <measures/TableMeasures/ArrayQuantColumn.h>
-#include <measures/TableMeasures/ScalarMeasColumn.h>
-#include <measures/TableMeasures/ScalarQuantColumn.h>
-#include <tables/Tables/ArrayColumn.h>
-#include <tables/Tables/ScalarColumn.h>
-#include <casa/BasicSL/String.h>
+#include <casacore/casa/aips.h>
+#include <casacore/measures/Measures/MPosition.h>
+#include <casacore/measures/Measures/MCPosition.h>
+#include <casacore/measures/TableMeasures/ArrayQuantColumn.h>
+#include <casacore/measures/TableMeasures/ScalarMeasColumn.h>
+#include <casacore/measures/TableMeasures/ScalarQuantColumn.h>
+#include <casacore/tables/Tables/ArrayColumn.h>
+#include <casacore/tables/Tables/ScalarColumn.h>
+#include <casacore/casa/BasicSL/String.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 class MSAntenna;
 
@@ -135,6 +135,13 @@ public:
   // match.
   Int matchAntenna(const String& antName, const MPosition& antennaPos,
 		   const Quantum<Double>& tolerance, Int tryRow=-1);
+
+  // Same as the previous function except that the station name must also
+  // match.
+  Int matchAntennaAndStation(const String& antName, 
+			     const String& stationName, // ignored when empty 
+			     const MPosition& antennaPos,
+			     const Quantum<Double>& tolerance, Int tryRow=-1);
 protected:
   //# default constructor creates a object that is not usable. Use the attach
   //# function correct this.
@@ -155,6 +162,7 @@ private:
   //# Functions which check the supplied values against the relevant column and
   //# the specified row.
   Bool matchName(uInt row, const String& antName) const;
+  Bool matchStation(uInt row, const String& stationName) const;
   Bool matchPosition(uInt row, const Vector<Double>& antPosInM,	
 		     const Double tolInM) const;
 
@@ -342,6 +350,6 @@ private:
 
 };
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

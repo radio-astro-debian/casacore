@@ -27,14 +27,14 @@
 //#
 
  
-#include <coordinates/Coordinates/Coordinate.h>
-#include <casa/Exceptions/Error.h>
+#include <casacore/coordinates/Coordinates/Coordinate.h>
+#include <casacore/casa/Exceptions/Error.h>
 
-#include <casa/iostream.h>
+#include <casacore/casa/iostream.h>
 
 
 
-#include <casa/namespace.h>
+#include <casacore/casa/namespace.h>
 int main()
 {
   try {
@@ -56,6 +56,11 @@ int main()
      type = Coordinate::typeToString(Coordinate::STOKES);
      if (type!=String("Stokes")) {
         throw(AipsError("Failed typeToString for STOKES"));
+     }
+//
+     type = Coordinate::typeToString(Coordinate::QUALITY);
+     if (type!=String("Quality")) {
+        throw(AipsError("Failed typeToString for QUALITY"));
      }
 //
      type = Coordinate::typeToString(Coordinate::LINEAR);

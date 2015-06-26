@@ -28,38 +28,37 @@
 
 
 
-#include <coordinates/Coordinates/SpectralCoordinate.h>
-#include <coordinates/Coordinates/TabularCoordinate.h>
-#include <coordinates/Coordinates/LinearXform.h>
-#include <coordinates/Coordinates/LinearCoordinate.h>
+#include <casacore/coordinates/Coordinates/SpectralCoordinate.h>
+#include <casacore/coordinates/Coordinates/TabularCoordinate.h>
+#include <casacore/coordinates/Coordinates/LinearXform.h>
+#include <casacore/coordinates/Coordinates/LinearCoordinate.h>
 
-#include <casa/Arrays/Vector.h>
-#include <casa/Arrays/Matrix.h>
-#include <casa/Arrays/ArrayMath.h>
-#include <casa/Arrays/ArrayUtil.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/Containers/Record.h>
-#include <fits/FITS/FITSSpectralUtil.h>
-#include <fits/FITS/FITSKeywordUtil.h>
-#include <scimath/Functionals/ScalarSampledFunctional.h>
-#include <casa/BasicMath/Math.h>
-#include <measures/Measures/MFrequency.h>
-#include <measures/Measures/MeasureHolder.h>
-#include <measures/Measures/VelocityMachine.h>
-#include <casa/Quanta/Quantum.h>
-#include <casa/Containers/RecordInterface.h>
-#include <casa/Logging/LogIO.h>
-#include <casa/Logging/LogOrigin.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Arrays/Matrix.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
+#include <casacore/casa/Arrays/ArrayUtil.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/Containers/Record.h>
+#include <casacore/fits/FITS/FITSSpectralUtil.h>
+#include <casacore/fits/FITS/FITSKeywordUtil.h>
+#include <casacore/scimath/Functionals/ScalarSampledFunctional.h>
+#include <casacore/casa/BasicMath/Math.h>
+#include <casacore/measures/Measures/MFrequency.h>
+#include <casacore/measures/Measures/MeasureHolder.h>
+#include <casacore/measures/Measures/VelocityMachine.h>
+#include <casacore/casa/Quanta/Quantum.h>
+#include <casacore/casa/Containers/RecordInterface.h>
+#include <casacore/casa/Logging/LogIO.h>
+#include <casacore/casa/Logging/LogOrigin.h>
 
-#include <casa/sstream.h>
-#include <casa/iostream.h>
+#include <casacore/casa/sstream.h>
+#include <casacore/casa/iostream.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 
 SpectralCoordinate::SpectralCoordinate()
 : Coordinate(),
-  pTabular_p(0),
   type_p(MFrequency::TOPO), 
   conversionType_p(type_p),
   restfreqs_p(0),
@@ -82,16 +81,16 @@ SpectralCoordinate::SpectralCoordinate()
    makeWCS(wcs_p, String("FREQ"), 0.0, 0.0, 1.0, 1.0, restfreqs_p(0));
    to_hz_p = 1.0;
    to_m_p = 0.001;
+   nativeType_p = SpectralCoordinate::FREQ;
 //
    setDefaultWorldMixRanges();
 }
 
 
 SpectralCoordinate::SpectralCoordinate(MFrequency::Types type,
-				       Double refVal, Double inc, 
-                                       Double refPix, Double restFrequency)
+		                                 Double refVal, Double inc,
+		                                 Double refPix, Double restFrequency)
 : Coordinate(),
-  pTabular_p(0),
   type_p(type), 
   conversionType_p(type_p),
   restfreqs_p(0),
@@ -106,7 +105,7 @@ SpectralCoordinate::SpectralCoordinate(MFrequency::Types type,
   axisName_p("Frequency"),
   formatUnit_p("")
 {
-  ///   AlwaysAssert(restFrequency>=0.0, AipsError);
+//
    restfreqs_p.resize(1);
    restfreqs_p(0) = max(0.0, restFrequency);
 //
@@ -116,6 +115,7 @@ SpectralCoordinate::SpectralCoordinate(MFrequency::Types type,
    makeWCS(wcs_p, String("FREQ"), refPix, refVal, inc, 1.0, restfreqs_p(0));
    to_hz_p = 1.0;
    to_m_p = 0.001;
+   nativeType_p = SpectralCoordinate::FREQ;
 //
    setDefaultWorldMixRanges();
 }
@@ -130,7 +130,6 @@ SpectralCoordinate::SpectralCoordinate(MFrequency::Types type,
                                        Double refPix, 
                                        const Quantum<Double>& restFrequency)
 : Coordinate(),
-  pTabular_p(0),
   type_p(type),
   conversionType_p(type_p),
   restfreqs_p(0),
@@ -167,212 +166,174 @@ SpectralCoordinate::SpectralCoordinate(MFrequency::Types type,
            1.0, restfreqs_p(0));
    to_hz_p = 1.0;
    to_m_p = 0.001;
+   nativeType_p = SpectralCoordinate::FREQ;
 //
    setDefaultWorldMixRanges();
 }
 
 
 
-SpectralCoordinate::SpectralCoordinate(MFrequency::Types type, 
-                                       const Vector<Double> &freqs,
-                                       Double restFrequency)
-: Coordinate(),
-  pTabular_p(0),
-  type_p(type), 
-  conversionType_p(type_p),
-  restfreqs_p(0),
-  restfreqIdx_p(0),
-  pConversionMachineTo_p(0),
-  pConversionMachineFrom_p(0),
-  pVelocityMachine_p(0),
-  velType_p(MDoppler::RADIO),
-  velUnit_p("km/s"),
-  waveUnit_p("mm"),
-  unit_p(Unit("Hz")),
-  axisName_p("Frequency"),
-  formatUnit_p("")
-{
-   AlwaysAssert(restFrequency>=0.0, AipsError);
-   restfreqs_p.resize(1);
-   restfreqs_p(0) = max(0.0, restFrequency);
-//
-   Vector<Double> channels(freqs.nelements());
-   indgen(channels);
-   pTabular_p = new TabularCoordinate(channels, freqs, "Hz", "Frequency");
-   to_hz_p = 1.0;
-   to_m_p = 0.001;
-//
-   makeVelocityMachine (velUnit_p, velType_p, unit_p,
-                        type_p, restfreqs_p(restfreqIdx_p));
-//
-   wcs_p.flag = -1;                // Uninitialized
-//
-   setDefaultWorldMixRanges();
+SpectralCoordinate::SpectralCoordinate(
+	MFrequency::Types type,  const Vector<Double> &freqs,
+	Double restFrequency)
+	: Coordinate(), type_p(type),
+	  conversionType_p(type_p), restfreqs_p(0),
+	  restfreqIdx_p(0), pConversionMachineTo_p(0),
+	  pConversionMachineFrom_p(0), pVelocityMachine_p(0),
+	  velType_p(MDoppler::RADIO), velUnit_p("km/s"),
+	  waveUnit_p("mm"), unit_p(Unit("Hz")),
+	  axisName_p("Frequency"), formatUnit_p("") {
+	AlwaysAssert(restFrequency>=0.0, AipsError);
+	restfreqs_p.resize(1);
+	restfreqs_p(0) = max(0.0, restFrequency);
+	_setTabulatedFrequencies(freqs);
+	to_hz_p = 1.0;
+	to_m_p = 0.001;
+	nativeType_p = SpectralCoordinate::FREQ;
+	makeVelocityMachine(
+		velUnit_p, velType_p, unit_p,
+		type_p, restfreqs_p(restfreqIdx_p)
+	);
+	wcs_p.flag = -1;                // Uninitialized
+	setDefaultWorldMixRanges();
 }
 
 
-SpectralCoordinate::SpectralCoordinate(MFrequency::Types type, 
-                                       const Quantum<Vector<Double> >& freqs,
-                                       const Quantum<Double>& restFrequency)
-: Coordinate(),
-  pTabular_p(0),
-  type_p(type),
-  conversionType_p(type_p),
-  restfreqs_p(0),
-  restfreqIdx_p(0),
-  pConversionMachineTo_p(0),
-  pConversionMachineFrom_p(0),
-  pVelocityMachine_p(0),
-  velType_p(MDoppler::RADIO),
-  velUnit_p("km/s"),
-  waveUnit_p("mm"),
-  unit_p(Unit("Hz")),
-  axisName_p("Frequency"),
-  formatUnit_p("")
-{
-   Unit hz("Hz");
-   if (!freqs.isConform(hz)) {
-      throw(AipsError("Unit of frequencies is not consistent with Hz"));
-   }
-   if (!restFrequency.isConform(hz)) {
-      throw(AipsError("Unit of rest frequency is not consistent with Hz"));
-   }
-//
-   AlwaysAssert(restFrequency.getValue(hz)>=0.0, AipsError);
-   restfreqs_p.resize(1);
-   restfreqs_p(0) = max(0.0, restFrequency.getValue(hz));
-//
-   Vector<Double> freqs2 = freqs.getValue(hz);
-   Vector<Double> channels(freqs2.nelements());
-   indgen(channels);
-   pTabular_p = new TabularCoordinate(channels, freqs2, "Hz", "Frequency");
-   to_hz_p = 1.0;
-   to_m_p = 0.001;
-//
-   makeVelocityMachine (velUnit_p, velType_p, unit_p,
-                        type_p, restfreqs_p(restfreqIdx_p));
-//
-   wcs_p.flag = -1;                // Uninitialized
-//
-   setDefaultWorldMixRanges();
+SpectralCoordinate::SpectralCoordinate(
+	MFrequency::Types type,
+	const Quantum<Vector<Double> >& freqs,
+	const Quantum<Double>& restFrequency
+)
+	: Coordinate(), type_p(type),
+	  conversionType_p(type_p), restfreqs_p(0),
+	  restfreqIdx_p(0), pConversionMachineTo_p(0),
+	  pConversionMachineFrom_p(0),
+	  pVelocityMachine_p(0), velType_p(MDoppler::RADIO),
+	  velUnit_p("km/s"), waveUnit_p("mm"),
+	  unit_p(Unit("Hz")), axisName_p("Frequency"),
+	  formatUnit_p("") {
+	Unit hz("Hz");
+	if (!freqs.isConform(hz)) {
+		throw(AipsError("Unit of frequencies is not consistent with Hz"));
+	}
+	if (!restFrequency.isConform(hz)) {
+		throw(AipsError("Unit of rest frequency is not consistent with Hz"));
+	}
+	AlwaysAssert(restFrequency.getValue(hz)>=0.0, AipsError);
+	restfreqs_p.resize(1);
+	restfreqs_p(0) = max(0.0, restFrequency.getValue(hz));
+	Vector<Double> freqs2 = freqs.getValue(hz);
+	_setTabulatedFrequencies(freqs2);
+	to_hz_p = 1.0;
+	to_m_p = 0.001;
+	nativeType_p = SpectralCoordinate::FREQ;
+	makeVelocityMachine(
+		velUnit_p, velType_p, unit_p,
+		type_p, restfreqs_p(restfreqIdx_p)
+	);
+	wcs_p.flag = -1;                // Uninitialized
+	setDefaultWorldMixRanges();
 }
 
 
-SpectralCoordinate::SpectralCoordinate(MFrequency::Types freqType,
-                                       MDoppler::Types velType,
-                                       const Vector<Double>& velocities,
-                                       const String& velUnit,
-                                       Double restFrequency )
-: Coordinate(),
-  pTabular_p(0),
-  type_p(freqType),
-  conversionType_p(type_p),
-  restfreqs_p(0),
-  restfreqIdx_p(0),
-  pConversionMachineTo_p(0),
-  pConversionMachineFrom_p(0),
-  pVelocityMachine_p(0),
-  velType_p(MDoppler::RADIO),
-  velUnit_p("km/s"),
-  waveUnit_p("mm"),
-  unit_p("Hz"),
-  axisName_p("Frequency"),
-  formatUnit_p("")
-{
-   restfreqs_p.resize(1);
-   restfreqs_p(0) = restFrequency;
+SpectralCoordinate::SpectralCoordinate(
+	MFrequency::Types freqType,
+	MDoppler::Types velType,
+	const Vector<Double>& velocities,
+	const String& velUnit,
+	Double restFrequency
+)
+	: Coordinate(),
+	  type_p(freqType), conversionType_p(type_p),
+	  restfreqs_p(0), restfreqIdx_p(0),
+	  pConversionMachineTo_p(0), pConversionMachineFrom_p(0),
+	  pVelocityMachine_p(0), velType_p(velType),
+	  velUnit_p("km/s"), waveUnit_p("mm"), unit_p("Hz"),
+	  axisName_p("Frequency"), formatUnit_p("") {
+	restfreqs_p.resize(1);
+	restfreqs_p(0) = restFrequency;
    
-// Convert to frequency
+	// Convert to frequency
 
-   makeVelocityMachine (velUnit, velType, String("Hz"), freqType, restFrequency);
-   Quantum<Vector<Double> > frequencies = pVelocityMachine_p->makeFrequency(velocities);
+	makeVelocityMachine(
+		velUnit, velType, String("Hz"), freqType, restFrequency
+	);
+	Quantum<Vector<Double> > frequencies
+		= pVelocityMachine_p->makeFrequency(velocities);
 
-// Make Tabular spectral coordinate
+	_setTabulatedFrequencies(frequencies.getValue());
+	to_hz_p = 1.0;
+	to_m_p = 0.001;
+	if (velType == MDoppler::OPTICAL) {
+		nativeType_p = SpectralCoordinate::VOPT;
+	}
+	else {
+		nativeType_p = SpectralCoordinate::VRAD;
+	}
 
-   Vector<Double> channels(velocities.nelements());
-   indgen(channels);
-   pTabular_p = new TabularCoordinate(channels, frequencies.getValue(), "Hz", "Frequency");
-   to_hz_p = 1.0;
-   to_m_p = 0.001;
+        // Now remake Velocity Machine to be consistent with state
 
-// make velocity machine
-
-   makeVelocityMachine (velUnit_p, velType_p, unit_p,
-                        type_p, restfreqs_p(restfreqIdx_p));
-//
-   wcs_p.flag = -1;                // Uninitialized
-//
-   setDefaultWorldMixRanges();
+	deleteVelocityMachine();
+	makeVelocityMachine (
+		velUnit_p, velType_p, unit_p,
+		type_p, restfreqs_p(restfreqIdx_p)
+	);
+	wcs_p.flag = -1;                // Uninitialized
+	setDefaultWorldMixRanges();
 }
 
-SpectralCoordinate::SpectralCoordinate(MFrequency::Types freqType,
-                                       const Vector<Double>& wavelengths,
-                                       const String&waveUnit,
-                                       Double restFrequency,
-				       Bool inAir)
-: Coordinate(),
-  pTabular_p(0),
-  type_p(freqType),
-  conversionType_p(type_p),
-  restfreqs_p(0),
-  restfreqIdx_p(0),
-  pConversionMachineTo_p(0),
-  pConversionMachineFrom_p(0),
-  pVelocityMachine_p(0),
-  velType_p(MDoppler::RADIO),
-  velUnit_p("km/s"),
-  waveUnit_p("mm"),
-  unit_p("Hz"),
-  axisName_p("Frequency"),
-  formatUnit_p("")
-{
-   restfreqs_p.resize(1);
-   restfreqs_p(0) = restFrequency;
+SpectralCoordinate::SpectralCoordinate(
+	MFrequency::Types freqType,
+	const Vector<Double>& wavelengths,
+	const String&waveUnit, Double restFrequency,
+	Bool inAir
+)
+	: Coordinate(), type_p(freqType),
+	  conversionType_p(type_p), restfreqs_p(0),
+	  restfreqIdx_p(0), pConversionMachineTo_p(0),
+	  pConversionMachineFrom_p(0),
+	  pVelocityMachine_p(0), velType_p(MDoppler::RADIO),
+	  velUnit_p("km/s"), waveUnit_p("mm"), unit_p("Hz"),
+	  axisName_p("Frequency"), formatUnit_p("") {
+	restfreqs_p.resize(1);
+	restfreqs_p(0) = restFrequency;
 
-   to_hz_p = 1.;
-   to_m_p = 0.001;
+	to_hz_p = 1.;
+	to_m_p = 0.001;
    
-// Convert to frequency
+	// Convert to frequency
 
-   if(!setWavelengthUnit(waveUnit)){
-      throw(AipsError("Wavelength unit is not consistent with m"));
-   }
+	if(!setWavelengthUnit(waveUnit)){
+		throw(AipsError("Wavelength unit is not consistent with m"));
+	}
      
-   //cout << "waveUnit " << waveUnit << " waveUnit_p " << waveUnit_p << " to_m_p " << to_m_p << " to_hz_p " << to_hz_p << endl;
+	Vector<Double> frequencies;
+	if(inAir){
+		airWavelengthToFrequency(frequencies, wavelengths);
+		nativeType_p = SpectralCoordinate::AWAV;
+	}
+	else{
+		wavelengthToFrequency(frequencies, wavelengths);
+		nativeType_p = SpectralCoordinate::WAVE;
+	}
 
-   Vector<Double> frequencies;
-   if(inAir){
-     airWavelengthToFrequency(frequencies, wavelengths);
-   }
-   else{
-     wavelengthToFrequency(frequencies, wavelengths);
-   }
 
-   //for(uInt i=0; i<frequencies.nelements(); i++){
-   //    cout << "freq i " << i << " " << frequencies(i) << endl;
-   //}
+	_setTabulatedFrequencies(frequencies);
 
-// Make Tabular spectral coordinate
+        // Now remake Velocity Machine to be consistent with state
 
-   Vector<Double> channels(frequencies.nelements());
-   indgen(channels);
-   pTabular_p = new TabularCoordinate(channels, frequencies, "Hz", "Frequency");
-
-// Now remake Velocity Machine to be consistent with state
-
-   delete pVelocityMachine_p;
-   makeVelocityMachine (velUnit_p, velType_p, unit_p,
-                        type_p, restfreqs_p(restfreqIdx_p));
-//
-   wcs_p.flag = -1;                // Uninitialized
-//
-   setDefaultWorldMixRanges();
+	deleteVelocityMachine();
+	makeVelocityMachine (
+		velUnit_p, velType_p, unit_p,
+        type_p, restfreqs_p(restfreqIdx_p)
+	);
+	wcs_p.flag = -1;                // Uninitialized
+	setDefaultWorldMixRanges();
 }
 
 
 SpectralCoordinate::SpectralCoordinate (MFrequency::Types type, const ::wcsprm& wcs, Bool oneRel)
 : Coordinate(),
-  pTabular_p(0),
   type_p(type), 
   conversionType_p(type_p),
   restfreqs_p(0),
@@ -415,6 +376,8 @@ SpectralCoordinate::SpectralCoordinate (MFrequency::Types type, const ::wcsprm& 
    restfreqs_p.resize(1);
    restfreqs_p(0) = max(0.0, wcs.restfrq);
 
+   nativeType_p = SpectralCoordinate::FREQ;
+
 // Velocity machine
 
    makeVelocityMachine (velUnit_p, velType_p, unit_p,
@@ -422,14 +385,12 @@ SpectralCoordinate::SpectralCoordinate (MFrequency::Types type, const ::wcsprm& 
 
 // Set name to something from wcs structure (from ctypes) ?
 
-//
    setDefaultWorldMixRanges();
 }
 
 
 SpectralCoordinate::SpectralCoordinate(const SpectralCoordinate &other)
 : Coordinate(other),
-  pTabular_p(0),
   pConversionMachineTo_p(0),
   pConversionMachineFrom_p(0),
   pVelocityMachine_p(0)
@@ -453,10 +414,6 @@ SpectralCoordinate::~SpectralCoordinate()
 {
    deleteConversionMachines();
    deleteVelocityMachine();
-   if (pTabular_p) {
-      delete pTabular_p;
-      pTabular_p = 0;
-   }
    if (wcs_p.flag != -1) {    
       wcsfree (&wcs_p);   
    }
@@ -491,9 +448,9 @@ Bool SpectralCoordinate::toWorld (Vector<Double> &world,
 // Convert to World (Hz)
 
     Bool ok = True;
-    if (pTabular_p) {
-       ok = pTabular_p->toWorld(world, pixel);
-       if (!ok) set_error(pTabular_p->errorMessage());
+    if (_tabular.ptr()) {
+       ok = _tabular->toWorld(world, pixel);
+       if (!ok) set_error(_tabular->errorMessage());
     } else {
        ok = toWorldWCS (world, pixel, wcs_p);
     }
@@ -509,9 +466,6 @@ Bool SpectralCoordinate::toWorld (Vector<Double> &world,
 //
     return ok;
 }
-
-
-
 
 Bool SpectralCoordinate::toWorld(Double& world, const Double& pixel) const
 {
@@ -547,9 +501,9 @@ Bool SpectralCoordinate::toPixel (Vector<Double> &pixel,
 
 // Convert to pixel
 
-    if (pTabular_p) {
-       ok = pTabular_p->toPixel(pixel, world_tmp1);
-       if (!ok) set_error(pTabular_p->errorMessage());
+    if (_tabular.ptr()) {
+       ok = _tabular->toPixel(pixel, world_tmp1);
+       if (!ok) set_error(_tabular->errorMessage());
     } else {
        ok = toPixelWCS (pixel, world_tmp1, wcs_p);
     }
@@ -582,9 +536,9 @@ Bool SpectralCoordinate::toWorldMany (Matrix<Double>& world,
 // Convert to world (Hz)
 
    Bool ok = True;
-   if (pTabular_p) {
-      ok = pTabular_p->toWorldMany(world, pixel, failures);
-      if (!ok) set_error(pTabular_p->errorMessage());
+   if (_tabular.ptr()) {
+      ok = _tabular->toWorldMany(world, pixel, failures);
+      if (!ok) set_error(_tabular->errorMessage());
    } else {
       ok = toWorldManyWCS (world, pixel, failures, wcs_p);
    }
@@ -624,9 +578,9 @@ Bool SpectralCoordinate::toPixelMany (Matrix<Double>& pixel,
 // Convert to pixel
 
     Bool ok = True;
-    if (pTabular_p) {
-       pTabular_p->toPixelMany(pixel, world2, failures);
-       if (!ok) set_error(pTabular_p->errorMessage());
+    if (_tabular.ptr()) {
+       _tabular->toPixelMany(pixel, world2, failures);
+       if (!ok) set_error(_tabular->errorMessage());
     } else {        
        ok = toPixelManyWCS (pixel, world2, failures, wcs_p);
     }
@@ -654,8 +608,8 @@ Vector<String> SpectralCoordinate::worldAxisUnits() const
 
 Vector<Double> SpectralCoordinate::referencePixel() const
 {
-    if (pTabular_p) {
-       return pTabular_p->referencePixel();
+    if (_tabular.ptr()) {
+       return _tabular->referencePixel();
     } else {
        Vector<Double> crpix(1);
        crpix[0] = wcs_p.crpix[0];
@@ -666,8 +620,8 @@ Vector<Double> SpectralCoordinate::referencePixel() const
 
 Matrix<Double> SpectralCoordinate::linearTransform() const
 {
-    if (pTabular_p) {
-       return pTabular_p->linearTransform();
+    if (_tabular.ptr()) {
+       return _tabular->linearTransform();
     } else {
        Matrix<Double> tmp(1,1);
        tmp(0,0) = wcs_p.pc[0];
@@ -681,8 +635,8 @@ Vector<Double> SpectralCoordinate::increment() const
 // Get in Hz
 
     Vector<Double> value(1);
-    if (pTabular_p) {
-       value= pTabular_p->increment(); 
+    if (_tabular.ptr()) {
+       value= _tabular->increment();
     } else {
        value[0] = wcs_p.cdelt[0];
     }
@@ -701,8 +655,8 @@ Vector<Double> SpectralCoordinate::referenceValue() const
 // Get in Hz
 
     Vector<Double> value(1);
-    if (pTabular_p) {
-       value= pTabular_p->referenceValue(); 
+    if (_tabular.ptr()) {
+       value= _tabular->referenceValue();
     } else {
        value[0] = wcs_p.crval[0];
     }
@@ -791,9 +745,6 @@ Bool SpectralCoordinate::setVelocity (const String& velUnit,
 Bool SpectralCoordinate::setWavelengthUnit(const String& waveUnit)
 {
 
-   //cout << "setting waveunit before: unit  is " << waveUnit_p << " to_m_p  is " << to_m_p << endl;  
-   //cout << "setting waveunit before: requested unit  is " << waveUnit << endl;  
-
    static const Unit unitsM_b(String("m"));
 
    String wu = waveUnit;
@@ -817,10 +768,87 @@ Bool SpectralCoordinate::setWavelengthUnit(const String& waveUnit)
    }
    to_m_p = factor(0);
    waveUnit_p = wu;
-
-   //cout << "setting waveunit after: unit now is " << waveUnit_p << " to_m_p now is " << to_m_p << endl;  
-//
    return True;
+}
+
+Bool SpectralCoordinate::setNativeType(const SpectralCoordinate::SpecType spcType)
+{
+	// just copy that over
+	nativeType_p = spcType;
+
+	//
+	return True;
+}
+
+//static Bool stringtoSpecType(SpecType &specType, const String &stypeString) const;
+//String SpectralCoordinate::specTypetoString(SpecType specType)
+Bool SpectralCoordinate::specTypetoString(String &stypeString, const SpecType &specType)
+{
+	Bool rvalue=True;
+
+	switch (specType)
+	{
+	case FREQ:
+		stypeString = String("frequency");
+		break;
+	case VRAD:
+		stypeString = String("radio velocity");
+		break;
+	case VOPT:
+		stypeString = String("optical velocity");
+		break;
+	case BETA:
+		stypeString = String("true");
+		break;
+	case WAVE:
+		stypeString = String("wavelength");
+		break;
+	case AWAV:
+		stypeString = String("air wavelength");
+		break;
+	default:
+		rvalue=False;
+	}
+
+	return rvalue;
+}
+
+//static Bool stringtoSpecType(SpecType &specType, const String &stypeString) const;
+//SpectralCoordinate::SpecType SpectralCoordinate::stringtoSpecType(String stypeString)
+Bool SpectralCoordinate::stringtoSpecType(SpecType &specType, const String &stypeString)
+{
+
+	if (!stypeString.compare("frequency")){
+		specType = FREQ;
+		return True;
+	}
+	else if (!stypeString.compare("radio velocity")){
+		specType = VRAD;
+		return True;
+	}
+	else if (!stypeString.compare("optical velocity")){
+		specType = VOPT;
+		return True;
+	}
+	else if (!stypeString.compare("true")){
+		specType = BETA;
+		return True;
+	}
+	else if (!stypeString.compare("wavelength")){
+		specType = WAVE;
+		return True;
+	}
+	else if (!stypeString.compare("air wavelength")){
+		specType = AWAV;
+		return True;
+	}
+	else
+	{
+		return False;
+	}
+
+	// should never get to here
+	return False;
 }
 
 Bool SpectralCoordinate::setReferenceConversion (MFrequency::Types conversionType,
@@ -859,9 +887,9 @@ Bool SpectralCoordinate::setReferencePixel(const Vector<Double> &refPix)
     }
 //
     Bool ok= True;
-    if (pTabular_p) {
-       ok = pTabular_p->setReferencePixel(refPix);
-       if (!ok) set_error (pTabular_p->errorMessage());
+    if (_tabular.ptr()) {
+       ok = _tabular->setReferencePixel(refPix);
+       if (!ok) set_error (_tabular->errorMessage());
     } else {
 
 // Set WCS card
@@ -884,9 +912,9 @@ Bool SpectralCoordinate::setLinearTransform(const Matrix<Double> &xform)
        return False;
     }
 //
-    if (pTabular_p) {
-       ok = pTabular_p->setLinearTransform(xform);
-       if (!ok) set_error(pTabular_p->errorMessage());
+    if (_tabular.ptr()) {
+       ok = _tabular->setLinearTransform(xform);
+       if (!ok) set_error(_tabular->errorMessage());
     } else {
 
 // Set PC card
@@ -914,9 +942,9 @@ Bool SpectralCoordinate::setIncrement (const Vector<Double>& incr)
 // Now set
 
     Bool ok= True;
-    if (pTabular_p) {
-       ok = pTabular_p->setIncrement(value);
-       if (!ok) set_error (pTabular_p->errorMessage());
+    if (_tabular.ptr()) {
+       ok = _tabular->setIncrement(value);
+       if (!ok) set_error (_tabular->errorMessage());
     } else {
 
 // Set WCS card
@@ -943,9 +971,9 @@ Bool SpectralCoordinate::setReferenceValue(const Vector<Double>& refval)
     fromCurrent (value);
 //
     Bool ok= True;
-    if (pTabular_p) {
-       ok = pTabular_p->setReferenceValue(value);
-       if (!ok) set_error (pTabular_p->errorMessage());
+    if (_tabular.ptr()) {
+       ok = _tabular->setReferenceValue(value);
+       if (!ok) set_error (_tabular->errorMessage());
     } else {
 
 // Set WCS card
@@ -965,8 +993,8 @@ Double SpectralCoordinate::restFrequency() const
 
 Vector<Double> SpectralCoordinate::pixelValues() const
 {
-    if (pTabular_p) {
-       return pTabular_p->pixelValues();
+    if (_tabular.ptr()) {
+       return _tabular->pixelValues();
     } else {
        Vector<Double> pixels;
        return pixels;
@@ -976,8 +1004,8 @@ Vector<Double> SpectralCoordinate::pixelValues() const
 Vector<Double> SpectralCoordinate::worldValues() const
 {
     Vector<Double> worlds;
-    if (pTabular_p) {
-       worlds = pTabular_p->worldValues();    // Hz
+    if (_tabular.ptr()) {
+       worlds = _tabular->worldValues();    // Hz
        toCurrent(worlds);
     }
 //
@@ -993,7 +1021,7 @@ MFrequency::Types SpectralCoordinate::frequencySystem(Bool showConversion) const
     }         
 }
 
-void  SpectralCoordinate::setFrequencySystem(MFrequency::Types type)
+void  SpectralCoordinate::setFrequencySystem(MFrequency::Types type, Bool verbose)
 {
     if (type==type_p) return;
 //   
@@ -1015,7 +1043,7 @@ void  SpectralCoordinate::setFrequencySystem(MFrequency::Types type)
 // the current conversion, and demand the user re-issues the
 // setReferenceConversion function
 
-   if (oldType != conversionType_p) {
+   if (verbose && oldType != conversionType_p) {
       LogIO os(LogOrigin("SpectralCoordinate", "setFrequencySystem"));
       os << LogIO::WARN << "Resetting the conversion frequency system " << MFrequency::showType(conversionType_p) << endl;
       os << "to the new native frequency system " << MFrequency::showType(type_p) << endl;
@@ -1024,6 +1052,70 @@ void  SpectralCoordinate::setFrequencySystem(MFrequency::Types type)
 //
    deleteConversionMachines();
    conversionType_p = type_p;
+}
+
+  Bool SpectralCoordinate::transformFrequencySystem(MFrequency::Types type,
+						    const MEpoch& epoch, const MPosition& position,
+						    const MDirection& direction){
+
+  Bool rval=True;
+
+  MFrequency::Types nativeCtype = frequencySystem(False);
+
+  if (type != nativeCtype) {
+
+    MFrequency::Types origType; // original type of the conversion layer
+    MEpoch origEpoch;
+    MPosition origPosition;
+    MDirection origDirection;
+    getReferenceConversion(origType, origEpoch, origPosition, origDirection);
+    // use the reference conversion layer to do the transformation 
+    if(origType!=type){
+      if(!setReferenceConversion(type, epoch, position, direction)){
+	setReferenceConversion(origType, origEpoch, origPosition, origDirection);
+	return False;
+      }
+    }
+
+    if(pixelValues().nelements() > 1){ // we have a tabular spectral coordinate
+      
+      Vector<String> oldunits(worldAxisUnits());
+      Vector<String> tmpunits(1,"Hz"); // need freqs in Hz for setTabulatedFrequencies
+      setWorldAxisUnits(tmpunits);
+      Vector<Double> tpixels = _tabular->pixelValues();
+      Vector<Double> newFreqs(tpixels.size());
+      toWorld(newFreqs, tpixels);
+      _setTabulatedFrequencies(newFreqs);
+      setWorldAxisUnits(oldunits);
+
+      Vector<Double> newCrval(1, newFreqs[0]);
+      setReferenceValue(newCrval);
+      if(tpixels[tpixels.size()-1]-tpixels[0] != 0.){
+	Vector<Double> newCdelt(1, (newFreqs[tpixels.size()-1]-newFreqs[0])/(tpixels[tpixels.size()-1]-tpixels[0]));
+	setIncrement(newCdelt); 
+      }
+      Vector<Double> newRefPix(1, tpixels[0]);
+      setReferencePixel(newRefPix);
+    }
+    else{ // not tabular: only need to change ctype, crval, cdelt
+      Vector<Double> newCrval(1,0.);
+      toWorld(newCrval[0], referencePixel()[0]);
+      
+      Double tmpWorld=0.; 
+      toWorld(tmpWorld, referencePixel()[0]+1);
+      Vector<Double> newCdelt(1, tmpWorld-newCrval[0]);
+      
+      setReferenceValue(newCrval);
+      setIncrement(newCdelt); 
+    }
+
+    setFrequencySystem(type, False);  
+    if(origType!=type){
+      rval = setReferenceConversion(origType, origEpoch, origPosition, origDirection);
+    }
+  }
+
+  return rval;
 }
 
 
@@ -1129,7 +1221,7 @@ Bool SpectralCoordinate::near(const Coordinate& other,
 
 // Rest freq
 
-   if (!casa::near(restFrequency(), sCoord.restFrequency(), tol)) {
+   if (!casacore::near(restFrequency(), sCoord.restFrequency(), tol)) {
       set_error("The SpectralCoordinates have differing active rest frequencies");
       return False;
    }
@@ -1144,7 +1236,7 @@ Bool SpectralCoordinate::near(const Coordinate& other,
    }
 //
    for (uInt i=0; i<restfreqs_p.nelements(); i++) {
-      if (!casa::near(restfreqs_p(i),rfs(i),tol)) {
+      if (!casacore::near(restfreqs_p(i),rfs(i),tol)) {
          set_error("The SpectralCoordinates have differing lists of rest frequencies");
          return False;
       }
@@ -1193,7 +1285,7 @@ Bool SpectralCoordinate::near(const Coordinate& other,
       const Vector<Double>& thisVal = referenceValue();   
       const Vector<Double>& thatVal = sCoord.referenceValue();
       if (!exclude) {
-         if (!casa::near(thisVal[0],thatVal[0])) {
+         if (!casacore::near(thisVal[0],thatVal[0])) {
             set_error(String("The SpectralCoordinates have differing reference values"));
             return False;
          }
@@ -1222,10 +1314,9 @@ Bool SpectralCoordinate::near(const Coordinate& other,
       return False;
    }
 //
+
    return True;
 }
-
-
 
 Bool SpectralCoordinate::save(RecordInterface &container,
 			    const String &fieldName) const
@@ -1235,52 +1326,53 @@ Bool SpectralCoordinate::save(RecordInterface &container,
         String system = MFrequency::showType(type_p);
 //
 	Record subrec;
-        subrec.define ("version", 2);            // Original unversioned was v 1 !
-	subrec.define("system", system);
-	subrec.define("restfreq", restFrequency());
-        subrec.define("restfreqs", restFrequencies());
-        subrec.define("velType", Int(velType_p));
-        subrec.define("velUnit", velUnit_p);
-        subrec.define("waveUnit", waveUnit_p);
-        subrec.define("formatUnit", formatUnit_p);
+	subrec.define ("version",   2);            // Original unversioned was v 1 !
+	subrec.define("system",     system);
+	subrec.define("restfreq",   restFrequency());
+	subrec.define("restfreqs",  restFrequencies());
+	subrec.define("velType",    Int(velType_p));
+	subrec.define("nativeType", Int(nativeType_p));
+	subrec.define("velUnit",    velUnit_p);
+	subrec.define("waveUnit",   waveUnit_p);
+	subrec.define("formatUnit", formatUnit_p);
 
 // We may have TC (for tabular coordinates) or not.
 
-        if (pTabular_p) {
-           ok = (pTabular_p->save(subrec, "tabular"));   // Always Hz
-        } else {
-           ok = wcsSave (subrec, wcs_p, "wcs");          // Always Hz
-        }
-        if (!ok) return False;
+	if (_tabular.ptr()) {
+		ok = (_tabular->save(subrec, "tabular"));   // Always Hz
+	} else {
+		ok = wcsSave (subrec, wcs_p, "wcs");          // Always Hz
+	}
+	if (!ok) return False;
 //
-        subrec.define("unit", worldAxisUnits()(0));
-        subrec.define("name", axisName_p);
+	subrec.define("unit", worldAxisUnits()(0));
+	subrec.define("name", axisName_p);
 
 // Conversion machine state
 
-        String error;
-        Record subrec2;
-        {
-           MeasureHolder mh(direction_p);
-           Record subrec3;
-           mh.toRecord (error, subrec3);
-           subrec2.defineRecord("direction", subrec3);
-        }
-        {
-           MeasureHolder mh(position_p);
-           Record subrec3;
-           mh.toRecord (error, subrec3);
-           subrec2.defineRecord("position", subrec3);
-        }
-        {
-           MeasureHolder mh(epoch_p);
-           Record subrec3;
-           mh.toRecord (error, subrec3);
-           subrec2.defineRecord("epoch", subrec3);
-        }
-        String conversionType = MFrequency::showType(conversionType_p);
-        subrec2.define("system", conversionType);
-        subrec.defineRecord("conversion", subrec2);
+	String error;
+	Record subrec2;
+	{
+		MeasureHolder mh(direction_p);
+		Record subrec3;
+		mh.toRecord (error, subrec3);
+		subrec2.defineRecord("direction", subrec3);
+	}
+	{
+		MeasureHolder mh(position_p);
+		Record subrec3;
+		mh.toRecord (error, subrec3);
+		subrec2.defineRecord("position", subrec3);
+	}
+	{
+		MeasureHolder mh(epoch_p);
+		Record subrec3;
+		mh.toRecord (error, subrec3);
+		subrec2.defineRecord("epoch", subrec3);
+	}
+	String conversionType = MFrequency::showType(conversionType_p);
+	subrec2.define("system", conversionType);
+	subrec.defineRecord("conversion", subrec2);
 //
 	container.defineRecord(fieldName, subrec);
     }
@@ -1362,7 +1454,6 @@ SpectralCoordinate* SpectralCoordinate::restoreVersion1 (const RecordInterface& 
 
 // Create new SpectralCoordinate  (will be in Hz regarldess of unit)
 
-    Bool ok(True);
     SpectralCoordinate* pSpectral = 0;
     Unit qUnit(unit);
     Quantum<Double> qRestFreq(restfreq, qUnit);
@@ -1373,15 +1464,15 @@ SpectralCoordinate* SpectralCoordinate::restoreVersion1 (const RecordInterface& 
 
 // Set units first !
 
-       ok = pSpectral->setWorldAxisUnits(pTabular->worldAxisUnits());
-       ok = pSpectral->setReferencePixel(pTabular->referencePixel());
-       ok = pSpectral->setReferenceValue(pTabular->referenceValue());
+       pSpectral->setWorldAxisUnits(pTabular->worldAxisUnits());
+       pSpectral->setReferencePixel(pTabular->referencePixel());
+       pSpectral->setReferenceValue(pTabular->referenceValue());
     } else {
        Quantum<Double> qcrval(pTabular->referenceValue()(0), qUnit);       
        Quantum<Double> qcdelt(pTabular->increment()(0), qUnit);
        Double crpix(pTabular->referencePixel()(0));
        pSpectral = new SpectralCoordinate (freqSys, qcrval, qcdelt, crpix, qRestFreq);
-       ok = pSpectral->setWorldAxisUnits(pTabular->worldAxisUnits());
+       pSpectral->setWorldAxisUnits(pTabular->worldAxisUnits());
     }
     AlwaysAssert(pSpectral, AipsError);
 
@@ -1473,7 +1564,6 @@ SpectralCoordinate* SpectralCoordinate::restoreVersion2 (const RecordInterface& 
     Unit qUnit(unit);
     Quantum<Double> qRestFreq(restfreq, qUnit);
 //
-    Bool ok(True);
     SpectralCoordinate* pSpectral = 0;
     if (subrec.isDefined("tabular")) {
 
@@ -1482,16 +1572,16 @@ SpectralCoordinate* SpectralCoordinate::restoreVersion2 (const RecordInterface& 
        TabularCoordinate* pTabular = TabularCoordinate::restore(subrec, "tabular");
        if (pTabular == 0) return 0;
 
-// Create SC (will be in Hz regarldess of units)
+// Create SC (will be in Hz regardless of units)
 
        Quantum<Vector<Double> > qWorlds(pTabular->worldValues(), 
                                         Unit(pTabular->worldAxisUnits()(0)));
        pSpectral = new SpectralCoordinate (freqSys, qWorlds, qRestFreq);
        AlwaysAssert(pSpectral, AipsError);
 //
-       ok = pSpectral->setReferencePixel(pTabular->referencePixel());
-       ok = pSpectral->setReferenceValue(pTabular->referenceValue());   // Hz
-       ok = pSpectral->setLinearTransform(pTabular->linearTransform());  
+       pSpectral->setReferencePixel(pTabular->referencePixel());
+       pSpectral->setReferenceValue(pTabular->referenceValue());   // Hz
+       pSpectral->setLinearTransform(pTabular->linearTransform());  
        delete pTabular;
        pTabular = 0;
     } else if (subrec.isDefined("wcs")) {
@@ -1510,7 +1600,7 @@ SpectralCoordinate* SpectralCoordinate::restoreVersion2 (const RecordInterface& 
 //
        Matrix<Double> xform(1,1);
        xform = pc;
-       ok = pSpectral->setLinearTransform(xform);
+       pSpectral->setLinearTransform(xform);
     } else {
        return 0;
     }
@@ -1559,6 +1649,12 @@ SpectralCoordinate* SpectralCoordinate::restoreVersion2 (const RecordInterface& 
     }
     pSpectral->setWavelengthUnit(waveUnit);
 
+    SpectralCoordinate::SpecType spcType = SpectralCoordinate::FREQ;
+    if (subrec.isDefined("nativeType")) {                    // optional
+   	 spcType = static_cast<SpectralCoordinate::SpecType>(subrec.asInt("nativeType"));
+    }
+    pSpectral->setNativeType(spcType);
+
 
     return pSpectral;
 }
@@ -1603,7 +1699,7 @@ void SpectralCoordinate::restoreRestFrequencies (SpectralCoordinate*& pSpectral,
 // Multiple rest frequencies were added after initial deployment
 
     if (subrec.isDefined("restfreqs")) {                   // optional
-        Vector<Double> restFreqs(subrec.toArrayDouble("restfreqs"));
+      Vector<Double> restFreqs(subrec.toArrayDouble("restfreqs"));
 
 // Old images might have a negative restfreq. Don't propagate that
 
@@ -1678,7 +1774,7 @@ Coordinate *SpectralCoordinate::clone() const
 void SpectralCoordinate::toFITS(RecordInterface &header, uInt whichAxis, 
 				LogIO &logger, Bool oneRelative, 
 				Bool preferVelocity,  Bool opticalVelDef, 
-				Bool preferWavelength) const
+				Bool preferWavelength, Bool airWaveDef) const
 {
     const Double offset(1.0*Int(oneRelative == True));
 
@@ -1694,12 +1790,15 @@ void SpectralCoordinate::toFITS(RecordInterface &header, uInt whichAxis,
 		 header.shape("ctype").nelements() == 1 &&
                  header.shape("ctype")(0) > Int(whichAxis), AipsError);
     AlwaysAssert(header.isDefined("crval") && 
+                 header.dataType("crval") == TpArrayDouble &&
 		 header.shape("crval").nelements() == 1 && 
                  header.shape("crval")(0) > Int(whichAxis), AipsError);
     AlwaysAssert(header.isDefined("crpix") && 
+		 header.dataType("crpix") == TpArrayDouble &&
 		 header.shape("crpix").nelements() == 1 &&
 		 header.shape("crpix")(0) > Int(whichAxis), AipsError);
     AlwaysAssert(header.isDefined("cdelt") && 
+		 header.dataType("cdelt") == TpArrayDouble &&
 		 header.shape("cdelt").nelements() == 1 &&
 		 header.shape("cdelt")(0) > Int(whichAxis), AipsError);
 
@@ -1717,7 +1816,7 @@ void SpectralCoordinate::toFITS(RecordInterface &header, uInt whichAxis,
 	header.get("cunit", cunit);
     }
 
-    String Ctype, Specsys;
+    String Ctype, Cunit, Specsys;
     Double Crval, Cdelt, Crpix, Altrval, Altrpix;
     Int Velref;
     Bool HaveAlt;
@@ -1728,6 +1827,8 @@ void SpectralCoordinate::toFITS(RecordInterface &header, uInt whichAxis,
     Double FreqInc = Quantity(increment()(0), 
 			      worldAxisUnits()(0)).getBaseValue();
     Double RefPix = referencePixel()(0) + offset;
+
+    Double linTrans = linearTransform()(0,0); // always one-dimensional
 
     MDoppler::Types VelPreference = opticalVelDef ? MDoppler::OPTICAL : MDoppler::RADIO;
 
@@ -1753,9 +1854,10 @@ void SpectralCoordinate::toFITS(RecordInterface &header, uInt whichAxis,
     else{
       uInt nEl = 0;
       if(header.isDefined("naxis") && 
+	 header.dataType("naxis") == TpArrayInt &&
 	 header.shape("naxis").nelements() == 1 &&
 	 header.shape("naxis")(0) > Int(whichAxis)){
-        Vector<Int> naxis(header.toArrayInt("naxis"));
+ 	Vector<Int> naxis(header.toArrayInt("naxis"));
 	nEl = naxis(whichAxis);
       }
       pixel.resize(nEl);
@@ -1780,13 +1882,13 @@ void SpectralCoordinate::toFITS(RecordInterface &header, uInt whichAxis,
 
       // frequencies
       Double actual = fx; // value in Hz
-      Double linear = RefFreq + FreqInc*(pixel(i)-(RefPix-offset)); // also in Hz
+      Double linear = RefFreq + FreqInc*(linTrans*pixel(i)-(RefPix-offset)); // also in Hz
       gridSpacing = FreqInc;      
 
       if(preferWavelength){ // check if we are linear in wavelength
 	if(actual>0. && RefFreq>0. && (RefFreq+FreqInc)>0.){
 	  actual = C::c/actual;
-	  linear = C::c/RefFreq + (C::c/(RefFreq+FreqInc) - C::c/RefFreq)*(pixel(i) - (RefPix-offset));
+	  linear = C::c/RefFreq + (C::c/(RefFreq+FreqInc) - C::c/RefFreq)*(linTrans*pixel(i) - (RefPix-offset));
 	  gridSpacing = -(C::c/(RefFreq+FreqInc) - C::c/RefFreq);
 	}
 	else{
@@ -1799,7 +1901,7 @@ void SpectralCoordinate::toFITS(RecordInterface &header, uInt whichAxis,
 	  Double refVelocity = -C::c * (1.0 - Restfreq / RefFreq);
 	  Double velocityIncrement = -C::c * (1.0 - Restfreq / (RefFreq + FreqInc)) - refVelocity;
 	  actual = -C::c * (1.0 - Restfreq / actual); 
-	  linear = refVelocity + velocityIncrement * (pixel(i) - (RefPix-offset));
+	  linear = refVelocity + velocityIncrement * (linTrans*pixel(i) - (RefPix-offset));
 	  gridSpacing = -velocityIncrement;
 	}
 	else{
@@ -1812,10 +1914,6 @@ void SpectralCoordinate::toFITS(RecordInterface &header, uInt whichAxis,
       if(maxDeviation<abs(actual-linear)){
 	maxDeviation = abs(actual-linear);
       }
-
-//       cout << " RefFreq " << RefFreq << " FreqInc " << FreqInc << " i " << i 
-// 	   << " pixel(i) " << pixel(i) << " RefPix " << RefPix << " actual " << actual << " linear " << linear << endl
-// 	   << " maxDeviation " << maxDeviation << " gridSpacing " << gridSpacing << endl;
 
     } // end for
     if (maxDeviation>0. && gridSpacing>0. && maxDeviation/gridSpacing>1E-3) {
@@ -1833,12 +1931,12 @@ void SpectralCoordinate::toFITS(RecordInterface &header, uInt whichAxis,
     }
 
 
-    AlwaysAssert(FITSSpectralUtil::toFITSHeader(Ctype, Crval, Cdelt, Crpix, HaveAlt, Altrval,
+    AlwaysAssert(FITSSpectralUtil::toFITSHeader(Ctype, Crval, Cdelt, Crpix, Cunit, HaveAlt, Altrval,
 						Altrpix, Velref, Restfreq, Specsys, 
 						logger,
 						RefFreq, RefPix,
   					        FreqInc, type_p, preferVelocity,
-						VelPreference, preferWavelength), AipsError);
+						VelPreference, preferWavelength, airWaveDef), AipsError);
 
     ctype(whichAxis) = Ctype;
     crval(whichAxis) = Crval;
@@ -1851,7 +1949,7 @@ void SpectralCoordinate::toFITS(RecordInterface &header, uInt whichAxis,
 	} else if (Ctype.contains("FREQ")) {
 	    cunit(whichAxis) = "Hz";
 	} else if (Ctype.contains("WAVE")|| Ctype.contains("AWAV")) {
-	    cunit(whichAxis) = "m";
+	    cunit(whichAxis) = Cunit;
 	} else {
 	    AlwaysAssert(0, AipsError); // NOTREACHED
 	}
@@ -1860,8 +1958,10 @@ void SpectralCoordinate::toFITS(RecordInterface &header, uInt whichAxis,
     if (Restfreq > 0) {
 	header.define("restfrq", Restfreq); // FITS standard v3.0 is RESTFRQ, no longer RESTFREQ
 	header.setComment("restfrq", "Rest Frequency (Hz)"); 
-	header.define("specsys", Specsys);
-	header.setComment("specsys", "Spectral reference frame"); 
+	if(!Specsys.empty()){
+	  header.define("specsys", Specsys);
+	  header.setComment("specsys", "Spectral reference frame"); 
+	}
     }
     if (HaveAlt && !preferWavelength) { // alternate representation not valid for ctype WAVE
 	header.define("altrval", Altrval);
@@ -1892,7 +1992,7 @@ Coordinate* SpectralCoordinate::makeFourierCoordinate (const Vector<Bool>& axes,
 // shape is the shape of the image for all axes in this coordinate
 //
 {
-   if (pTabular_p) {
+   if (_tabular.ptr()) {
       set_error("Cannot Fourier Transform a non-linear SpectralCoordinate");
       return 0;
    }
@@ -1992,7 +2092,7 @@ String SpectralCoordinate::format (String& units,
                                    uInt worldAxis,
                                    Bool isAbsolute,
                                    Bool showAsAbsolute,
-                                   Int precision) const
+                                   Int precision, Bool usePrecForMixed) const
 {
    AlwaysAssert(worldAxis < nWorldAxes(), AipsError);
     
@@ -2033,79 +2133,101 @@ String SpectralCoordinate::format (String& units,
 // Requested unit is empty or consistent with Hz.  
 
       theString = Coordinate::format(units, form, worldValue, worldAxis,
-                                     isAbsolute, showAsAbsolute, precision);
+                                     isAbsolute, showAsAbsolute, precision, usePrecForMixed);
    } 
    else { // unit not frequency
 
-     if (unit == unitsKMS_c) { // unit consistent with velocty
+   	if (unit == unitsKMS_c) { // unit consistent with velocty
 
-       world.resize(nWorldAxes());
+   		world.resize(nWorldAxes());
 
 // We must convert to absolute first (regardless of how we want
 // to see the value) as we are formatting in velocity units
 
-       if (!isAbsolute) {
-         world = 0.0;
-         world(worldAxis) = worldValue; 
-         makeWorldAbsolute(world);
-         worldValue = world(worldAxis);
-       }
+   		if (!isAbsolute) {
+   			world = 0.0;
+   			world(worldAxis) = worldValue;
+   			makeWorldAbsolute(world);
+   			worldValue = world(worldAxis);
+   		}
 //
-       if (showAsAbsolute) {
-	 if (!frequencyToVelocity (qVel, worldValue)) {
-	   theString = "Fail";
-	   return theString;
-         }
+   		if (showAsAbsolute) {
+   			if (!frequencyToVelocity (qVel, worldValue)) {
+   				theString = "Fail";
+   				return theString;
+   			}
 
 // Convert from velUnit_p (used in f2v) to desired unit
 
-         worldValue = qVel.getValue(unit);
-       } else {
+   			worldValue = qVel.getValue(unit);
+   		} else {
 
 // Find relative coordinate in km/s consistent units
 
-         static Vector<Double> vel(2), freq2(2);
-         freq2(0) = referenceValue()(worldAxis);
-         freq2(1) = worldValue;
-         if (!frequencyToVelocity(vel, freq2)) {
-	   theString = "Fail";
-	   return theString;
-         }
+   			static Vector<Double> vel(2), freq2(2);
+   			freq2(0) = referenceValue()(worldAxis);
+   			freq2(1) = worldValue;
+   			if (!frequencyToVelocity(vel, freq2)) {
+   				theString = "Fail";
+   				return theString;
+   			}
 	 
 // Convert from velUnit_p (used in f2v) to desired unit
 	 
-         Quantum<Double> t(vel[1]-vel[0], Unit(velUnit_p)); // rel=abs-ref
-         worldValue = t.getValue(unit);
-       }
+   			Quantum<Double> t(vel[1]-vel[0], Unit(velUnit_p)); // rel=abs-ref
+   			worldValue = t.getValue(unit);
+   		}
 
-     }  
-     else{ // unit should be wavelength
+   	}
+   	else{ // unit should be wavelength
 
-       if (unit != unitsM_c) {
-	 throw(AipsError("Requested units must be consistent with km/s, m, or Hz for a SpectralCoordinate"));
-       }
+   		if (unit != unitsM_c) {
+   			throw(AipsError("Requested units must be consistent with km/s, m, or Hz for a SpectralCoordinate"));
+   		}
        
 // Requested unit is consistent with m
 
-       world.resize(nWorldAxes());
+   		world.resize(nWorldAxes());
+   		// new start
+   		vWave.resize(nWorldAxes());
+   		// new end
 
 // We must convert to absolute first (regardless of how we want
 // to see the value) as we are formatting in wavelength units
 
-       if (!isAbsolute) {
-	 world = 0.0;
-	 world(worldAxis) = worldValue; 
-	 makeWorldAbsolute(world);
-	 worldValue = world(worldAxis);
-       }
-//
-       MVFrequency mvFreq(worldValue*to_hz_p);
-       worldValue = mvFreq.get(unit).getValue();
-       if (!showAsAbsolute) {
-// Find relative coordinate in m consistent units
-	 mvFreq = MVFrequency(referenceValue()(worldAxis)*to_hz_p);
-	 worldValue = worldValue - mvFreq.get(unit).getValue(); // subtract reference
-       }
+   		if (!isAbsolute) {
+   			world = 0.0;
+   			world(worldAxis) = worldValue;
+   			makeWorldAbsolute(world);
+   			worldValue = world(worldAxis);
+   		}
+
+   		// new start
+		world = 0.0;
+		vWave = 0.0;
+		world(worldAxis) = worldValue;
+		if (nativeType_p == SpectralCoordinate::AWAV)
+		  frequencyToAirWavelength(vWave, world);
+		else
+		  frequencyToWavelength(vWave, world);
+		Quantity tmpI=Quantity(vWave(worldAxis), waveUnit_p);
+		worldValue = tmpI.get(unit).getValue();
+   		// new end
+
+   		if (!showAsAbsolute) {
+
+		  // new start
+		  // Find relative coordinate in m consistent units
+		  world(worldAxis) = referenceValue()(worldAxis);
+		  if (nativeType_p == SpectralCoordinate::AWAV)
+		    frequencyToAirWavelength(vWave, world);
+		  else
+		    frequencyToWavelength(vWave, world);
+		  Quantity tmpI=Quantity(vWave(worldAxis), waveUnit_p);
+		  worldValue = worldValue - tmpI.get(unit).getValue(); // subtract reference
+		  // new end
+
+   		}
 
      } // end if
 //
@@ -2168,7 +2290,7 @@ String SpectralCoordinate::formatRestFrequencies () const
          oss << " [";
          uInt j = 0;
          for (uInt i=0; i<n; i++) {
-            if (!casa::near(rfs(i), rf)) {
+            if (!casacore::near(rfs(i), rf)) {
                if (j > 0) oss << ", ";
                oss << rfs(i);
                j++;
@@ -2307,24 +2429,17 @@ const Vector<Double> SpectralCoordinate::toCurrentFactors () const
 
 
 
-void SpectralCoordinate::copy (const SpectralCoordinate &other)
-{
-
+void SpectralCoordinate::copy (const SpectralCoordinate &other) {
    type_p = other.type_p;
    to_hz_p = other.to_hz_p;
    to_m_p = other.to_m_p;
-//
    restfreqs_p.resize(0);
    restfreqs_p = other.restfreqs_p;
-//
    restfreqIdx_p = other.restfreqIdx_p;
 
 // Clean up first
 
-   if (pTabular_p) {
-      delete pTabular_p; 
-      pTabular_p = 0;
-   } 
+
    if (wcs_p.flag != -1) {    
        wcsfree (&wcs_p);
    }
@@ -2332,9 +2447,13 @@ void SpectralCoordinate::copy (const SpectralCoordinate &other)
 // Copy TabularCoordinate or wcs structure. Only one of the two
 // is allocated at any given time.
 
-    if (other.pTabular_p) {
-       pTabular_p = new TabularCoordinate(*(other.pTabular_p));
-    } else {
+    if (other._tabular.ptr()) {
+       _tabular.reset(new TabularCoordinate(*(other._tabular)));
+    }
+    else {
+    	if (_tabular.ptr()) {
+    		_tabular.reset(0);
+    	}
        int err = wcscopy (1, &(other.wcs_p), &wcs_p);
        if (err != 0) {
           String errmsg = "wcs wcscopy_error: ";
@@ -2348,10 +2467,10 @@ void SpectralCoordinate::copy (const SpectralCoordinate &other)
     direction_p = other.direction_p;
     position_p = other.position_p;
     epoch_p = other.epoch_p;
-//
     velType_p = other.velType_p;
     velUnit_p = other.velUnit_p;
     waveUnit_p = other.waveUnit_p;
+    nativeType_p = other.nativeType_p;
     unit_p = other.unit_p;
     axisName_p = other.axisName_p;
     formatUnit_p = other.formatUnit_p;
@@ -2360,12 +2479,53 @@ void SpectralCoordinate::copy (const SpectralCoordinate &other)
 
     makeConversionMachines(type_p, conversionType_p, epoch_p, position_p,
                            direction_p);
-//
     deleteVelocityMachine();
     if (other.pVelocityMachine_p) {
        pVelocityMachine_p = new VelocityMachine(*(other.pVelocityMachine_p));
     }
 }
 
-} //# NAMESPACE CASA - END
+
+void SpectralCoordinate::_setTabulatedFrequencies(const Vector<Double>& freqs) {
+	Vector<Double> channels(freqs.nelements());
+	indgen(channels);
+	_tabular.reset(new TabularCoordinate(channels, freqs, "Hz", "Frequency"));
+}
+
+ostream& SpectralCoordinate::print(ostream& os) const {
+    os << "tabular " << _tabular.ptr() << endl;
+    os << "to_hz_p " <<  to_hz_p << endl;
+    os << "to_m_p " << to_m_p << endl;
+    os << "type_p " << MFrequency::showType(type_p) << endl;
+    os << "conversionType_p " << MFrequency::showType(conversionType_p) << endl;
+    os << "restfreqs_p " << restfreqs_p << endl;
+    os << "restfreqIdx_p " << restfreqIdx_p << endl;
+    os << "pConversionMachineTo_p " << pConversionMachineTo_p << endl;
+    os << "pConversionMachineFrom_p " << pConversionMachineFrom_p << endl;
+    os << "pVelocityMachine_p " <<  pVelocityMachine_p << endl;
+    os << "velType_p " << velType_p << endl;
+    os << "velUnit_p " << velUnit_p << endl;
+    os << "waveUnit_p " << waveUnit_p << endl;
+    os << "nativeType_p " << nativeType_p << endl;
+    os << "unit_p " << unit_p.getName() << endl;
+    os << "increment " << increment() << endl;
+    os << "axisName_p " << axisName_p << endl;
+    os << "formatUnit_p " << formatUnit_p << endl;
+    os << "direction_p " <<  direction_p << endl;
+    os << "position_p " << position_p << endl;
+    os << "epoch_p " << epoch_p << endl;
+    return os;
+
+}
+
+Bool SpectralCoordinate::isTabular() const {
+	return _tabular.ptr();
+}
+
+ostream &operator<<(ostream &os, const SpectralCoordinate& spcoord) {
+	return spcoord.print(os);
+}
+
+
+} //# NAMESPACE CASACORE - END
 

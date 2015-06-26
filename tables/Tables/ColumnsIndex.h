@@ -30,16 +30,17 @@
 
 
 //# Includes
-#include <tables/Tables/Table.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Containers/Block.h>
-#include <casa/Containers/Record.h>
+#include <casacore/casa/aips.h>
+#include <casacore/tables/Tables/Table.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Containers/Block.h>
+#include <casacore/casa/Containers/Record.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
 class String;
-class ROTableColumn;
+class TableColumn;
 template<typename T> class RecordFieldPtr;
 
 // <summary>
@@ -347,7 +348,7 @@ protected:
 
     // Add a column to the record description for the keys.
     void addColumnToDesc (RecordDesc& description,
-			  const ROTableColumn& column);
+			  const TableColumn& column);
 
     // Create the various members in the object.
     void create (const Table& table, const Vector<String>& columnNames,
@@ -436,6 +437,6 @@ inline Record& ColumnsIndex::accessUpperKey()
 }
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

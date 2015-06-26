@@ -26,21 +26,21 @@
 //# $Id$
 
 
-#include <casa/Exceptions.h>
-#include <casa/OS/RegularFile.h>
-#include <casa/OS/SymLink.h>
-#include <casa/IO/FiledesIO.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/Exceptions/Error.h>
+#include <casacore/casa/Exceptions.h>
+#include <casacore/casa/OS/RegularFile.h>
+#include <casacore/casa/OS/SymLink.h>
+#include <casacore/casa/IO/FiledesIO.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/Exceptions/Error.h>
 
 #include <fcntl.h>                // needed for creat
 #include <unistd.h>               // needed for unlink, etc.
 #include <errno.h>                // needed for errno
-#include <casa/string.h>          // needed for strerror
-#include <casa/stdlib.h>          // needed for system
+#include <casacore/casa/string.h>          // needed for strerror
+#include <casacore/casa/stdlib.h>          // needed for system
 
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 RegularFile::RegularFile ()
 : File()
@@ -125,7 +125,7 @@ void RegularFile::create (Bool overwrite)
 			      " already exists"));
 	}
     }
-    int fd = ::creat (itsFile.path().expandedName().chars(), 0644);
+    int fd = ::creat (itsFile.path().expandedName().chars(), 0666);
     if (fd < 0) {
 	throw (AipsError ("RegularFile::create error on " +
 			  itsFile.path().expandedName() +
@@ -154,7 +154,7 @@ void RegularFile::copy (const Path& target, Bool overwrite,
     String call("cp '");
     call += itsFile.path().expandedName() + "' '" +
             targetName.expandedName() + "'";
-    system (call.chars());
+    AlwaysAssert (system(call.chars()) == 0, AipsError);
     if (setUserWritePermission) {
 	File result(targetName.expandedName());
 	if (! result.isWritable()) {
@@ -232,5 +232,5 @@ Int64 RegularFile::size() const
   return itsFile.size();
 }
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 

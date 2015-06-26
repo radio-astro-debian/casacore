@@ -28,10 +28,10 @@
 #define SCIMATH_LSQTRAITS_H
 
 //# Includes
-#include <casa/aips.h>
+#include <casacore/casa/aips.h>
 #include <complex>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
 
@@ -54,7 +54,7 @@ namespace casa { //# NAMESPACE CASA - BEGIN
 
 // <motivation>
 // To ease the interface to Fitting (and probably other) classes, by producing
-// a framework that can be used with aips++ containers.
+// a framework that can be used with Casacore containers.
 // </motivation>
 
 // <todo asof="2004/04/01">
@@ -162,6 +162,6 @@ template <> class LSQTraits_CF<std::complex<Float> > {
 #undef LSQTraits_CF
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

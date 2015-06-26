@@ -26,23 +26,23 @@
 //# $Id$
 //#
  
-#include <casa/Arrays/Vector.h>
-#include <casa/Arrays/Matrix.h>
-#include <casa/Arrays/ArrayLogical.h>
-#include <casa/Arrays/ArrayMath.h>
-#include <casa/BasicMath/Math.h>
-#include <coordinates/Coordinates/GaussianConvert.h>
-#include <coordinates/Coordinates/CoordinateUtil.h>
-#include <coordinates/Coordinates/CoordinateSystem.h>
-#include <casa/Exceptions/Error.h>
-#include <casa/Quanta/Quantum.h>
-#include <casa/Utilities/Assert.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Arrays/Matrix.h>
+#include <casacore/casa/Arrays/ArrayLogical.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
+#include <casacore/casa/BasicMath/Math.h>
+#include <casacore/coordinates/Coordinates/GaussianConvert.h>
+#include <casacore/coordinates/Coordinates/CoordinateUtil.h>
+#include <casacore/coordinates/Coordinates/CoordinateSystem.h>
+#include <casacore/casa/Exceptions/Error.h>
+#include <casacore/casa/Quanta/Quantum.h>
+#include <casacore/casa/Utilities/Assert.h>
 
 
 
-#include <casa/iostream.h>
+#include <casacore/casa/iostream.h>
 
-#include <casa/namespace.h>
+#include <casacore/casa/namespace.h>
 void doit (Double majorPixels, Double minorPixels, const Quantum<Double>& pa1,
            const CoordinateSystem& cSys,
            const Vector<uInt>& worldAxes,
@@ -51,8 +51,6 @@ void doit (Double majorPixels, Double minorPixels, const Quantum<Double>& pa1,
 
 void doit2 (Vector<Double>& pixel, const CoordinateSystem& cSys,
            const Vector<uInt>& worldAxes);
-
-void doit3();
 
 int main()
 {
@@ -129,12 +127,6 @@ int main()
          Vector<Double> pixel(cSys.referencePixel().copy());
          doit2 (pixel, cSys, worldAxes);
       }
-//
-// Deconvolution
-//
-      {
-         doit3();
-      }
    } catch (AipsError x) {
       cerr << "aipserror: error " << x.getMesg() << endl;
       return 1;
@@ -205,113 +197,4 @@ void doit2 (Vector<Double>& pixel, const CoordinateSystem& cSys,
    world(1).convert(Unit("arcmin"));
    AlwaysAssert(gc.toPixel(pixel2, world), AipsError);
    AlwaysAssert(allNear(pixel2,pixel,1e-6), AipsError);
-}
-
-void doit3()
-{
-   Quantum<Double> paModel;
-   Quantum<Double> majModel;
-   Quantum<Double> minModel;
-   Quantum<Double> paSource(0.0, Unit("deg"));
-   Quantum<Double> majSource(0.0, Unit("arcsec"));
-   Quantum<Double> minSource(0.0, Unit("arcsec"));;
-   Quantum<Double> paBeam(0.0, Unit("deg"));;
-   Quantum<Double> majBeam(0.0, Unit("arcsec"));;
-   Quantum<Double> minBeam(0.0, Unit("arcsec"));;
-//
-// Easy test 1 - P.A. = 0
-//
-   {
-      Unit rad("rad");
-      majSource.setValue(20.0);
-      minSource.setValue(10.0);
-      majBeam.setValue(15.0);
-      minBeam.setValue(5.0);
-//
-      Double maj = sqrt(square(majSource.getValue(rad)) -
-                        square(majBeam.getValue(rad)));
-      Quantum<Double> majQ(maj, rad);
-      majQ.convert(majSource.getFullUnit());
-//
-      Double min = sqrt(square(minSource.getValue(rad)) -
-                        square(minBeam.getValue(rad)));
-      Quantum<Double> minQ(min, rad);
-      minQ.convert(minSource.getFullUnit());
-//
-      Quantum<Double> paQ(0.0,paSource.getFullUnit());
-//
-      Bool isPoint = GaussianConvert::deconvolve(majModel, minModel, paModel,
-                                                 majSource, minSource, paSource,
-                                                 majBeam, minBeam, paBeam);
-      cout << "Source   = " << majSource << ", " << minSource << ", " << paSource << endl;
-      cout << "Beam     = " << majBeam << ", " << minBeam << ", " << paBeam << endl;
-      cout << "Model    = " << majModel << ", " << minModel << ", " << paModel << endl;
-      cout << "Expected = " << majQ << ", " << minQ << ", " << paQ << endl;
-      cout << "isPoint  = " << isPoint << endl << endl;
-      AlwaysAssert(!isPoint, AipsError);
-      AlwaysAssert((near(majQ.getValue(),majModel.getValue(),1e-6) &&
-                    near(minQ.getValue(),minModel.getValue(),1e-6) &&
-                    near(paQ.getValue(),paModel.getValue(),1e-6)), AipsError);
-   }
-//
-// Easy test 2 - P.A. aligned
-//
-   {
-      Unit rad("rad");
-      majSource.setValue(20.0);
-      minSource.setValue(10.0);
-      paSource.setValue(45.0);
-      majBeam.setValue(15.0);
-      minBeam.setValue(5.0);
-      paBeam.setValue(45.0);
-//
-      Double maj = sqrt(square(majSource.getValue(rad)) -
-                        square(majBeam.getValue(rad)));
-      Quantum<Double> majQ(maj, rad);
-      majQ.convert(majSource.getFullUnit());
-//
-      Double min = sqrt(square(minSource.getValue(rad)) -
-                        square(minBeam.getValue(rad)));
-      Quantum<Double> minQ(min, rad);
-      minQ.convert(minSource.getFullUnit());
-//
-      Quantum<Double> paQ(45.0,paSource.getFullUnit());
-//
-      Bool isPoint = GaussianConvert::deconvolve(majModel, minModel, paModel,
-                                                 majSource, minSource, paSource,
-                                                 majBeam, minBeam, paBeam);
-      cout << "Source   = " << majSource << ", " << minSource << ", " << paSource << endl;
-      cout << "Beam     = " << majBeam << ", " << minBeam << ", " << paBeam << endl;
-      cout << "Model    = " << majModel << ", " << minModel << ", " << paModel << endl;
-      cout << "Expected = " << majQ << ", " << minQ << ", " << paQ << endl;
-      cout << "isPoint  = " << isPoint << endl << endl;
-      AlwaysAssert(!isPoint, AipsError);
-      AlwaysAssert((near(majQ.getValue(),majModel.getValue(),1e-6) &&
-                    near(minQ.getValue(),minModel.getValue(),1e-6) &&
-                    near(paQ.getValue(),paModel.getValue(),1e-6)), AipsError);
-   }
-//
-// Easy test 3 - beam and source the same
-//
-   {
-      Unit rad("rad");
-      majSource.setValue(20.0);
-      minSource.setValue(10.0);
-      paSource.setValue(45.0);
-      majBeam.setValue(20.00001);
-      minBeam.setValue(10.00001);
-      paBeam.setValue(45.0);
-//
-      Bool isPoint = GaussianConvert::deconvolve(majModel, minModel, paModel,
-                                                 majSource, minSource, paSource,
-                                                 majBeam, minBeam, paBeam);
-      cout << "Source   = " << majSource << ", " << minSource << ", " << paSource << endl;
-      cout << "Beam     = " << majBeam << ", " << minBeam << ", " << paBeam << endl;
-      cout << "Model    = " << majModel << ", " << minModel << ", " << paModel << endl;
-      cout << "Expected = " << majBeam << ", " << minBeam << ", " << paBeam << endl;
-      cout << "isPoint  = " << isPoint << endl << endl;
-      AlwaysAssert(isPoint, AipsError);
-      AlwaysAssert((nearAbs(majModel.getValue(),majBeam.getValue(),1e-6) &&
-                    nearAbs(minModel.getValue(),minBeam.getValue(),1e-6)),AipsError);
-   }
 }

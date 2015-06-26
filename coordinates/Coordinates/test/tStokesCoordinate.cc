@@ -27,19 +27,19 @@
 //#
 
  
-#include <casa/Arrays/Vector.h>
-#include <casa/Arrays/Matrix.h>
-#include <casa/Arrays/ArrayLogical.h>
-#include <casa/Arrays/ArrayMath.h>
-#include <casa/BasicMath/Math.h>
-#include <coordinates/Coordinates/StokesCoordinate.h>
-#include <casa/Exceptions/Error.h>
-#include <tables/Tables/TableRecord.h>
-#include <casa/Utilities/Assert.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Arrays/Matrix.h>
+#include <casacore/casa/Arrays/ArrayLogical.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
+#include <casacore/casa/BasicMath/Math.h>
+#include <casacore/coordinates/Coordinates/StokesCoordinate.h>
+#include <casacore/casa/Exceptions/Error.h>
+#include <casacore/tables/Tables/TableRecord.h>
+#include <casacore/casa/Utilities/Assert.h>
 
 
-#include <casa/iostream.h>
-#include <casa/namespace.h>
+#include <casacore/casa/iostream.h>
+#include <casacore/casa/namespace.h>
 
 StokesCoordinate makeCoordinate(Vector<Int>& whichStokes,
                                 Vector<String>& stokesStrings);
@@ -103,8 +103,23 @@ int main()
       {
          doit5();
       }
+      {
+    	  Vector<Int> stokesInts(4);
+    	  stokesInts[0] = (Int)Stokes::V;
+    	  stokesInts[1] = (Int)Stokes::LL;
+    	  stokesInts[2] = (Int)Stokes::XY;
+    	  stokesInts[3] = (Int)Stokes::Q;
+    	  StokesCoordinate coord(stokesInts);
+    	  Vector<String> stokesStrings = coord.stokesStrings();
+    	  Vector<String> expec(4);
+    	  expec[0] = "V";
+    	  expec[1] = "LL";
+    	  expec[2] = "XY";
+    	  expec[3] = "Q";
+    	  AlwaysAssert(allTrue(stokesStrings == expec), AipsError);
+      }
 
-   } catch (AipsError x) {
+   } catch (const AipsError& x) {
       cerr << "aipserror: error " << x.getMesg() << endl;
       return (1);
    }

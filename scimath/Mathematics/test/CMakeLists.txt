@@ -2,10 +2,16 @@ set (tests
 dAutoDiff
 dSparseDiff
 tAutoDiff
+tChauvenetCriterionStatistics
+tClassicalStatistics
 tCombinatorics
 tConvolver
 tFFTServer
 tFFTServer2
+tFitToHalfStatistics
+tGaussianBeam
+tGeometry
+tHingesFencesStatistics
 tHistAcc
 tInterpolateArray1D
 tMathFunc
@@ -14,7 +20,10 @@ tMedianSlider
 tSmooth
 tSparseDiff
 tStatAcc
+tStatisticsUtilities
 tVanVleck
+tVectorKernel
+tZScoreCalculator
 )
 
 foreach (test ${tests})

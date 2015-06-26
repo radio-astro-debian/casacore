@@ -25,20 +25,23 @@
 //#
 //# $Id$
 
-#include <images/Images/SubImage.h>
-#include <coordinates/Coordinates/CoordinateUtil.h>
-#include <lattices/Lattices/LattRegionHolder.h>
-#include <lattices/Lattices/SubLattice.h>
-#include <lattices/Lattices/LatticeRegion.h>
-#include <casa/Arrays/IPosition.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/Exceptions/Error.h>
+#ifndef IMAGES_SUBIMAGE_TCC
+#define IMAGES_SUBIMAGE_TCC
 
-#include <casa/Arrays.h>
+#include <casacore/images/Images/SubImage.h>
+#include <casacore/coordinates/Coordinates/CoordinateUtil.h>
+#include <casacore/lattices/LRegions/LattRegionHolder.h>
+#include <casacore/lattices/Lattices/SubLattice.h>
+#include <casacore/lattices/LRegions/LatticeRegion.h>
+#include <casacore/casa/Arrays/IPosition.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/Exceptions/Error.h>
+
+#include <casacore/casa/Arrays.h>
 
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 template<class T>
 SubImage<T>::SubImage()
@@ -48,29 +51,29 @@ SubImage<T>::SubImage()
 
 template<class T>
 SubImage<T>::SubImage (const ImageInterface<T>& image,
-		       AxesSpecifier axesSpec)
+		       AxesSpecifier axesSpec, Bool preserveAxesOrder)
 : itsImagePtr (image.cloneII())
 {
   itsSubLatPtr = new SubLattice<T> (image, axesSpec);
-  setCoords (image.coordinates());
-  setMembers (*itsImagePtr);
+  setCoords (image.coordinates(), preserveAxesOrder);
+  setMembers();
 }
 
 template<class T>
 SubImage<T>::SubImage (ImageInterface<T>& image,
 		       Bool writableIfPossible,
-		       AxesSpecifier axesSpec)
+		       AxesSpecifier axesSpec, Bool preserveAxesOrder)
 : itsImagePtr (image.cloneII())
 {
   itsSubLatPtr = new SubLattice<T> (image, writableIfPossible, axesSpec);
-  setCoords (image.coordinates());
-  setMembers (*itsImagePtr);
+  setCoords (image.coordinates(), preserveAxesOrder);
+  setMembers();
 }
 
 template<class T>
 SubImage<T>::SubImage (const ImageInterface<T>& image,
 		       const LattRegionHolder& region,
-		       AxesSpecifier axesSpec)
+		       AxesSpecifier axesSpec, Bool preserveAxesOrder)
 : itsImagePtr (image.cloneII())
 {
   itsSubLatPtr = new SubLattice<T> (image,
@@ -83,15 +86,17 @@ SubImage<T>::SubImage (const ImageInterface<T>& image,
   convertIPosition(blc, slicer.start());
   convertIPosition(inc, slicer.stride());
 //
-  setCoords (image.coordinates().subImage (blc, inc, slicer.length().asVector()));
-  setMembers (*itsImagePtr);
+  CoordinateSystem subCoords (image.coordinates().subImage
+                              (blc, inc, slicer.length().asVector()));
+  setCoords (subCoords, preserveAxesOrder);
+  setMembers (slicer);
 }
 
 template<class T>
 SubImage<T>::SubImage (ImageInterface<T>& image,
 		       const LattRegionHolder& region,
 		       Bool writableIfPossible,
-		       AxesSpecifier axesSpec)
+		       AxesSpecifier axesSpec, Bool preserveAxesOrder)
 : itsImagePtr (image.cloneII())
 {
   itsSubLatPtr = new SubLattice<T> (image, 
@@ -105,14 +110,16 @@ SubImage<T>::SubImage (ImageInterface<T>& image,
   convertIPosition(blc, slicer.start());
   convertIPosition(inc, slicer.stride());
 //
-  setCoords (image.coordinates().subImage (blc, inc, slicer.length().asVector()));
-  setMembers (*itsImagePtr);
+  CoordinateSystem subCoords (image.coordinates().subImage
+                              (blc, inc, slicer.length().asVector()));
+  setCoords (subCoords, preserveAxesOrder);
+  setMembers (slicer);
 }
 
 template<class T>
 SubImage<T>::SubImage (const ImageInterface<T>& image,
 		       const Slicer& slicer,
-		       AxesSpecifier axesSpec)
+		       AxesSpecifier axesSpec, Bool preserveAxesOrder)
 : itsImagePtr (image.cloneII())
 {
   itsSubLatPtr = new SubLattice<T> (image, slicer, axesSpec);
@@ -121,15 +128,17 @@ SubImage<T>::SubImage (const ImageInterface<T>& image,
   Vector<Float> blc, inc;
   convertIPosition(blc, refslicer.start());
   convertIPosition(inc, refslicer.stride());
-  setCoords (image.coordinates().subImage (blc, inc, refslicer.length().asVector()));
-  setMembers (*itsImagePtr);
+  CoordinateSystem subCoords (image.coordinates().subImage
+                              (blc, inc, refslicer.length().asVector()));
+  setCoords (subCoords, preserveAxesOrder);
+  setMembers (refslicer);
 }
 
 template<class T>
 SubImage<T>::SubImage (ImageInterface<T>& image,
 		       const Slicer& slicer,
 		       Bool writableIfPossible,
-		       AxesSpecifier axesSpec)
+		       AxesSpecifier axesSpec, Bool preserveAxesOrder)
 : itsImagePtr (image.cloneII())
 {
   itsSubLatPtr = new SubLattice<T> (image, slicer, writableIfPossible,
@@ -139,8 +148,10 @@ SubImage<T>::SubImage (ImageInterface<T>& image,
   Vector<Float> blc, inc;
   convertIPosition(blc, refslicer.start());
   convertIPosition(inc, refslicer.stride());
-  setCoords (image.coordinates().subImage (blc, inc, refslicer.length().asVector()));
-  setMembers (*itsImagePtr);
+  CoordinateSystem subCoords (image.coordinates().subImage
+                              (blc, inc, refslicer.length().asVector()));
+  setCoords (subCoords, preserveAxesOrder);
+  setMembers (refslicer);
 }
 
 template<class T>
@@ -178,44 +189,27 @@ ImageInterface<T>* SubImage<T>::cloneII() const
 }
 
 template<class T>
-SubImage<T> SubImage<T>::createSubImage
-(ImageRegion*& outRegion, ImageRegion*& outMask,
- ImageInterface<T>& inImage, const Record& region,
- const String& mask, LogIO *os,
- Bool writableIfPossible, const AxesSpecifier& axesSpecifier)
+void SubImage<T>::setMembers()
 {
-  // The ImageRegion pointers must be null on entry
-  // either pointer may be null on exit
-  SubImage<T> subImage;
-  outMask = ImageRegion::fromLatticeExpression(mask);
-  // We can get away with no region processing if the region record
-  // is empty and the user is not dropping degenerate axes
-  if (region.nfields() == 0  &&  axesSpecifier.keep()) {
-    subImage = (outMask == 0)  ?
-        SubImage<T>(inImage, True)
-      : SubImage<T>(inImage, *outMask, writableIfPossible);
-  } else {
-    outRegion = ImageRegion::fromRecord (os, inImage.coordinates(),
-                                         inImage.shape(), region);
-    if (outMask == 0) {
-      subImage = SubImage<T> (inImage, *outRegion,
-                              writableIfPossible, axesSpecifier);
-    } else {
-      SubImage<T> subImage0 (inImage, *outMask, writableIfPossible);
-      subImage = SubImage<T>(subImage0, *outRegion,
-                             writableIfPossible, axesSpecifier);
-    }
-  }
-  return subImage;
+  this->setImageInfoMember (itsImagePtr->imageInfo());
+  this->setMiscInfoMember (itsImagePtr->miscInfo());
+  this->setUnitMember (itsImagePtr->units());
+  logger().addParent (itsImagePtr->logger());
 }
 
 template<class T>
-void SubImage<T>::setMembers (const ImageInterface<T>& image)
+void SubImage<T>::setMembers (const Slicer& slicer)
 {
-  this->setImageInfoMember (image.imageInfo());
-  this->setMiscInfoMember (image.miscInfo());
-  this->setUnitMember (image.units());
-  logger().addParent (image.logger());
+  // Reset to a subset of the beams in the beamset.
+  ImageInfo info (itsImagePtr->imageInfo());
+  ImageBeamSet subSet = info.getBeamSet().subset (slicer,
+                                                  itsImagePtr->coordinates());
+  info.removeRestoringBeam();
+  info.setBeams (subSet);
+  this->setImageInfoMember (info);
+  this->setMiscInfoMember (itsImagePtr->miscInfo());
+  this->setUnitMember (itsImagePtr->units());
+  logger().addParent (itsImagePtr->logger());
 }
 
 template<class T>
@@ -225,7 +219,8 @@ String SubImage<T>::imageType() const
 }
 
 template<class T>
-void SubImage<T>::setCoords (const CoordinateSystem& coords)
+void SubImage<T>::setCoords (const CoordinateSystem& coords,
+                             Bool preserveAxesOrder)
 {
   const AxesMapping& axesMap = itsSubLatPtr->getAxesMap();
   AlwaysAssert (!axesMap.isReordered(), AipsError);
@@ -248,7 +243,7 @@ void SubImage<T>::setCoords (const CoordinateSystem& coords)
 // Actually drop any coordinates which have their axes fully removed
 
     CoordinateSystem crdOut;
-    CoordinateUtil::dropRemovedAxes(crdOut, crd);
+    CoordinateUtil::dropRemovedAxes(crdOut, crd, preserveAxesOrder);
     setCoordsMember (crdOut);
   }
 }
@@ -456,5 +451,8 @@ void SubImage<T>::convertIPosition(Vector<Float>& x, const IPosition& pos) const
   for (uInt i=0; i<x.nelements(); i++) x[i] = Float(pos(i));
 }
 
-} //# NAMESPACE CASA - END
 
+} //# NAMESPACE CASACORE - END
+
+
+#endif

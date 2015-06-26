@@ -29,9 +29,9 @@
 #define CASA_LOGIARRAYFWD_H
 
 
-#include <casa/aips.h>
+#include <casacore/casa/aips.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 // <summary>
 //    Forward declarations for LogicalArrays.
@@ -44,8 +44,9 @@ namespace casa { //# NAMESPACE CASA - BEGIN
 // </prerequisite>
 //
 // <etymology>
-// LogiArrayFwd is short for LogicalArrayForwards, which is too long by
-// AIPS++ file naming conventions.  It contains forwards for LogicalArrays.
+// LogiArrayFwd is short for LogicalArrayForwards, which was too long by
+// the old AIPS++ file naming conventions.
+// It contains forwards for LogicalArrays.
 // </etymology>
 //
 // <synopsis>
@@ -101,6 +102,6 @@ typedef Array<LogicalArrayElem> LogicalArray;
 // </group>
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

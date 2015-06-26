@@ -27,25 +27,26 @@
 //# $Id$
 
 //# Includes
-#include <measures/Measures/MeasComet.h>
-#include <measures/Measures/MeasIERS.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Quanta/MVRadialVelocity.h>
-#include <casa/Quanta/MVDirection.h>
-#include <casa/Logging/LogIO.h>
-#include <casa/System/Aipsrc.h>
-#include <casa/BasicMath/Math.h>
-#include <tables/Tables/TableRecord.h>
-#include <casa/System/Aipsrc.h>
+#include <casacore/measures/Measures/MeasComet.h>
+#include <casacore/measures/Measures/MeasIERS.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Quanta/MVRadialVelocity.h>
+#include <casacore/casa/Quanta/MVDirection.h>
+#include <casacore/casa/Logging/LogIO.h>
+#include <casacore/casa/System/Aipsrc.h>
+#include <casacore/casa/BasicMath/Math.h>
+#include <casacore/tables/Tables/TableRecord.h>
+#include <casacore/casa/System/Aipsrc.h>
+#include <casacore/casa/OS/Path.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Constructors
 MeasComet::MeasComet() :
   tab_p(), measFlag_p(True), measured_p(False),
   row_p(),
   mjd0_p(0), mjdl_p(0), dmjd_p(0), nrow_p(0), name_p(), topo_p(),
-  mtype_p(MDirection::APP),
+  mtype_p(MDirection::APP), // default, if the keyword obsloc is not defined, is apparent geocentric
   msgDone_p(False), tp_p(),
   haveDiskLongLat_p(false),
   ncols_p(5)
@@ -140,6 +141,7 @@ Bool MeasComet::get(MVPosition &returnValue, Double date) const {
   returnValue = getRelPosition(0);
   const MVPosition deltaX(getRelPosition(1) - returnValue);
   returnValue += f * deltaX;
+
   return True;
 }
 
@@ -204,6 +206,7 @@ Bool MeasComet::initMeas(const String &which, const Table *tabin) {
     LogIO os(LogOrigin("MeasComet", String("initMeas(String, Table *)"),
 		       WHERE));
 
+    closeMeas(); // seems to need this to ensure full initialization (TT) 
     measFlag_p = False;
     tp_p = which;
     TableRecord kws;
@@ -249,7 +252,29 @@ Bool MeasComet::initMeas(const String &which, const Table *tabin) {
       topo_p = MVPosition(Quantity(kws.asDouble("GeoDist"), "km"),
 			  Quantity(kws.asDouble("GeoLong"), "deg"),
 			  Quantity(kws.asDouble("GeoLat"), "deg"));
-      if (kws.asDouble("GeoDist") != 0.0) mtype_p = MDirection::TOPO;
+      if (kws.isDefined("posrefsys")) {
+	String prs = kws.asString("posrefsys");
+	prs.upcase();
+	if(prs.contains("J2000")){
+	  mtype_p = MDirection::J2000;
+	}else if(prs.contains("B1950")){
+	  mtype_p = MDirection::B1950;	
+	}else if(prs.contains("APP")){
+	  mtype_p = MDirection::APP;
+	}else if(prs.contains("ICRS")){
+	  mtype_p = MDirection::ICRS;
+	}else if(prs.contains("TOPO")){
+	  mtype_p = MDirection::TOPO;
+	}else{
+	  os << LogIO::SEVERE
+             << "Unrecognized position reference frame (posrefsys): "
+	     << kws.asString("posrefsys")
+             << " - possible are J2000, B1950, APP, ICRS, TOPO" << LogIO::POST;
+	}
+      } else if (kws.asDouble("GeoDist") != 0.0){
+	mtype_p = MDirection::TOPO;
+      }
+	  
       mjd0_p = kws.asDouble("MJD0");
       dmjd_p = kws.asDouble("dMJD");
       nrow_p = tab_p.nrow();
@@ -326,6 +351,11 @@ Double MeasComet::get_Quantity_keyword(const TableRecord& ks,
   }
 }
 
+String MeasComet::getTablePath()
+{
+  return Path(tab_p.tableName()).absoluteName();
+}
+
 Bool MeasComet::getExtras() {
   if(haveTriedExtras_p)		// That was easy.
     return true;
@@ -360,6 +390,7 @@ void MeasComet::closeMeas() {
     tp_p   = "";
     msgDone_p = False;
     for (uInt i=0; i<2; ++i)  lnr_p[i] = -1;
+    row_p = ROTableRow();
     tab_p = Table();
   }
 }
@@ -389,5 +420,5 @@ Bool MeasComet::fillMeas(Double utf) const {
   return True;
 }
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 

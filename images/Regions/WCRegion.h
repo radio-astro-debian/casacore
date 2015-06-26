@@ -29,15 +29,16 @@
 #define IMAGES_WCREGION_H
 
 //# Includes
-#include <casa/Containers/Record.h>
+#include <casacore/casa/aips.h>
+#include <casacore/casa/Containers/Record.h>
+#include <casacore/coordinates/Coordinates/CoordinateSystem.h>
+#include <casacore/tables/Tables/TableRecord.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
 class LCRegion;
-class CoordinateSystem;
 class RecordInterface;
-class TableRecord;
 class IPosition;
 class String;
 
@@ -222,6 +223,22 @@ protected:
                             const CoordinateSystem& cSys,
                             const IPosition& shape) const;
 
+    static void unitInit();
+
+    void checkAxes (
+    	const IPosition& pixelAxes,
+        const CoordinateSystem& cSys,
+        const Vector<String>& quantityUnits
+    ) const;
+
+	static void convertPixel(
+		Double& pixel,
+	    const Double& value,
+	    const String& unit,
+	    const Int absRel,
+	    const Double refPix,
+	    const Int shape
+	);
 private:
     String itsComment;
     Record itsAxesDesc;
@@ -247,6 +264,6 @@ inline const Record& WCRegion::getAxesDesc() const
 
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

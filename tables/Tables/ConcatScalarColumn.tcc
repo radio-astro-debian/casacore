@@ -25,14 +25,17 @@
 //#
 //# $Id$
 
-#include <tables/Tables/ConcatScalarColumn.h>
-#include <tables/Tables/ConcatTable.h>
-#include <tables/Tables/ScalarColumn.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Utilities/GenSort.h>
+#ifndef TABLES_CONCATSCALARCOLUMN_TCC
+#define TABLES_CONCATSCALARCOLUMN_TCC
+
+#include <casacore/tables/Tables/ConcatScalarColumn.h>
+#include <casacore/tables/Tables/ConcatTable.h>
+#include <casacore/tables/Tables/ScalarColumn.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Utilities/GenSort.h>
 
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
   template<typename T>
   ConcatScalarColumn<T>::ConcatScalarColumn (const BaseColumnDesc* bcdp,
@@ -132,8 +135,8 @@ namespace casa { //# NAMESPACE CASA - BEGIN
     //# Get the data as a column.
     //# Save the pointer to the vector for deletion by freeSortKey().
     dataSave = 0;
-    ROScalarColumn<T> col(refTabPtr_p->asTable(),
-			  this->columnDesc().name());
+    ScalarColumn<T> col(refTabPtr_p->asTable(),
+                        this->columnDesc().name());
     Vector<T>* vecPtr = new Vector<T>;
     col.getColumn (*vecPtr);
     dataSave = vecPtr;
@@ -149,8 +152,8 @@ namespace casa { //# NAMESPACE CASA - BEGIN
   {
     //# Get the data as a column.
     dataSave = 0;
-    ROScalarColumn<T> col(refTabPtr_p->asTable(),
-			  this->columnDesc().name());
+    ScalarColumn<T> col(refTabPtr_p->asTable(),
+                        this->columnDesc().name());
     Vector<T>* vecPtr = new Vector<T>;
     col.getColumnCells (RefRows(rownrs), *vecPtr);
     dataSave = vecPtr;
@@ -187,4 +190,6 @@ namespace casa { //# NAMESPACE CASA - BEGIN
     dataSave = 0;
   }
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
+
+#endif

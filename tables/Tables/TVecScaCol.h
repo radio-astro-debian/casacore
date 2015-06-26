@@ -29,15 +29,13 @@
 #define TABLES_TVECSCACOL_H
 
 //# Includes
-#include <casa/aips.h>
-#include <tables/Tables/TVec.h>
+#include <casacore/casa/aips.h>
+#include <casacore/tables/Tables/TVec.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
-class ROTableColumn;
 class TableColumn;
-template<class T> class ROScalarColumn;
 template<class T> class ScalarColumn;
 class String;
 
@@ -94,11 +92,6 @@ protected:
 
 public:
     // Create a table vector from the given table column.
-    // This constructor is for ROTableVector and does not allow
-    // elements to be changed.
-    TabVecScaCol (const ROTableColumn& column);
-
-    // Create a table vector from the given table column.
     // This constructor is for TableVector and allows elements to be changed.
     TabVecScaCol (const TableColumn& column);
 
@@ -121,15 +114,14 @@ public:
     void set (const T&);
 
 protected:
-    ROScalarColumn<T>*  colPtr_p;
-    ScalarColumn<T>*    colPtrPut_p;
+    ScalarColumn<T>*  colPtr_p;
 };
 
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #ifndef CASACORE_NO_AUTO_TEMPLATES
-#include <tables/Tables/TVecScaCol.tcc>
+#include <casacore/tables/Tables/TVecScaCol.tcc>
 #endif //# CASACORE_NO_AUTO_TEMPLATES
 #endif

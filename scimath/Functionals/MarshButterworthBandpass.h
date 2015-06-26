@@ -29,11 +29,11 @@
 #ifndef SCIMATH_MARSHBUTTERWORTHBANDPASS_H
 #define SCIMATH_MARSHBUTTERWORTHBANDPASS_H
 
-#include <casa/aips.h>
-#include <scimath/Functionals/SimButterworthBandpass.h>
-#include <scimath/Functionals/FunctionMarshallable.h>
+#include <casacore/casa/aips.h>
+#include <casacore/scimath/Functionals/SimButterworthBandpass.h>
+#include <casacore/scimath/Functionals/FunctionMarshallable.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
 
@@ -60,8 +60,8 @@ namespace casa { //# NAMESPACE CASA - BEGIN
 // This class is a specialization of SimButterworthBandpass class that 
 // supports serialization.  That is, it allows one to write the state of the 
 // SimButterworthBandpass function object into a Record.  This record 
-// can then be transmitted to another execution context (e.g.  or 
-// another AIPS++ DO) where it can be "reconstituted" as a new object with 
+// can then be transmitted to another execution context
+// where it can be "reconstituted" as a new object with 
 // identical state as this one.  This documentation focusses on this 
 // serialization functionality (also known as "marshalling"); for details 
 // about the general features of this Butterworth function, see the 
@@ -162,9 +162,9 @@ public:
 };
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #ifndef CASACORE_NO_AUTO_TEMPLATES
-#include <scimath/Functionals/MarshButterworthBandpass.tcc>
+#include <casacore/scimath/Functionals/MarshButterworthBandpass.tcc>
 #endif //# CASACORE_NO_AUTO_TEMPLATES
 #endif

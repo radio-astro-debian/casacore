@@ -25,16 +25,19 @@
 //#
 //# $Id$
 
-#include <casa/Arrays/Array.h>
-#include <casa/Arrays/MaskedArray.h>
-#include <casa/Arrays/Slicer.h>
-#include <casa/Arrays/ArrayIter.h>
-#include <casa/Arrays/ArrayError.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/BasicMath/Functional.h>
-#include <casa/Utilities/Copy.h>
+#ifndef CASA_ARRAY_TCC
+#define CASA_ARRAY_TCC
 
-namespace casa {//#Begin casa namespace
+#include <casacore/casa/Arrays/Array.h>
+#include <casacore/casa/Arrays/MaskedArray.h>
+#include <casacore/casa/Arrays/Slicer.h>
+#include <casacore/casa/Arrays/ArrayIter.h>
+#include <casacore/casa/Arrays/ArrayError.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/BasicMath/Functional.h>
+#include <casacore/casa/Utilities/Copy.h>
+
+namespace casacore {//#Begin casa namespace
 
 
 template<class T> Array<T>::Array()
@@ -49,8 +52,7 @@ template<class T> Array<T>::Array()
 //   <item> ArrayShapeError
 // </thrown>
 template<class T> Array<T>::Array(const IPosition &Shape)
-: ArrayBase (Shape),
-  data_p    (0)
+: ArrayBase (Shape)
 {
     data_p = new Block<T>(nelements());
     begin_p = data_p->storage();
@@ -63,8 +65,7 @@ template<class T> Array<T>::Array(const IPosition &Shape)
 // </thrown>
 template<class T> Array<T>::Array(const IPosition &Shape,
 				  const T &initialValue)
-: ArrayBase (Shape),
-  data_p    (0)
+: ArrayBase (Shape)
 {
     data_p = new Block<T>(nelements());
     begin_p = data_p->storage();
@@ -86,8 +87,7 @@ template<class T> Array<T>::Array(const Array<T> &other)
 template<class T>
 Array<T>::Array(const IPosition &shape, T *storage, 
 		StorageInitPolicy policy)
-: ArrayBase (shape),
-  data_p    (0)
+: ArrayBase (shape)
 {
     takeStorage(shape, storage, policy);
     DebugAssert(ok(), ArrayError);
@@ -95,8 +95,7 @@ Array<T>::Array(const IPosition &shape, T *storage,
 
 template<class T>
 Array<T>::Array (const IPosition &shape, const T *storage)
-: ArrayBase (shape),
-  data_p    (0)
+: ArrayBase (shape)
 {
     takeStorage(shape, storage);
     DebugAssert(ok(), ArrayError);
@@ -108,6 +107,10 @@ template<class T> Array<T>::~Array()
 {
 }
 
+template<class T> CountedPtr<ArrayBase> Array<T>::makeArray() const
+{
+  return new Array<T>();
+}
 
 template<class T> void Array<T>::assign (const Array<T>& other)
 {
@@ -116,6 +119,19 @@ template<class T> void Array<T>::assign (const Array<T>& other)
         resize (other.shape());
     }
     operator= (other);
+}
+
+template<class T> void Array<T>::assignBase (const ArrayBase& other, Bool checkType)
+{
+    DebugAssert(ok(), ArrayError);
+    // Checking the type can be expensive, so only do if needed or in debug mode.
+    if (checkType  ||  aips_debug) {
+      const Array<T>* pa = dynamic_cast<const Array<T>*>(&other);
+      if (pa == 0) {
+        throw ArrayError("assign(ArrayBase&) has incorrect template type");
+      }
+    }
+    assign (static_cast<const Array<T>&>(other));
 }
 
 template<class T> void Array<T>::reference(const Array<T> &other)
@@ -140,11 +156,11 @@ template<class T> Array<T> Array<T>::copy() const
     } else if (contiguousStorage()) {
 	objcopy (vp.begin_p, begin_p, nels_p);
     } else if (ndim() == 1) {
-	objcopy (vp.begin_p, begin_p, uInt(length_p(0)), 1U, uInt(inc_p(0)));
+	objcopy (vp.begin_p, begin_p, length_p(0), 1U, inc_p(0));
     } else if (length_p(0) == 1  &&  ndim() == 2) {
         // Special case which can be quite common (e.g. row in a matrix).
-	objcopy (vp.begin_p, begin_p, uInt(length_p(1)), 1U,
-		 uInt(originalLength_p(0)*inc_p(1)));
+	objcopy (vp.begin_p, begin_p, length_p(1), 1U,
+		 originalLength_p(0)*inc_p(1));
     } else if (length_p(0) <= 25) {
         // If not many elements on a line, it's better to use this loop.
         T* ptr = vp.begin_p;
@@ -164,7 +180,7 @@ template<class T> Array<T> Array<T>::copy() const
 	    offset = ArrayIndexOffset(ndim(), originalLength_p.storage(),
 				      inc_p.storage(), index);
 	    objcopy (vp.begin_p + count*length_p(0), begin_p+offset,
-		     uInt(length_p(0)), 1U, uInt(inc_p(0)));
+		     length_p(0), 1U, inc_p(0));
 	    ai.next(); count++;
 	}
     }
@@ -191,13 +207,13 @@ template<class T> Array<T> &Array<T>::operator=(const Array<T> &other)
 	} else if (contiguousStorage() && other.contiguousStorage()) {
 	    objcopy (begin_p, other.begin_p, nels_p);
 	} else if (ndim() == 1) {
-	    objcopy (begin_p, other.begin_p, uInt(length_p(0)), uInt(inc_p(0)),
-		     uInt(other.inc_p(0)));
+	    objcopy (begin_p, other.begin_p, length_p(0), inc_p(0),
+		     other.inc_p(0));
 	} else if (length_p(0) == 1  &&  ndim() == 2) {
             // Special case which can be quite common (e.g. row in a matrix).
-	    objcopy (begin_p, other.begin_p, uInt(length_p(1)),
-		     uInt(originalLength_p(0)*inc_p(1)),
-		     uInt(other.originalLength_p(0)*other.inc_p(1)));
+	    objcopy (begin_p, other.begin_p, length_p(1),
+		     originalLength_p(0)*inc_p(1),
+		     other.originalLength_p(0)*other.inc_p(1));
 	} else if (length_p(0) <= 25) {
 	    // If not many elements on a line, it's better to use this loop.
 	    const_iterator from(other.begin());
@@ -217,8 +233,8 @@ template<class T> Array<T> &Array<T>::operator=(const Array<T> &other)
 					   other.originalLength_p.storage(),
 					   other.inc_p.storage(), index);
 		objcopy (begin_p+offset, other.begin_p+offset2,
-			 uInt(length_p(0)), uInt(inc_p(0)),
-			 uInt(other.inc_p(0)));
+			 length_p(0), inc_p(0),
+			 other.inc_p(0));
 		ai.next();
 	    }
 	}
@@ -292,11 +308,11 @@ template<class T> void Array<T>::set(const T &Value)
     } else if (contiguousStorage()) {
 	objset (begin_p, Value, nels_p);
     } else if (ndim() == 1) {
-	objset (begin_p, Value, uInt(length_p(0)), uInt(inc_p(0)));
+	objset (begin_p, Value, length_p(0), inc_p(0));
     } else if (length_p(0) == 1  &&  ndim() == 2) {
         // Special case which can be quite common (e.g. row in a matrix).
-        objset (begin_p, Value, uInt(length_p(1)),
-		uInt(originalLength_p(0)*inc_p(1)));
+        objset (begin_p, Value, length_p(1),
+		originalLength_p(0)*inc_p(1));
     } else if (length_p(0) <= 25) {
         // If not many elements on a line, it's better to use this loop.
         iterator iterend=end();
@@ -311,7 +327,7 @@ template<class T> void Array<T>::set(const T &Value)
 	    index = ai.pos();
 	    offset = ArrayIndexOffset(ndim(), originalLength_p.storage(),
 				      inc_p.storage(), index);
-	    objset(begin_p+offset, Value, uInt(length_p(0)), uInt(inc_p(0)));
+	    objset(begin_p+offset, Value, length_p(0), inc_p(0));
 	    ai.next();
 	}
     }
@@ -334,15 +350,15 @@ template<class T> void Array<T>::apply(T (*function)(T))
 	ArrayPositionIterator ai(shape(), 1);
 	IPosition index(ndim());
 
-	uInt len  = length_p(0);
-	uInt incr = inc_p(0);
+	size_t len  = length_p(0);
+	size_t incr = inc_p(0);
 	size_t offset;
 
 	while (! ai.pastEnd()) {
 	    index = ai.pos();
 	    offset = ArrayIndexOffset(ndim(), originalLength_p.storage(),
 				      inc_p.storage(), index);
-	    for (uInt i=0; i < len; i++) {
+	    for (size_t i=0; i < len; i++) {
 		begin_p[offset + i*incr] = function(begin_p[offset + i*incr]);
 	    }
 	    ai.next();
@@ -367,15 +383,15 @@ template<class T> void Array<T>::apply(T (*function)(const T &))
 	ArrayPositionIterator ai(shape(), 1);
 	IPosition index(ndim());
 
-	uInt len  = length_p(0);
-	uInt incr = inc_p(0);
+	size_t len  = length_p(0);
+	size_t incr = inc_p(0);
 	size_t offset;
 
 	while (! ai.pastEnd()) {
 	    index = ai.pos();
 	    offset = ArrayIndexOffset(ndim(), originalLength_p.storage(),
 				      inc_p.storage(), index);
-	    for (uInt i=0; i < len; i++) {
+	    for (size_t i=0; i < len; i++) {
 		begin_p[offset+i*incr] = function(begin_p[offset+i*incr]);
 	    }
 	    ai.next();
@@ -400,15 +416,15 @@ template<class T> void Array<T>::apply(const Functional<T,T> &function)
 	ArrayPositionIterator ai(shape(), 1);
 	IPosition index(ndim());
 
-	uInt len  = length_p(0);
-	uInt incr = inc_p(0);
+	size_t len  = length_p(0);
+	size_t incr = inc_p(0);
 	size_t offset;
 
 	while (! ai.pastEnd()) {
 	    index = ai.pos();
 	    offset = ArrayIndexOffset(ndim(), originalLength_p.storage(),
 				      inc_p.storage(), index);
-	    for (uInt i=0; i < len; i++) {
+	    for (size_t i=0; i < len; i++) {
 		begin_p[offset+i*incr] = function(begin_p[offset+i*incr]);
 	    }
 	    ai.next();
@@ -596,8 +612,6 @@ template<class T> T &Array<T>::operator()(const IPosition &index)
     if (aips_debug) {
 	validateIndex(index);
     }
-    ///uInt offs = ArrayIndexOffset(ndim(), originalLength_p.storage(),
-    ///                        inc_p.storage(), index);
     size_t offs=0;
     for (uInt i=0; i<ndimen_p; i++) {
         offs += index(i) * steps_p(i);
@@ -664,12 +678,13 @@ template<class T> const Array<T> Array<T>::operator()(const Slicer& slicer) cons
     return const_cast<Array<T>*>(this)->operator() (slicer);
 }
 
-template<class T> ArrayBase* Array<T>::getSection(const Slicer& slicer)
+template<class T>
+CountedPtr<ArrayBase> Array<T>::getSection(const Slicer& slicer) const
 {
     return new Array<T>(operator()(slicer));
 }
 
-template<class T> Array<T> Array<T>::operator[](uInt i) const
+template<class T> Array<T> Array<T>::operator[](size_t i) const
 {
     DebugAssert(ok(), ArrayError);
     uInt nd = ndim();
@@ -764,11 +779,11 @@ template<class T> T *Array<T>::getStorage(Bool &deleteIt)
     }
     // ok - copy it
     if (ndim() == 1) {
-	objcopy(storage, begin_p, uInt(length_p(0)), 1U, uInt(inc_p(0)));
+	objcopy(storage, begin_p, length_p(0), 1U, inc_p(0));
     } else if (length_p(0) == 1  &&  ndim() == 2) {
         // Special case which can be quite common (e.g. row in a matrix).
-	objcopy(storage, begin_p, uInt(length_p(1)), 1U,
-		uInt(originalLength_p(0)*inc_p(1)));
+	objcopy(storage, begin_p, length_p(1), 1U,
+		originalLength_p(0)*inc_p(1));
     } else if (length_p(0) <= 25) {
         // If not many elements on a line, it's better to use this loop.
         T* ptr = storage;
@@ -780,26 +795,17 @@ template<class T> T *Array<T>::getStorage(Bool &deleteIt)
 	ArrayPositionIterator ai(this->shape(), 1);
 	size_t offset;
 	IPosition index(ndim());
-	uInt count=0;
+	size_t count=0;
 	while (! ai.pastEnd()) {
 	    index = ai.pos();
 	    offset = ArrayIndexOffset(ndim(), originalLength_p.storage(),
 				      inc_p.storage(), index);
 	    objcopy(storage + count*length_p(0), begin_p+offset,
-		    uInt(length_p(0)), 1U, uInt(inc_p(0)));
+		    length_p(0), 1U, inc_p(0));
 	    ai.next(); count++;
 	}
     }
     return storage;
-}
-
-template<class T> const T *Array<T>::getStorage(Bool &deleteIt) const
-{
-    DebugAssert(ok(), ArrayError);
-
-    // The cast is OK because the return pointer will be cast to const
-    Array<T> *This = const_cast<Array<T>*>(this);
-    return This->getStorage(deleteIt);
 }
 
 template<class T> void Array<T>::putStorage(T *&storage, Bool deleteAndCopy)
@@ -812,11 +818,11 @@ template<class T> void Array<T>::putStorage(T *&storage, Bool deleteAndCopy)
     }
 
     if (ndim() == 1) {
-	objcopy(begin_p, storage, uInt(length_p(0)), uInt(inc_p(0)), 1U);
+	objcopy(begin_p, storage, length_p(0), inc_p(0), 1U);
     } else if (length_p(0) == 1  &&  ndim() == 2) {
         // Special case which can be quite common (e.g. row in a matrix).
-	objcopy(begin_p, storage, uInt(length_p(1)),
-		uInt(originalLength_p(0)*inc_p(1)), 1U);
+	objcopy(begin_p, storage, length_p(1),
+		originalLength_p(0)*inc_p(1), 1U);
     } else if (length_p(0) <= 25) {
         // If not many elements on a line, it's better to use this loop.
         const T* ptr = storage;
@@ -834,7 +840,7 @@ template<class T> void Array<T>::putStorage(T *&storage, Bool deleteAndCopy)
 	    offset = ArrayIndexOffset(ndim(), originalLength_p.storage(),
 				      inc_p.storage(), index);
 	    objcopy(begin_p+offset, storage+count*length_p(0),
-		    uInt(length_p(0)), uInt(inc_p(0)), 1U);
+		    length_p(0), inc_p(0), 1U);
 	    ai.next(); count++;
 	}
     }
@@ -854,6 +860,32 @@ void Array<T>::freeStorage(const T*&storage, Bool deleteIt) const
     }
     storage = 0;
 }
+
+template<class T>
+void *Array<T>::getVStorage(Bool &deleteIt)
+{
+    return getStorage (deleteIt);
+}
+template<class T>
+const void *Array<T>::getVStorage(Bool &deleteIt) const
+{
+    return getStorage (deleteIt);
+}
+template<class T>
+void Array<T>::putVStorage(void *&storage, Bool deleteAndCopy)
+{
+  T* ptr = static_cast<T*>(storage);
+  putStorage (ptr, deleteAndCopy);
+  storage = 0;
+}
+template<class T>
+void Array<T>::freeVStorage(const void *&storage, Bool deleteAndCopy) const
+{
+  const T* ptr = static_cast<const T*>(storage);
+  freeStorage (ptr, deleteAndCopy);
+  storage = 0;
+}
+
 
 template<class T>
 void Array<T>::takeStorage(const IPosition &shape, T *storage,
@@ -897,7 +929,7 @@ void Array<T>::takeStorage(const IPosition &shape, const T *storage)
 
 
 template<class T>
-ArrayPositionIterator* Array<T>::makeIterator (uInt byDim)
+CountedPtr<ArrayPositionIterator> Array<T>::makeIterator (uInt byDim) const
 {
     return new ArrayIterator<T> (*this, byDim);
 }
@@ -959,4 +991,18 @@ void Array<T>::BaseIteratorSTL::increment()
   }
 }
 
+
+template<class T>
+vector<T> Array<T>::tovector() const {
+  Bool deleteIt;
+  const T *stor = this->getStorage(deleteIt);
+  vector<T> out;
+  out.assign(stor, stor+nelements());
+  this->freeStorage(stor, deleteIt);
+  return out;
+}
+
+
 } //#End casa namespace
+
+#endif

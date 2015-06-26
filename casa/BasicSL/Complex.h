@@ -31,11 +31,11 @@
 
 
 //# Includes
-#include <casa/aips.h>
-#include <casa/BasicSL/Complexfwd.h>
-#include <casa/complex.h>
+#include <casacore/casa/aips.h>
+#include <casacore/casa/BasicSL/Complexfwd.h>
+#include <casacore/casa/complex.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 // <summary>
 // Single and double precision complex numbers
@@ -54,10 +54,10 @@ namespace casa { //# NAMESPACE CASA - BEGIN
 // It is only used by the <src>FITS</src> classes.
 //
 // <src>lDComplex</src> has not been defined: <src>long double</src> is not
-// part of the standard aips++ data suite (yet)
+// part of the standard Casacore data suite (yet)
 //
 // A set of global functions are added for historic reasons (they were present
-// in the original aips++/gcc complex implementation).
+// in the original Casacore/gcc complex implementation).
 //
 // See the standard library documentation for the expected behaviour of 
 // the <src>Complex</src> and <src>DComplex</src> classes.
@@ -336,22 +336,24 @@ Complex erfc(const Complex &in);
 
 // </group>
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 // Define real & complex conjugation for non-complex types
 // and put comparisons into std namespace.
+// The new C++11 standard library already defines real and imag.
 namespace std { 
   inline float  conj(float  x) { return x; }
   inline double conj(double x) { return x; }
+#if !(defined(AIPS_CXX11) || (defined(__APPLE_CC__) && __APPLE_CC__ > 5621))
   inline float  real(float  x) { return x; }
   inline double real(double x) { return x; }
   inline float  imag(float   ) { return 0; }
   inline double imag(double  ) { return 0; }
-  
-  using casa::operator>;
-  using casa::operator>=;
-  using casa::operator<;
-  using casa::operator<=;
+#endif  
+  using casacore::operator>;
+  using casacore::operator>=;
+  using casacore::operator<;
+  using casacore::operator<=;
 }
 
 #endif

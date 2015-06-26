@@ -1,4 +1,4 @@
-//# MatrixMath.h: The AIPS++ linear algebra functions
+//# MatrixMath.h: The Casacore linear algebra functions
 //# Copyright (C) 1994,1995,1996,1999,2000,2002
 //# Associated Universities, Inc. Washington DC, USA.
 //#
@@ -29,13 +29,13 @@
 #define SCIMATH_MATRIXMATHLA_H
 
 
-#include <casa/aips.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Arrays/Matrix.h>
-#include <casa/BasicSL/Complex.h>
+#include <casacore/casa/aips.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Arrays/Matrix.h>
+#include <casacore/casa/BasicSL/Complex.h>
 
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //<summary>
 //    Linear algebra functions on Vectors and Matrices.
@@ -217,9 +217,9 @@ inline void potri(const char *uplo, const int *n, DComplex *a,
 
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #ifndef CASACORE_NO_AUTO_TEMPLATES
-#include <scimath/Mathematics/MatrixMathLA.tcc>
+#include <casacore/scimath/Mathematics/MatrixMathLA.tcc>
 #endif //# CASACORE_NO_AUTO_TEMPLATES
 #endif

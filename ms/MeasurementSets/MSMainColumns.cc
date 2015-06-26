@@ -25,20 +25,20 @@
 //#
 //# $Id$
 
-#include <ms/MeasurementSets/MSMainColumns.h>
-#include <ms/MeasurementSets/MeasurementSet.h>
-#include <tables/Tables/ColDescSet.h>
-#include <tables/Tables/TableDesc.h>
-#include <tables/Tables/TableRecord.h>
-#include <casa/BasicSL/String.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Arrays/IPosition.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/Utilities/DataType.h>
-#include <casa/Containers/RecordFieldId.h>
-#include <casa/Exceptions/Error.h>
+#include <casacore/ms/MeasurementSets/MSMainColumns.h>
+#include <casacore/ms/MeasurementSets/MeasurementSet.h>
+#include <casacore/tables/Tables/ColDescSet.h>
+#include <casacore/tables/Tables/TableDesc.h>
+#include <casacore/tables/Tables/TableRecord.h>
+#include <casacore/casa/BasicSL/String.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Arrays/IPosition.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/Utilities/DataType.h>
+#include <casacore/casa/Containers/RecordFieldId.h>
+#include <casacore/casa/Exceptions/Error.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 ROMSMainColumns::ROMSMainColumns(const MeasurementSet& ms):
   antenna1_p(ms, MS::columnName(MS::ANTENNA1)),
@@ -76,6 +76,7 @@ ROMSMainColumns::ROMSMainColumns(const MeasurementSet& ms):
   uvw2_p(),
   videoPoint_p(),
   weightSpectrum_p(),
+  weightSpectrumCorrected_p(),
   correctedData_p(),
   imagingWeight_p(),
   modelData_p(),
@@ -143,6 +144,7 @@ ROMSMainColumns::ROMSMainColumns():
   uvw2_p(),
   videoPoint_p(),
   weightSpectrum_p(),
+  weightSpectrumCorrected_p(),
   correctedData_p(),
   imagingWeight_p(),
   modelData_p(),
@@ -234,6 +236,9 @@ void ROMSMainColumns::attachOptionalCols(const MeasurementSet& ms)
   if (cds.isDefined(MS::columnName(MS::WEIGHT_SPECTRUM))) {
     weightSpectrum_p.attach(ms,MS::columnName(MS::WEIGHT_SPECTRUM));
   }
+    if (cds.isDefined(MS::columnName(MS::CORRECTED_WEIGHT_SPECTRUM))) {
+    weightSpectrumCorrected_p.attach(ms,MS::columnName(MS::CORRECTED_WEIGHT_SPECTRUM));
+  }
   if (cds.isDefined(MS::columnName(MS::CORRECTED_DATA))) {
     correctedData_p.attach(ms,MS::columnName(MS::CORRECTED_DATA));
   }
@@ -282,6 +287,7 @@ MSMainColumns::MSMainColumns(MeasurementSet& ms):
   uvw2_p(),
   videoPoint_p(),
   weightSpectrum_p(),
+  weightSpectrumCorrected_p(),
   correctedData_p(),
   imagingWeight_p(),
   modelData_p(),
@@ -361,6 +367,7 @@ MSMainColumns::MSMainColumns():
   uvw2_p(),
   videoPoint_p(),
   weightSpectrum_p(),
+  weightSpectrumCorrected_p(),
   correctedData_p(),
   imagingWeight_p(),
   modelData_p(),
@@ -453,6 +460,9 @@ void MSMainColumns::attachOptionalCols(MeasurementSet& ms)
   if (cds.isDefined(MS::columnName(MS::WEIGHT_SPECTRUM))) {
     weightSpectrum_p.attach(ms,MS::columnName(MS::WEIGHT_SPECTRUM));
   }
+  if (cds.isDefined(MS::columnName(MS::CORRECTED_WEIGHT_SPECTRUM))) {
+    weightSpectrumCorrected_p.attach(ms,MS::columnName(MS::CORRECTED_WEIGHT_SPECTRUM));
+  }
   if (cds.isDefined(MS::columnName(MS::CORRECTED_DATA))) {
     correctedData_p.attach(ms,MS::columnName(MS::CORRECTED_DATA));
   }
@@ -467,5 +477,5 @@ void MSMainColumns::attachOptionalCols(MeasurementSet& ms)
 // compile-command: "gmake MSMainColumns"
 // End: 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 

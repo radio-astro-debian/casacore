@@ -29,12 +29,12 @@
 #define MEASURES_MEASUREHOLDER_H
 
 //# Includes
-#include <casa/aips.h>
-#include <casa/Utilities/PtrHolder.h>
-#include <casa/Utilities/RecordTransformable.h>
-#include <casa/Containers/Block.h>
+#include <casacore/casa/aips.h>
+#include <casacore/casa/Utilities/PtrHolder.h>
+#include <casacore/casa/Utilities/RecordTransformable.h>
+#include <casacore/casa/Containers/Block.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
 class Measure;
@@ -205,6 +205,15 @@ public:
   // message generated only if the MeasureHolder does not contain a Measure.
   // Error messages are postfixed to error.
   virtual Bool toRecord(String &error, RecordInterface &out) const;
+
+  // This version  throws an exception if the conversion cannot
+  // occur. It is meant for more allow more compact calling code for callers
+  // that are content with just letting the exception proceed up the call stack
+  // so they do not have to check a return status. This is, among other things, what
+  // exceptions are for after all.
+  virtual void toRecord(RecordInterface& outRecord) const;
+
+
   // Create a default Measure or a record with only a type from a Measure
   // <group>
   Bool toType(String &error, RecordInterface &out) const;
@@ -244,6 +253,6 @@ private:
 };
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

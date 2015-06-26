@@ -30,15 +30,15 @@
 #define MEASURES_MEASCOMET_H
 
 //# Includes
-#include <casa/aips.h>
-#include <tables/Tables/Table.h>
-#include <tables/Tables/TableRow.h>
-#include <casa/Containers/RecordField.h>
-#include <casa/BasicSL/String.h>
-#include <casa/Quanta/MVPosition.h>
-#include <measures/Measures/MDirection.h>
+#include <casacore/casa/aips.h>
+#include <casacore/tables/Tables/Table.h>
+#include <casacore/tables/Tables/TableRow.h>
+#include <casacore/casa/Containers/RecordField.h>
+#include <casacore/casa/BasicSL/String.h>
+#include <casacore/casa/Quanta/MVPosition.h>
+#include <casacore/measures/Measures/MDirection.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
 class MVRadialVelocity;
@@ -180,6 +180,11 @@ class MeasComet {
   // success.
   static Double get_Quantity_keyword(const TableRecord& ks, const String& kw,
 				     const Unit& unit, Bool& success);
+
+  // Convenience function that returns the absolute path to the ephemeris table
+  // connected to the MeasComet object
+  String getTablePath();
+
  private:
   
   //# General member functions
@@ -254,6 +259,6 @@ class MeasComet {
 //# Inline Implementations
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

@@ -1,4 +1,4 @@
-//# ValueHolder.cc: A holder object for the standard AIPS++ data
+//# ValueHolder.cc: A holder object for the standard Casacore data
 //# Copyright (C) 2005
 //# Associated Universities, Inc. Washington DC, USA.
 //#
@@ -27,194 +27,109 @@
 //# $Id$
 
 
-#include <casa/Containers/ValueHolder.h>
-#include <casa/Containers/Record.h>
-#include <casa/Arrays/Array.h>
-#include <casa/Arrays/ArrayMath.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/Exceptions/Error.h>
+#include <casacore/casa/Containers/ValueHolder.h>
+#include <casacore/casa/Containers/Record.h>
+#include <casacore/casa/Arrays/Array.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/Exceptions/Error.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 
 ValueHolder::ValueHolder (Bool value)
   : itsRep (new ValueHolderRep(value))
-{
-  itsRep->link();
-}
-
+{}
 ValueHolder::ValueHolder (uChar value)
   : itsRep (new ValueHolderRep(value))
-{
-  itsRep->link();
-}
-
+{}
 ValueHolder::ValueHolder (Short value)
   : itsRep (new ValueHolderRep(value))
-{
-  itsRep->link();
-}
-
+{}
 ValueHolder::ValueHolder (uShort value)
   : itsRep (new ValueHolderRep(value))
-{
-  itsRep->link();
-}
-
+{}
 ValueHolder::ValueHolder (Int value)
   : itsRep (new ValueHolderRep(value))
-{
-  itsRep->link();
-}
-
+{}
 ValueHolder::ValueHolder (uInt value)
   : itsRep (new ValueHolderRep(value))
-{
-  itsRep->link();
-}
-
+{}
 ValueHolder::ValueHolder (Int64 value)
   : itsRep (new ValueHolderRep(value))
-{
-  itsRep->link();
-}
-
+{}
 ValueHolder::ValueHolder (Float value)
   : itsRep (new ValueHolderRep(value))
-{
-  itsRep->link();
-}
-
+{}
 ValueHolder::ValueHolder (Double value)
   : itsRep (new ValueHolderRep(value))
-{
-  itsRep->link();
-}
-
+{}
 ValueHolder::ValueHolder (const Complex& value)
   : itsRep (new ValueHolderRep(value))
-{
-  itsRep->link();
-}
-
+{}
 ValueHolder::ValueHolder (const DComplex& value)
   : itsRep (new ValueHolderRep(value))
-{
-  itsRep->link();
-}
-
+{}
 ValueHolder::ValueHolder (const Char* value)
   : itsRep (new ValueHolderRep(String(value)))
-{
-  itsRep->link();
-}
-
+{}
 ValueHolder::ValueHolder (const String& value)
   : itsRep (new ValueHolderRep(value))
-{
-  itsRep->link();
-}
-
+{}
 ValueHolder::ValueHolder (const Array<Bool>& value)
   : itsRep (new ValueHolderRep(value))
-{
-  itsRep->link();
-}
-
+{}
 ValueHolder::ValueHolder (const Array<uChar>& value)
   : itsRep (new ValueHolderRep(value))
-{
-  itsRep->link();
-}
-
+{}
 ValueHolder::ValueHolder (const Array<Short>& value)
   : itsRep (new ValueHolderRep(value))
-{
-  itsRep->link();
-}
-
+{}
 ValueHolder::ValueHolder (const Array<uShort>& value)
   : itsRep (new ValueHolderRep(value))
-{
-  itsRep->link();
-}
-
+{}
 ValueHolder::ValueHolder (const Array<Int>& value)
   : itsRep (new ValueHolderRep(value))
-{
-  itsRep->link();
-}
-
+{}
 ValueHolder::ValueHolder (const Array<uInt>& value)
   : itsRep (new ValueHolderRep(value))
-{
-  itsRep->link();
-}
-
+{}
 ValueHolder::ValueHolder (const Array<Int64>& value)
   : itsRep (new ValueHolderRep(value))
-{
-  itsRep->link();
-}
-
+{}
 ValueHolder::ValueHolder (const Array<Float>& value)
   : itsRep (new ValueHolderRep(value))
-{
-  itsRep->link();
-}
-
+{}
 ValueHolder::ValueHolder (const Array<Double>& value)
   : itsRep (new ValueHolderRep(value))
-{
-  itsRep->link();
-}
-
+{}
 ValueHolder::ValueHolder (const Array<Complex>& value)
   : itsRep (new ValueHolderRep(value))
-{
-  itsRep->link();
-}
-
+{}
 ValueHolder::ValueHolder (const Array<DComplex>& value)
   : itsRep (new ValueHolderRep(value))
-{
-  itsRep->link();
-}
-
+{}
 ValueHolder::ValueHolder (const Array<String>& value)
   : itsRep (new ValueHolderRep(value))
-{
-  itsRep->link();
-}
-
+{}
 ValueHolder::ValueHolder (const Record& value)
   : itsRep (new ValueHolderRep(value))
-{
-  itsRep->link();
-}
-
+{}
 ValueHolder::ValueHolder (uInt ndim, Bool dummy)
   : itsRep (new ValueHolderRep(ndim, dummy))
-{
-  itsRep->link();
-}
-
+{}
 
 ValueHolder::ValueHolder (const ValueHolder& that)
   : itsRep (that.itsRep)
-{
-  if (itsRep) itsRep->link();
-}
+{}
 
 ValueHolder& ValueHolder::operator= (const ValueHolder& that)
 {
   if (this != &that) {
-    ValueHolderRep::unlink (itsRep);
     itsRep = that.itsRep;
-    if (itsRep) itsRep->link();
   }
   return *this;
 }
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END

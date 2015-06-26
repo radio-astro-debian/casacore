@@ -26,21 +26,21 @@
 //# $Id$
 
 //# Includes
-#include <casa/aips.h>
-#include <casa/Exceptions/Error.h>
-#include <measures/Measures.h>
-#include <measures/Measures/VelocityMachine.h>
-#include <casa/Quanta/MVTime.h>
-#include <measures/Measures/MDirection.h>
-#include <measures/Measures/MPosition.h>
-#include <measures/Measures/MEpoch.h>
-#include <measures/Measures/MFrequency.h>
-#include <measures/Measures/MDoppler.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Arrays/ArrayIO.h>
-#include <casa/iostream.h>
+#include <casacore/casa/aips.h>
+#include <casacore/casa/Exceptions/Error.h>
+#include <casacore/measures/Measures.h>
+#include <casacore/measures/Measures/VelocityMachine.h>
+#include <casacore/casa/Quanta/MVTime.h>
+#include <casacore/measures/Measures/MDirection.h>
+#include <casacore/measures/Measures/MPosition.h>
+#include <casacore/measures/Measures/MEpoch.h>
+#include <casacore/measures/Measures/MFrequency.h>
+#include <casacore/measures/Measures/MDoppler.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Arrays/ArrayIO.h>
+#include <casacore/casa/iostream.h>
 
-#include <casa/namespace.h>
+#include <casacore/casa/namespace.h>
 int main() {
 
   try {
@@ -122,6 +122,29 @@ int main() {
     cout << "List to RADIO: " << vm.makeVelocity(fx) << endl;
     vm.set(frame);
     cout << "List to RADIO: " << vm.makeVelocity(fx) << endl;
+    {
+    	// test restfreq <= 0 throws exception
+    	MVFrequency restfrq2(0);
+        VelocityMachine bogus(frqref, Unit("GHz"), restfrq2, velref, Unit("km/s"));
+        try {
+        	bogus.makeVelocity(20);
+        	// exception should be thrown before we get here
+        	AlwaysAssert(False, AipsError);
+        }
+        catch (const AipsError& x) {}
+        MVFrequency restfrq3(-1);
+        VelocityMachine bogus2(
+        	frqref, Unit("GHz"), restfrq3, velref, Unit("km/s")
+        );
+        try {
+        	bogus2.makeVelocity(20);
+        	AlwaysAssert(False, AipsError);
+        }
+        catch (const AipsError& x) {}
+
+
+
+    }
 
   } catch (AipsError x) {
     cout << x.getMesg() << endl;

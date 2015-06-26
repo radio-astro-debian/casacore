@@ -24,35 +24,38 @@
 //#                        Charlottesville, VA 22903-2475 USA
 //#
 //# $Id$
+
+#ifndef IMAGES_IMAGESUMMARY_TCC
+#define IMAGES_IMAGESUMMARY_TCC
 //
-#include <casa/aips.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Arrays/ArrayMath.h>
-#include <casa/Arrays/ArrayIO.h>
-#include <casa/Arrays/IPosition.h>
-#include <coordinates/Coordinates.h>
-#include <coordinates/Coordinates/CoordinateUtil.h>
-#include <images/Images/ImageInterface.h>
-#include <images/Images/ImageInfo.h>
-#include <casa/Logging/LogIO.h>
-#include <casa/BasicSL/Constants.h>
-#include <casa/Quanta/Unit.h>
-#include <measures/Measures/MDirection.h>
-#include <measures/Measures/MFrequency.h>
-#include <measures/Measures/MDoppler.h>
-#include <measures/Measures/MEpoch.h>
-#include <casa/Quanta/MVAngle.h>
-#include <casa/Quanta/MVTime.h>
-#include <casa/Quanta/Quantum.h>
-#include <measures/Measures/Stokes.h>
-#include <casa/Utilities/ValType.h>
+#include <casacore/casa/aips.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
+#include <casacore/casa/Arrays/ArrayIO.h>
+#include <casacore/casa/Arrays/ArrayPosIter.h>
+#include <casacore/coordinates/Coordinates.h>
+#include <casacore/coordinates/Coordinates/CoordinateUtil.h>
+#include <casacore/images/Images/ImageInterface.h>
+#include <casacore/images/Images/ImageInfo.h>
+#include <casacore/casa/Logging/LogIO.h>
+#include <casacore/casa/BasicSL/Constants.h>
+#include <casacore/casa/Quanta/Unit.h>
+#include <casacore/measures/Measures/MDirection.h>
+#include <casacore/measures/Measures/MFrequency.h>
+#include <casacore/measures/Measures/MDoppler.h>
+#include <casacore/measures/Measures/MEpoch.h>
+#include <casacore/casa/Quanta/MVAngle.h>
+#include <casacore/casa/Quanta/MVTime.h>
+#include <casacore/casa/Quanta/Quantum.h>
+#include <casacore/measures/Measures/Stokes.h>
+#include <casacore/casa/Utilities/ValType.h>
 
-#include <casa/iomanip.h>
-#include <casa/iostream.h>
+#include <casacore/casa/iomanip.h>
+#include <casacore/casa/iostream.h>
 
-#include <images/Images/ImageSummary.h>
+#include <casacore/images/Images/ImageSummary.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 template <class T>
 ImageSummary<T>::ImageSummary (const ImageInterface<T>& image)
@@ -350,27 +353,16 @@ String ImageSummary<T>::defaultMaskName() const
 }
 
 template <class T> 
-Vector<Quantum<Double> > ImageSummary<T>::restoringBeam () const
-{
-   return imageInfo_p.restoringBeam();
-}
-
-
-template <class T> 
 String ImageSummary<T>::imageType  () const
 {
    return pImage_p->imageType();
 }
 
 template <class T> 
-Vector<String> ImageSummary<T>::list (LogIO& os, const MDoppler::Types velocityType,
-                                      Bool postLocally)
-{
-   LogSinkInterface& lsi = os.localSink();
-   uInt n = lsi.nelements();
-   Int iStart  =  0;
-   if (n>0) iStart = n - 1;
-//
+Vector<String> ImageSummary<T>::list (
+	LogIO& os, const MDoppler::Types velocityType,
+	Bool postLocally, const Bool verbose
+) {
    os << LogIO::NORMAL << endl;
    MEpoch epoch;
    obsDate(epoch);
@@ -394,18 +386,29 @@ Vector<String> ImageSummary<T>::list (LogIO& os, const MDoppler::Types velocityT
 
 // Restoring beam
 
-   Vector<Quantum<Double> > rb = imageInfo_p.restoringBeam();
-   if (rb.nelements()>0) {
-      rb(0).convert(Unit("deg"));
-      rb(1).convert(Unit("deg"));
-      if (rb(0).getValue()<1.0 || rb(1).getValue()<1.0) {
-         rb(0).convert(Unit("arcsec"));
-         rb(1).convert(Unit("arcsec"));
-      }
-      rb(2).convert(Unit("deg"));
-      os.output() << "Restoring Beam   : " << rb(0) << ", " << rb(1) << ", " << rb(2) << endl;
-   } 
-//
+   if ( imageInfo_p.hasBeam()) {
+	   if (imageInfo_p.hasSingleBeam()) {
+		   GaussianBeam rb = imageInfo_p.restoringBeam();
+		   Quantity majAx = rb.getMajor();
+		   majAx.convert("deg");
+		   Quantity minAx = rb.getMinor();
+		   minAx.convert("deg");
+		   if (majAx.getValue()<1.0 || minAx.getValue()<1.0) {
+			   majAx.convert(Unit("arcsec"));
+			   minAx.convert(Unit("arcsec"));
+		   }
+		   Quantity pa = rb.getPA(True);
+		   pa.convert(Unit("deg"));
+		   os.output() << "Restoring Beam   : " << majAx
+			   << ", " << minAx << ", " << pa << endl;
+	   }
+	   else {
+		   imageInfo_p.getBeamSet().summarize(
+				   os, verbose, pImage_p->coordinates()
+		   );
+	   }
+   }
+
    if (postLocally) {
       os.postLocally();
    } else {
@@ -419,23 +422,12 @@ Vector<String> ImageSummary<T>::list (LogIO& os, const MDoppler::Types velocityT
    return messages;
 }
 
-
 template <class T> 
-Bool ImageSummary<T>::setNewImage (const ImageInterface<T>& image)
-//
-// Reassign pointer.  
-//
-{
-   const ImageInterface<T>* pTemp;
-   pTemp = &image;
-   if (pTemp == 0) {
-      return False;
-   } else {
-      pImage_p = pTemp;
-      return True;
-   }
+Bool ImageSummary<T>::setNewImage (const ImageInterface<T>& image) {
+	// FIXME this should be done using shared pointers
+	pImage_p = &image;
+	return True;
 }
-
          
 template <class T> 
 String ImageSummary<T>::makeMasksString() const
@@ -494,5 +486,7 @@ String ImageSummary<T>::makeRegionsString() const
    return String(oss);
 }
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
+
+#endif

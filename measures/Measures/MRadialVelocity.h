@@ -30,21 +30,19 @@
 #define MEASURES_MRADIALVELOCITY_H
 
 //# Includes
-#include <casa/aips.h>
-#include <measures/Measures/MeasBase.h>
-#include <measures/Measures/MeasRef.h>
-#include <casa/Quanta/MVRadialVelocity.h>
+#include <casacore/casa/aips.h>
+#include <casacore/measures/Measures/MeasBase.h>
+#include <casacore/measures/Measures/MeasRef.h>
+#include <casacore/casa/Quanta/MVRadialVelocity.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
 class MRadialVelocity;
 class MCRadialVelocity;
 template <class M> class MeasConvert;
 template <class M> class ArrayMeasColumn;
-template <class M> class ROArrayMeasColumn;
 template <class M> class ScalarMeasColumn;
-template <class M> class ROScalarMeasColumn;
 class MDoppler;
 class MVDoppler;
 
@@ -175,10 +173,8 @@ class MRadialVelocity : public MeasBase<MVRadialVelocity, MeasRef<MRadialVelocit
   typedef MeasRef<MRadialVelocity> Ref;
   // Measure conversion use (i.e. MRadialVelocity::Convert)
   typedef MeasConvert<MRadialVelocity> Convert;
-  // Measure table Columns (e.g., MRadialVelocity::ROScalarColumn)
-  typedef ROScalarMeasColumn<MRadialVelocity> ROScalarColumn;
+  // Measure table Columns (e.g., MRadialVelocity::ScalarColumn)
   typedef ScalarMeasColumn<MRadialVelocity> ScalarColumn;
-  typedef ROArrayMeasColumn<MRadialVelocity> ROArrayColumn;
   typedef ArrayMeasColumn<MRadialVelocity> ArrayColumn;
   // Reference enum Types (included originally for gcc 2.95)  
   typedef WHATEVER_SUN_TYPEDEF(MRadialVelocity) Types Types;
@@ -295,6 +291,6 @@ class MRadialVelocity : public MeasBase<MVRadialVelocity, MeasRef<MRadialVelocit
 };
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

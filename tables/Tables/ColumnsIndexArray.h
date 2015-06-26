@@ -30,16 +30,17 @@
 
 
 //# Includes
-#include <tables/Tables/Table.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Containers/Block.h>
-#include <casa/Containers/Record.h>
+#include <casacore/casa/aips.h>
+#include <casacore/tables/Tables/Table.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Containers/Block.h>
+#include <casacore/casa/Containers/Record.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
 class String;
-class ROTableColumn;
+class TableColumn;
 
 
 // <summary>
@@ -253,7 +254,7 @@ protected:
   // If the switch <src>arrayPossible</src> is True, the column can
   // be an array. Otherwise it has to be a scalar.
   void addColumnToDesc (RecordDesc& description,
-			const ROTableColumn& column);
+			const TableColumn& column);
 
   // Make the various internal <src>RecordFieldPtr</src> objects.
   void makeObjects (const RecordDesc& description);
@@ -340,6 +341,6 @@ inline Record& ColumnsIndexArray::accessUpperKey()
 
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

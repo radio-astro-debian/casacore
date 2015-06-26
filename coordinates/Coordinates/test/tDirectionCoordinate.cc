@@ -27,27 +27,31 @@
 //#
 
  
-#include <casa/Arrays/Vector.h>
-#include <casa/Arrays/Matrix.h>
-#include <casa/Arrays/ArrayLogical.h>
-#include <casa/Arrays/ArrayMath.h>
-#include <casa/Arrays/ArrayIO.h>
-#include <casa/BasicMath/Math.h>
-#include <casa/BasicSL/Constants.h>
-#include <measures/Measures/MDirection.h>
-#include <casa/OS/Timer.h>
-#include <casa/Quanta/Quantum.h>
-#include <casa/Quanta/MVDirection.h>
-#include <coordinates/Coordinates/DirectionCoordinate.h>
-#include <coordinates/Coordinates/Projection.h>
-#include <casa/Exceptions/Error.h>
-#include <tables/Tables/TableRecord.h>
-#include <coordinates/Coordinates/CoordinateSystem.h>
-#include <casa/Logging/LogIO.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Arrays/Matrix.h>
+#include <casacore/casa/Arrays/ArrayLogical.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
+#include <casacore/casa/Arrays/ArrayIO.h>
+#include <casacore/casa/BasicMath/Math.h>
+#include <casacore/casa/BasicSL/Constants.h>
+#include <casacore/casa/Containers/Record.h>
+#include <casacore/measures/Measures/MCDirection.h>
+
+#include <casacore/measures/Measures/MDirection.h>
+#include <casacore/casa/OS/Timer.h>
+#include <casacore/casa/Quanta/Quantum.h>
+#include <casacore/casa/Quanta/MVDirection.h>
+#include <casacore/coordinates/Coordinates/DirectionCoordinate.h>
+#include <casacore/coordinates/Coordinates/Projection.h>
+#include <casacore/casa/Exceptions/Error.h>
+#include <casacore/tables/Tables/TableRecord.h>
+#include <casacore/coordinates/Coordinates/CoordinateSystem.h>
+#include <casacore/casa/Logging/LogIO.h>
 
 #include <wcslib/wcs.h>
-#include <casa/iostream.h>
-#include <casa/namespace.h>
+#include <casacore/casa/iostream.h>
+#include <casacore/casa/namespace.h>
+#include <iomanip>
 
 DirectionCoordinate makeCoordinate(MDirection::Types type,
                                    Projection& proj,
@@ -193,6 +197,7 @@ int main()
          if (!dc5.near(dc3)) {
             throw(AipsError(String("wcs interface constructor failed consistency test 2")));
          }
+         wcsfree(&wcs);
       }  
 
 
@@ -270,7 +275,207 @@ int main()
       {
          doit10();
       }
-  } catch (AipsError x) {
+      {
+    	  // getPixelArea
+    	  DirectionCoordinate dc  = makeCoordinate(
+    	      MDirection::J2000, proj, crval, crpix,
+    	      cdelt, xform
+    	  );
+    	  cout << "cdelt " << cdelt << endl;
+    	  Quantity pixelArea = dc.getPixelArea();
+    	  AlwaysAssert(pixelArea.getValue() == fabs(cdelt[0]*cdelt[1]), AipsError);
+    	  Vector<String> units = dc.worldAxisUnits();
+    	  AlwaysAssert(
+    	      pixelArea.getUnit()
+    	      == (Quantity(1, units[0])*Quantity(1, units[1])).getUnit(),
+    	      AipsError
+    	  );
+      }
+      {
+    	  cout << "*** Test rotate" << endl;
+    	  DirectionCoordinate dc  = makeCoordinate(
+    	      MDirection::J2000, proj, crval, crpix,
+    	      cdelt, xform
+    	  );
+    	  // No rotation
+    	  Coordinate *c = dc.rotate(Quantity(0, "deg"));
+    	  Vector<Double> p1(2);
+    	  p1[0] = 10;
+    	  p1[1] = 20;
+    	  Vector<Double> p2(2);
+    	  p2[0] = 200;
+    	  p2[1] = 240;
+    	  Vector<Double> got, exp;
+    	  c->toWorld(got, p1);
+    	  dc.toWorld(exp, p1);
+    	  Vector<Double> p1World = exp.copy();
+    	  AlwaysAssert(allTrue(got == exp), AipsError);
+    	  c->toWorld(got, p2);
+    	  dc.toWorld(exp, p2);
+    	  Vector<Double> p2World = exp.copy();
+
+    	  AlwaysAssert(allTrue(got == exp), AipsError);
+          delete c;
+
+    	  // non-zero rotation
+    	  c = dc.rotate(Quantity(30, "deg"));
+    	  c->toPixel(got, p1World);
+    	  Vector<Double> orig;
+    	  dc.toPixel(orig, p1World);
+    	  exp[0] = 72.05771366;
+    	  exp[1] = -11.60254038;
+    	  AlwaysAssert(allNear(got, exp, 1e-8), AipsError);
+          delete c;
+      }
+      {
+    	  cout << "*** Test convert()" << endl;
+    	  Projection p(Projection::SIN, Vector<Double>(2, 0));
+    	  Matrix<Double> xform(2, 2, 0);
+    	  xform.diagonal() = 1;
+    	  DirectionCoordinate origGalactic(
+    	      MDirection::GALACTIC, p,
+    	      Quantity(0.15064170309942734, "rad"),
+    	      Quantity(-0.0027706408478612907, "rad"),
+    	      Quantity(-6, "arcsec"), Quantity(6, "arcsec"),
+    	      xform, 1573.5, -6.5
+    	  );
+
+    	  Record r;
+    	  origGalactic.save(r, "coords");
+    	  cout << "*** original " << r << endl;
+    	  Quantity angle;
+    	  DirectionCoordinate converted = origGalactic.convert(angle, MDirection::J2000);
+    	  Record s;
+    	  converted.save(s, "coords");
+    	  cout << "*** converted " << s << endl;
+
+    	  Vector<Double> origRefVal = origGalactic.referenceValue();
+    	  Vector<String> units = origGalactic.worldAxisUnits();
+    	  MDirection origRefDir(
+    		  Quantity(origRefVal[0], units[0]),
+    	      Quantity(origRefVal[1], units[1]),
+    	  	  MDirection::GALACTIC
+    	  );
+    	  Quantum<Vector<Double> > expRefDir = MDirection::Convert(
+    	      origRefDir, MDirection::J2000
+    	  )().getAngle();
+    	  Vector<Double> gotRefDir = converted.referenceValue();
+    	  AlwaysAssert(
+    	      near(
+    	          gotRefDir[0], expRefDir.getValue(units[0])[0],
+    	          1e-8
+    	      ),
+    	      AipsError
+    	  );
+    	  AlwaysAssert(
+    	      near(
+    	          gotRefDir[1],
+    	          expRefDir.getValue(units[1])[1],
+    	          1e-8
+    	      ),
+    	      AipsError
+    	  );
+    	  Vector<Double> origWorld;
+    	  Vector<Double> pixel(2, 20);
+    	  origGalactic.toWorld(origWorld, pixel);
+    	  MDirection origDir2(
+    	      Quantity(origWorld[0], units[0]),
+    	      Quantity(origWorld[1], units[1]),
+    	      MDirection::GALACTIC
+    	  );
+    	  Quantum<Vector<Double> > expDir = MDirection::Convert(
+    	      origDir2, MDirection::J2000
+    	  )().getAngle();
+    	  Vector<Double> gotDir;
+    	  converted.toWorld(gotDir, pixel);
+    	  Vector<Double> pixela(2, -6.5);
+    	  pixela[0] = 1573.5;
+    	  Vector<Double> pixelb = pixela.copy();
+    	  pixelb[0] = 1574.5;
+    	  //Vector<Double> pixelc = pixela.copy();
+    	  //pixelc[0] = 1500;
+    	  Vector<Double> worlda, worldb, worldc;
+    	  converted.toWorld(worlda, pixela);
+    	  converted.toWorld(worldb, pixelb);
+    	  //converted.toWorld(worldc, pixelc);
+
+    	  cout << "*** a " << worlda << endl;
+    	  cout << "*** b " << worldb << endl;
+    	  //cout << "*** c " << worldc << endl;
+    	  cout << "*** inc " << converted.increment() << endl;
+      }
+      {
+    	  cout << "*** test hasSquarePixels()" << endl;
+    	  DirectionCoordinate dc(
+    	      MDirection::J2000, Projection::SIN,
+    	      Quantity(1, "rad"), Quantity(1, "rad"),
+    	      Quantity(-6, "arcsec"), Quantity(6, "arcsec"),
+    	      xform, 1573.5, -6.5
+    	  );
+    	  AlwaysAssert(dc.hasSquarePixels(), AipsError);
+    	  dc = DirectionCoordinate(
+    		  MDirection::J2000, Projection::SIN,
+    		  Quantity(1, "rad"), Quantity(1, "rad"),
+    		  Quantity(-6, "arcsec"), Quantity(-6, "arcsec"),
+    		  xform, 1573.5, -6.5
+    	  );
+    	  dc = DirectionCoordinate(
+    		  MDirection::J2000, Projection::SIN,
+    		  Quantity(1, "rad"), Quantity(1, "rad"),
+    		  Quantity(6, "arcsec"), Quantity(-6, "arcsec"),
+    		  xform, 1573.5, -6.5
+    	  );
+    	  AlwaysAssert(dc.hasSquarePixels(), AipsError);
+    	  dc = DirectionCoordinate(
+    		  MDirection::J2000, Projection::SIN,
+    		  Quantity(1, "rad"), Quantity(1, "rad"),
+    		  Quantity(6, "arcsec"), Quantity(6, "arcsec"),
+    		  xform, 1573.5, -6.5
+    	  );
+    	  AlwaysAssert(dc.hasSquarePixels(), AipsError);
+    	  dc = DirectionCoordinate(
+    		  MDirection::J2000, Projection::SIN,
+    		  Quantity(1, "rad"), Quantity(1, "rad"),
+    		  Quantity(7, "arcsec"), Quantity(6, "arcsec"),
+    		  xform, 1573.5, -6.5
+    	  );
+    	  AlwaysAssert(! dc.hasSquarePixels(), AipsError);
+
+      }
+      {
+    	  // test isNCP()
+    	  Vector<Double> parms(2, 0);
+    	  Projection projection(Projection::SIN, parms);
+    	  Double refLong = 0;
+    	  Double refLat = 0.5;
+    	  Double inc = C::pi/180/3600;
+    	  Matrix<Double> xform = Matrix<Double>::identity(2);
+    	  Double refX = 0;
+    	  Double refY = 0;
+    	  DirectionCoordinate dc(
+    	      MDirection::J2000, projection,
+    	      refLong, refLat, inc, -inc,
+    	  	  xform, refX, refY
+    	  );
+    	  AlwaysAssert(! dc.isNCP(), AipsError);
+    	  parms[1] = 1/tan(refLat);
+    	  projection = Projection(Projection::SIN, parms);
+    	  dc = DirectionCoordinate(
+    	      MDirection::J2000, projection,
+    	      refLong, refLat, inc, -inc,
+    	      xform, refX, refY
+    	  );
+    	  AlwaysAssert(dc.isNCP(), AipsError);
+    	  projection = Projection(Projection::TAN, parms);
+    	  dc = DirectionCoordinate(
+    	      MDirection::J2000, projection,
+    	      refLong, refLat, inc, -inc,
+    	      xform, refX, refY
+    	  );
+    	  AlwaysAssert(! dc.isNCP(), AipsError);
+      }
+
+  } catch (const AipsError& x) {
       cerr << "aipserror: error " << x.getMesg() << endl;
       return (1);
    }
@@ -445,11 +650,19 @@ void doit2 (DirectionCoordinate& lc,
   }
 //       
    xform.diagonal() = -2.0;
+   Matrix<Double> xformOut(2,2);
+   xformOut = 0.;
+   xformOut.diagonal() = 1.0;
+   Vector<Double> cdeltOut; 
+   cdeltOut = cdelt * -2.0;
    if (!lc.setLinearTransform(xform)) {
       throw(AipsError(String("Failed to set linear transform because") + lc.errorMessage()));
    }
-   if (!allEQ(xform, lc.linearTransform())) {
-      throw(AipsError("Failed linear transform set/recovery test"));
+   if (!allEQ(xformOut, lc.linearTransform())) {
+      throw(AipsError("Failed linear transform set/recovery test (wrong resulting xform)"));
+   }
+   if (!allEQ(cdeltOut, lc.increment())) {
+      throw(AipsError("Failed linear transform set/recovery test (wrong resulting cdelt)"));
    }
 }
 
@@ -504,7 +717,10 @@ void doit3 (DirectionCoordinate& lc)
    if (!allNear(dirV.get(), world, 1e-6)) {
          throw(AipsError("Coordinate conversion values (MVDirection) are wrong"));
    }
-//
+   Vector<Double> pix2;
+   pix2 = lc.toPixel(dirV);
+   AlwaysAssert(allNear(pix2, pixel, 1e-6), AipsError);
+
    axisUnits.set("deg");
    if (!lc.setWorldAxisUnits(axisUnits)) {
       throw(AipsError(String("failed to set world axis units to degrees because ") + lc.errorMessage())); 
@@ -537,7 +753,14 @@ void doit3 (DirectionCoordinate& lc)
    if (!allNear(pixel3, pixel, 1e-6)) {
          throw(AipsError("Coordinate conversion reflection 2 failed"));
    }
-
+   MDirection converted = MDirection::Convert(dir, MDirection::SUPERGAL)();
+   Vector<Double> pixel4;
+   if (!lc.toPixel(pixel4, converted)) {
+	   throw(AipsError(String("toPixel conversion (3) after conversion failed because ") + lc.errorMessage()));
+   }
+   if (!allNear(pixel4, pixel, 1e-5)) {
+	   throw(AipsError("Coordinate conversion reflection 3 failed"));
+   }
 // relative/absolute world
 
    {

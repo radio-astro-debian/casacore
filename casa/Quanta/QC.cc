@@ -26,10 +26,10 @@
 //# $Id$
 
 //# Includes
-#include <casa/Quanta/QC.h>
-#include <casa/Quanta/UnitMap.h>
+#include <casacore/casa/Quanta/QC.h>
+#include <casacore/casa/Quanta/UnitMap.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 Quantum<Double> QC::c(C::c,"m/s");
 Quantum<Double> QC::G(6.67259e-11,"N.m2/kg2");
@@ -49,6 +49,9 @@ Quantum<Double> QC::re(2.8179e-15,"m");
 Quantum<Double> QC::a0(5.2918e-11,"m");
 Quantum<Double> QC::R0(6.9599e+08,"m");
 Quantum<Double> QC::k2(IAU_k*IAU_k,"AU3/d2/S0");
+Quantum<Double> QC::qTurn(90.0, "deg");
+Quantum<Double> QC::hTurn(180.0, "deg");
+Quantum<Double> QC::fTurn(360.0, "deg");
 
 uShort QC_init::count;
 
@@ -68,5 +71,5 @@ QC_init::~QC_init() {
 void QC::init() {
 }
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 

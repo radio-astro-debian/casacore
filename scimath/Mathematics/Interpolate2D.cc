@@ -25,15 +25,15 @@
 //#
 //# $Id$
  
-#include <scimath/Mathematics/Interpolate2D.h>
+#include <casacore/scimath/Mathematics/Interpolate2D.h>
 
-#include <casa/Arrays/Matrix.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Exceptions/Error.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/BasicSL/String.h>
+#include <casacore/casa/Arrays/Matrix.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Exceptions/Error.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/BasicSL/String.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 Interpolate2D::Interpolate2D(Interpolate2D::Method method) {
 
@@ -282,9 +282,9 @@ Interpolate2D::Method Interpolate2D::stringToMethod (const String &method) {
   } else if (tmp==String("C")) {
     method2 = Interpolate2D::CUBIC;
   } else if (tmp==String("Z")) {
-      method2 = Interpolate2D::LANCZOS;
+    method2 = Interpolate2D::LANCZOS;
   } else {
-    throw(AipsError("Illegal method"));
+    throw AipsError("Unknown interpolation method " + method);
   }
   return method2;
 }
@@ -299,5 +299,5 @@ Bool Interpolate2D::anyBadMaskPixels (const Matrix<Bool>* &maskPtr,
   return False;
 }  
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 

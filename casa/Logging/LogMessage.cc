@@ -25,13 +25,13 @@
 //#
 //# $Id$
 
-#include <casa/Logging/LogMessage.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/Utilities/Regex.h>
+#include <casacore/casa/Logging/LogMessage.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/Utilities/Regex.h>
 
-#include <casa/sstream.h>
+#include <casacore/casa/sstream.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 LogMessage::LogMessage(Priority prio)
   : priority_p(prio)
@@ -187,11 +187,37 @@ String LogMessage::toString() const
   return os;
 }
 
+String LogMessage::toTermString() const
+{
+    String header  = messageTime().ISODate();
+    header += "\t";
+    header += toString(priority());
+    header += "\t";
+    if (! origin_p.isUnset()) {
+        String daOrigin = origin().toString();
+        if (priority_p > NORMAL1 && priority_p < WARN) {
+            // Remove file and line location from origin
+            daOrigin.gsub(Regex(".file .*line .*"), "");
+        }
+        header += daOrigin;
+  }
+	
+  String continuationHeader = "\n\t";
+  String message = String(message_p); // copy
+  //message.gsub("\n", continuationHeader);
+
+  ostringstream os;
+  os << header << "\n" << message;
+  //String pr = toString(priority());
+  //os << pr.resize(6, ' ') << "   " << message;
+  return os;
+}
+
 ostream &operator<<(ostream &os, const LogMessage &message)
 {
     os << message.toString() << endl;
     return os;
 }
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 

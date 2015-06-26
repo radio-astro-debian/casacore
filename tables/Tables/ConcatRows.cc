@@ -26,11 +26,11 @@
 //# $Id$
 
 //# Includes
-#include <tables/Tables/ConcatRows.h>
-#include <tables/Tables/TableError.h>
-#include <casa/Utilities/BinarySearch.h>
+#include <casacore/tables/Tables/ConcatRows.h>
+#include <casacore/tables/Tables/TableError.h>
+#include <casacore/casa/Utilities/BinarySearch.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
   void ConcatRows::add (uInt nrow)
   {
@@ -69,7 +69,7 @@ namespace casa { //# NAMESPACE CASA - BEGIN
   {
     itsPastEnd  = (itsEnd==0);
     itsChunk[0] = 0;
-    itsChunk[1] = rows[0]-1;
+    itsChunk[1] = rows.ntable()>0 ? rows[0]-1 : 0;
     itsChunk[2] = 1;
   }
 
@@ -113,4 +113,4 @@ namespace casa { //# NAMESPACE CASA - BEGIN
     }
   }
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END

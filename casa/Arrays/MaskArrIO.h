@@ -28,11 +28,11 @@
 #ifndef CASA_MASKARRIO_H
 #define CASA_MASKARRIO_H
 
-#include <casa/aips.h>
+#include <casacore/casa/aips.h>
 
 //# Forward declarations
-#include <casa/iosfwd.h>
-namespace casa { //# NAMESPACE CASA - BEGIN
+#include <casacore/casa/iosfwd.h>
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 template<class T> class MaskedArray;
 template<class T> class MaskedArray;
@@ -50,7 +50,7 @@ template<class T> class MaskedArray;
 // </prerequisite>
 //
 // <etymology>
-// MaskArrIO is short for MaskedArrayIO, which is too long by
+// MaskArrIO is short for MaskedArrayIO, which is too long by the old
 // AIPS++ file naming conventions.  This file contains global functions
 // for writing out ascii representations of masked arrays.
 // </etymology>
@@ -97,9 +97,9 @@ template<class T> ostream & operator<< (ostream &, const MaskedArray<T> &);
 // </group>
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #ifndef CASACORE_NO_AUTO_TEMPLATES
-#include <casa/Arrays/MaskArrIO.tcc>
+#include <casacore/casa/Arrays/MaskArrIO.tcc>
 #endif //# CASACORE_NO_AUTO_TEMPLATES
 #endif

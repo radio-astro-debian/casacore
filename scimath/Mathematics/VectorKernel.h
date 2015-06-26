@@ -30,10 +30,10 @@
 
 
 //# Includes
-#include <casa/aips.h>
-#include <casa/Arrays/Vector.h>
+#include <casacore/casa/aips.h>
+#include <casacore/casa/Arrays/Vector.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
 class Regex;
@@ -50,7 +50,6 @@ class String;
 
 // <prerequisite>
 //   <li> <linkto class="Vector">Vector</linkto>
-//   <li> <linkto class="SepImageConvolver">SepImageConvolver</linkto>
 // </prerequisite>
 
 // <etymology>
@@ -100,12 +99,11 @@ enum KernelTypes {
    NKERNELS};
 
 // Create kernel vector for width in pixels.  For Gaussian, width is FWHM,
-// for Boxcar, width is full width.  For Hanning width is ignored (always 3)
+// for Boxcar, width is full width.  For Hanning width is ignored.
 // If useShapeExactly is True, the provided shape is used exactly. 
 // If useShapeExactly is False,
 // the kernel length will be the max of the provided shape and an
 // autoestimate (e.g. from +/- 5sigma limits for a Gaussian).  
-// The output shape is always 3 for Hanning.
 // <group>   
    static Vector<Double> make(KernelTypes kernelType, Double width, 
                               uInt shape, Bool useShapeExactly, Bool peakIsUnity=False);
@@ -128,7 +126,7 @@ enum KernelTypes {
 };
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif
 

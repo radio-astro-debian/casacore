@@ -25,27 +25,22 @@
 //#
 //# $Id$
 
-#include <casa/Arrays/ArrayLogical.h>
-#include <casa/Arrays/MaskArrMath.h>
-#include <casa/BasicMath/Math.h>
-#include <casa/Arrays/Array.h>
-#include <casa/Arrays/ArrayError.h>
-#include <casa/Arrays/ArrayIter.h>
-#include <casa/Arrays/VectorIter.h>
-#include <casa/Utilities/GenSort.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/Exceptions/Error.h>
+#ifndef CASA_MASKARRMATH_TCC
+#define CASA_MASKARRMATH_TCC
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+#include <casacore/casa/Arrays/ArrayLogical.h>
+#include <casacore/casa/Arrays/MaskArrMath.h>
+#include <casacore/casa/BasicMath/Math.h>
+#include <casacore/casa/Arrays/Array.h>
+#include <casacore/casa/Arrays/ArrayError.h>
+#include <casacore/casa/Arrays/ArrayIter.h>
+#include <casacore/casa/Arrays/VectorIter.h>
+#include <casacore/casa/Utilities/GenSort.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/Exceptions/Error.h>
 
-// Some test programs seem to want this. It doesn't seem to make
-// any sense!
-#if defined(AIPS_STDLIB)
-inline Int atan2(Int a1, Int a2)
-{
-  return Int(std::atan2(double(a1),double(a2)));
-}
-#endif
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
+
 
 #define MARRM_IOP_MA(IOP,STRIOP) \
 template<class T> \
@@ -1582,6 +1577,14 @@ template<class T> T median(const MaskedArray<T> &left, Bool sorted,
     return medval;
 }
 
+template<class T> T madfm(const MaskedArray<T> &a, Bool sorted,
+                          Bool takeEvenMean)
+{
+    T med = median(a, sorted, takeEvenMean);
+    MaskedArray<T> absdiff = abs(a - med);
+    return median(absdiff, False, takeEvenMean);
+}
+
 
 template<class T> MaskedArray<T> square(const MaskedArray<T> &left)
 {
@@ -1772,5 +1775,7 @@ Array<T> slidingArrayMath (const MaskedArray<T>& array,
 }
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
+
+#endif

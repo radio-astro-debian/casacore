@@ -26,14 +26,14 @@
 //# $Id$
 
 //# Includes
-#include <casa/Arrays/Array.h>
-#include <casa/Arrays/ArrayMath.h>
-#include <casa/Arrays/ArrayLogical.h>
-#include <casa/Arrays/ArrayIO.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/iostream.h>
+#include <casacore/casa/Arrays/Array.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
+#include <casacore/casa/Arrays/ArrayLogical.h>
+#include <casacore/casa/Arrays/ArrayIO.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/iostream.h>
 
-#include <casa/namespace.h>
+#include <casacore/casa/namespace.h>
 
 
 #define TestBinary(OPER,NAME,T,U)                \
@@ -96,7 +96,7 @@ void NAME()\
   T* ap = a.data();\
   T* ep = e.data();\
   for (uInt i=0; i<a.size(); ++i) {\
-    ap[i] = (i+1)/120.;\
+    ap[i] = static_cast<T> ((i+1)/120.);      \
     ep[i] = OPER ap[i];\
   }\
   AlwaysAssertExit (allEQ(OPER a, e));\

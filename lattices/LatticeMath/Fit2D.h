@@ -29,13 +29,13 @@
 #define LATTICES_FIT2D_H
 
 //# Includes
-#include <casa/aips.h>
-#include <scimath/Functionals/CompoundFunction.h>
-#include <casa/BasicSL/Constants.h>
-#include <scimath/Fitting/NonLinearFitLM.h>
-#include <casa/Logging/LogIO.h>
+#include <casacore/casa/aips.h>
+#include <casacore/scimath/Functionals/CompoundFunction.h>
+#include <casacore/casa/BasicSL/Constants.h>
+#include <casacore/scimath/Fitting/NonLinearFitLM.h>
+#include <casacore/casa/Logging/LogIO.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 template<class T> class Array;
 template<class T> class Matrix;
@@ -107,6 +107,7 @@ public:
       GAUSSIAN = 0,
       DISK = 1,
       LEVEL=2,
+      PLANE=3,
       nTypes
     };
 
@@ -205,10 +206,18 @@ public:
                           const Array<Float>& sigma);
     //</group>
 
-    // Find the residuals to the fit.   
+    // Find the residuals to the fit. xOffset and yOffset allow one to provide a data
+    // array that is offset in space from the grid that was fit. In this way, one
+    // can fill out a larger image than the subimage that was fit, for example. A negative
+    // value of xOffset means the supplied data array represents a grid that has a y axis left
+    // of the grid of pixels that was fit. A negative yOffset value means the supplied data
+    // array represents a grid that has an x axis that is below the x axis of the grid of pixels
+    // that was fit.
     //<group>
-    Fit2D::ErrorTypes residual(Array<Float>& resid, Array<Float>& model,
-                               const Array<Float>& data);
+    Fit2D::ErrorTypes residual(
+    	Array<Float>& resid, Array<Float>& model,
+    	const Array<Float>& data, Int xOffset=0, int yOffset=0
+    ) const;
     Fit2D::ErrorTypes residual(Array<Float>& resid, Array<Float>& model,
                                const MaskedLattice<Float>& data);
     Fit2D::ErrorTypes residual(Array<Float>& resid, Array<Float>& model,
@@ -320,7 +329,7 @@ inline Bool Fit2D::includeIt (Float value, const Vector<Float>& range,
 
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif
 

@@ -27,36 +27,33 @@
 //# $Id$
 
 
-#include <coordinates/Coordinates/Coordinate.h>
+#include <casacore/coordinates/Coordinates/Coordinate.h>
 
-#include <casa/Arrays/Matrix.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Arrays/ArrayMath.h>
-#include <casa/Arrays/ArrayLogical.h>
-#include <casa/Arrays/ArrayAccessor.h>
-#include <coordinates/Coordinates/Projection.h>
-#include <casa/Exceptions/Error.h>
-#include <casa/Logging/LogIO.h>
-#include <casa/BasicMath/Math.h>
-#include <measures/Measures/MDirection.h>
-#include <casa/Quanta/Unit.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/Utilities/Regex.h>
+#include <casacore/casa/Arrays/Matrix.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
+#include <casacore/casa/Arrays/ArrayLogical.h>
+#include <casacore/casa/Arrays/ArrayAccessor.h>
+#include <casacore/coordinates/Coordinates/Projection.h>
+#include <casacore/casa/Exceptions/Error.h>
+#include <casacore/casa/Logging/LogIO.h>
+#include <casacore/casa/BasicMath/Math.h>
+#include <casacore/measures/Measures/MDirection.h>
+#include <casacore/casa/Quanta/Unit.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/Utilities/Regex.h>
 
-#include <casa/OS/Timer.h>
+#include <casacore/casa/OS/Timer.h>
 
+#include <casacore/casa/iomanip.h>  
+#include <casacore/casa/sstream.h>
 
-#include <casa/iomanip.h>  
-#include <casa/sstream.h>
-
-namespace casa { //# NAMESPACE CASA - BEGIN
-
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 Coordinate::Coordinate()
 : worldMin_p(0),
   worldMax_p(0)
 {}
-
 
 Coordinate::Coordinate(const Coordinate& other)
 : worldMin_p(0),
@@ -331,13 +328,12 @@ void Coordinate::getPrecision(Int &precision,
 }
    
 
-String Coordinate::format(String& units,
-                          Coordinate::formatType format, 
-                          Double worldValue, 
-                          uInt worldAxis, 
-                          Bool isAbsolute, 
-                          Bool showAsAbsolute,
-                          Int precision) const
+String Coordinate::format(
+	String& units, Coordinate::formatType format,
+	Double worldValue, uInt worldAxis,
+	Bool isAbsolute, Bool showAsAbsolute,
+	Int precision, Bool usePrecForMixed
+) const
 //
 // isAbsolute
 //    T means the worldValue is given as absolute
@@ -429,7 +425,10 @@ String Coordinate::format(String& units,
 // Format and get units.
   
    if (form == Coordinate::MIXED) {
-      oss << worldValue;
+	   if (usePrecForMixed) {
+		   oss << setprecision(prec);
+	   }
+	   oss << worldValue;
    } else if (form == Coordinate::SCIENTIFIC) {
       oss.setf(ios::scientific, ios::floatfield);
       if ( precision_set == false ) oss.precision(prec);
@@ -511,6 +510,8 @@ String Coordinate::typeToString (Coordinate::Type type)
       return String("Spectral");
    } else if (type==Coordinate::STOKES) {
       return String("Stokes");
+   } else if (type==Coordinate::QUALITY) {
+      return String("Quality");
    } else if (type==Coordinate::TABULAR) {
       return String("Tabular");
    } else if (type==Coordinate::COORDSYS) {      
@@ -586,6 +587,8 @@ void Coordinate::fourierUnits (String& nameOut, String& unitOut, String& unitInC
       }
    } else if (type==Coordinate::STOKES) {
       throw (AipsError("Cannot provide Fourier coordinate name for Stokes coordinate"));
+   } else if (type==Coordinate::QUALITY) {
+      throw (AipsError("Cannot provide Fourier coordinate name for Quality coordinate"));
    } else if (type==Coordinate::COORDSYS) {
       throw (AipsError("Cannot provide Fourier coordinate name for CoordinateSystem coordinate"));
    } else {
@@ -631,7 +634,7 @@ void Coordinate::makeWorldAbsRelMany (Matrix<Double>& value, Bool toAbs) const
        same = True;
        for (i.reset(),k=0; i!=i.end(); i++,k++) {
           col[k] = *i;
-          if (l==0 || (l!=0 && !casa::near(col[k],lastInCol[k]))) same = False;
+          if (l==0 || (l!=0 && !casacore::near(col[k],lastInCol[k]))) same = False;
        }
        lastInCol = col;
 //
@@ -670,7 +673,7 @@ void Coordinate::makePixelAbsRelMany (Matrix<Double>& value, Bool abs) const
        same = True;
        for (i.reset(),k=0; i!=i.end(); i++,k++) {
           col[k] = *i;
-          if (l==0 || (l!=0 && !casa::near(col[k],lastInCol[k]))) same = False;
+          if (l==0 || (l!=0 && !casacore::near(col[k],lastInCol[k]))) same = False;
        }
        lastInCol = col;
 //
@@ -868,7 +871,7 @@ Bool Coordinate::doNearPixel (const Coordinate& other,
 
 // Ref val
 
-         if (!casa::near(thisRefVal(i), otherRefVal(i), tol)) {
+         if (!casacore::near(thisRefVal(i), otherRefVal(i), tol)) {
             oss << "The Coordinates have differing reference values for axis "
                  << i;
             set_error(String(oss));
@@ -877,7 +880,7 @@ Bool Coordinate::doNearPixel (const Coordinate& other,
 
 // Increment
 
-         if (!casa::near(thisInc(i), otherInc(i), tol)) {
+         if (!casacore::near(thisInc(i), otherInc(i), tol)) {
             oss << "The Coordinates have differing increments for axis "
                  << i;
             set_error(String(oss));
@@ -886,7 +889,7 @@ Bool Coordinate::doNearPixel (const Coordinate& other,
 
 // Ref pix
  
-         if (!casa::near(thisRefPix(i), otherRefPix(i), tol)) {
+         if (!casacore::near(thisRefPix(i), otherRefPix(i), tol)) {
             oss << "The Coordinates have differing reference pixels for axis "
                  << i;
             set_error(String(oss));
@@ -905,13 +908,13 @@ Bool Coordinate::doNearPixel (const Coordinate& other,
          Vector<Double> r1 = thisPC.row(i);
          Vector<Double> r2 = otherPC.row(i);
          for (uInt j=0; j<r1.nelements(); j++) {
-            if (!casa::near(r1(j),r2(j),tol)) return False;
+            if (!casacore::near(r1(j),r2(j),tol)) return False;
          }
 //
          Vector<Double> c1 = thisPC.column(i);
          Vector<Double> c2 = otherPC.column(i);
          for (uInt j=0; j<r1.nelements(); j++) {
-            if (!casa::near(c1(j),c2(j),tol)) return False;
+            if (!casacore::near(c1(j),c2(j),tol)) return False;
          }
       }
    }
@@ -921,7 +924,36 @@ Bool Coordinate::doNearPixel (const Coordinate& other,
 }
 
 
+Coordinate* Coordinate::rotate(const Quantity& angle) const {
+	if (nPixelAxes() != 2) {
+		throw AipsError(
+			"Coordinate::rotate: This coordinate does not have exactly two pixel axes. Rotation is not possible."
+		);
+	}
+	Matrix<Double> xf = linearTransform();
 
+	// Generate rotation matrix components
+	Double angleRad = angle.getValue(Unit("rad"));
+	Matrix<Double> rotm(2, 2);
+	Double s = sin(-angleRad);
+	Double c = cos(-angleRad);
+	rotm(0, 0) = c;
+	rotm(0, 1) = s;
+	rotm(1, 0) = -s;
+	rotm(1, 1) = c;
+
+	// Create new linear transform matrix
+	Matrix<Double> xform(2, 2);
+	xform(0, 0) = rotm(0, 0) * xf(0, 0) + rotm(0, 1) * xf(1, 0);
+	xform(0, 1) = rotm(0, 0) * xf(0, 1) + rotm(0, 1) * xf(1, 1);
+	xform(1, 0) = rotm(1, 0) * xf(0, 0) + rotm(1, 1) * xf(1, 0);
+	xform(1, 1) = rotm(1, 0) * xf(0, 1) + rotm(1, 1) * xf(1, 1);
+
+	// Apply new linear transform matrix
+	Coordinate* result = clone();
+	result->setLinearTransform(xform);
+	return result;
+}
 
 Bool Coordinate::toWorldWCS (Vector<Double>& world, const Vector<Double>& pixel,
                              ::wcsprm& wcs) const
@@ -939,8 +971,7 @@ Bool Coordinate::toWorldWCS (Vector<Double>& world, const Vector<Double>& pixel,
 //
     Block<double> imgCrd(nAxes);
     double phi;
-    double theta;
-
+    double theta=0;   // initialize, because wcslib not always sets theta
 // Convert from pixel to world with wcs units
 
     int stat;
@@ -1217,5 +1248,5 @@ void Coordinate::set_wcs (::wcsprm& wcs)
     }
 }
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 

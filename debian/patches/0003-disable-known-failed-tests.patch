@@ -1,0 +1,211 @@
+From df33e210fc7140c7bb4c0f122d73fb59d2d27518 Mon Sep 17 00:00:00 2001
+From: Benda Xu <heroxbd@gentoo.org>
+Date: Wed, 10 Sep 2014 10:00:43 +0900
+Subject: disable known failed tests
+
+Bug: http://code.google.com/p/casacore/issues/detail?id=67
+Description: Testsuite of tEarthField, tEarthMagneticMachine,
+    tMEarthMagnetic are out of date with casacore-data. Data needed
+    for tAntennaResponses is not available.
+
+    dImageMoments, dImageStatistics, dImageSummary, tAntennaResponses,
+    tImageAttrHandler, tImageConvolver, tImageEmpty, tImageExpr2Gram,
+    tImageExpr3Gram, tImageFFT, tImageMetaData, tImageRegrid,
+    tImageReorderer, tImageUtilities, tLELSpectralIndex, tPagedImage,
+    tPagedImage2, tRebinImage, tSepImConvolver, tRegionManager,
+    tWCBox, tWCLELMask, dCoordinates, tCoordinateSystem, tCoordinateUtil,
+    tFrequencyAligner, tObsInfo, tSpectralCoordinate  disabled, because
+    geodetic/Observatories is not yet available in casacore-data.
+
+    dTwoSidedShape, dImageHistograms, tMSSimulator, tIAU2000,
+    tVelocityMachine, tParAngleMachine, tMuvw, tMeasure, dMeasure,
+    disabled for missing geodetic/TAI_UTC.
+
+    tMeasJPL disabled for ephemerides/DE200.
+
+    tMSDerivedValues disabled for geodetic/IERSpredict.
+
+    tMeasComet for ephemerides/VGEO.
+
+    tMBaseline for geodetic/IGRF.
+
+    tTableMeasures disabled for
+
+       geodetic/{IERSeop{2000,97},IERSpredict{,2000},TAI_UTC}.
+---
+ coordinates/Coordinates/test/CMakeLists.txt |  6 ------
+ images/Images/test/CMakeLists.txt           | 19 ++-----------------
+ images/Regions/test/CMakeLists.txt          |  4 ----
+ measures/Measures/test/CMakeLists.txt       | 19 -------------------
+ measures/TableMeasures/test/CMakeLists.txt  |  1 -
+ ms/MeasurementSets/test/CMakeLists.txt      | 29 -----------------------------
+ 6 files changed, 2 insertions(+), 76 deletions(-)
+ delete mode 100644 ms/MeasurementSets/test/CMakeLists.txt
+
+diff --git a/coordinates/Coordinates/test/CMakeLists.txt b/coordinates/Coordinates/test/CMakeLists.txt
+index f46b327..bbf7e68 100644
+--- a/coordinates/Coordinates/test/CMakeLists.txt
++++ b/coordinates/Coordinates/test/CMakeLists.txt
+@@ -1,18 +1,12 @@
+ set (tests
+-dCoordinates
+ dRemoveAxes
+ dWorldMap
+ tCoordinate
+-tCoordinateSystem
+-tCoordinateUtil
+ tDirectionCoordinate
+-tFrequencyAligner
+ tGaussianConvert
+ tLinearCoordinate
+ tLinearXform
+-tObsInfo
+ tProjection
+-tSpectralCoordinate
+ tStokesCoordinate
+ tQualityCoordinate
+ tTabularCoordinate
+diff --git a/images/Images/test/CMakeLists.txt b/images/Images/test/CMakeLists.txt
+index 7d606f5..74de981 100644
+--- a/images/Images/test/CMakeLists.txt
++++ b/images/Images/test/CMakeLists.txt
+@@ -24,36 +24,21 @@ endforeach (file)
+ 
+ set (tests
+ dImageInterface
+-dImageStatistics
+-dImageSummary
+ dPagedImage
+ tExtendImage
+-tFITSErrorImage
+ tFITSExtImage
+ tFITSExtImageII
+ tFITSImage
+ tFITSImgParser
+-tFITSQualityImage
+ tHDF5Image
+-tImageAttrHandler
+-tImageBeamSet
+ tImageConcat
+-tImageEmpty
+-tImageExpr
+-tImageExpr2Gram
+-tImageExpr3Gram
+ tImageExprGram
+ tImageExprParse_addDir
+ tImageInfo
+-tImageRegrid
++tImagePolarimetry
++tImageSourceFinder
+ tImageStatistics
+-tImageStatistics2
+-tImageUtilities
+-tLELSpectralIndex
+ tMIRIADImage
+-tPagedImage
+-tPagedImage2
+-tRebinImage
+ tSubImage
+ tTempImage
+ )
+diff --git a/images/Regions/test/CMakeLists.txt b/images/Regions/test/CMakeLists.txt
+index e41dd37..6ac6c4b 100644
+--- a/images/Regions/test/CMakeLists.txt
++++ b/images/Regions/test/CMakeLists.txt
+@@ -9,12 +9,8 @@ foreach (file ${datafiles})
+ endforeach (file)
+ 
+ set (tests
+-tImageRegion
+ tRegionHandler
+-tWCBox
+-tWCEllipsoid
+ tWCExtension
+-tWCLELMask
+ tWCUnion
+ )
+ 
+diff --git a/measures/Measures/test/CMakeLists.txt b/measures/Measures/test/CMakeLists.txt
+index 0723581..130babb 100644
+--- a/measures/Measures/test/CMakeLists.txt
++++ b/measures/Measures/test/CMakeLists.txt
+@@ -1,24 +1,10 @@
+ set (tests
+ dM1950_2000
+-dMeasure
+-tEarthField
+-tEarthMagneticMachine
+-tMBaseline
+-tMDirection
+-tMEarthMagnetic
+-tMFrequency
+-tMeasComet
+-tMeasJPL
+ tMeasMath
+-tMeasure
+ tMeasureHolder
+-tMuvw
+-tParAngleMachine
+-tQuality
+ tRecordTransformable
+ tStokes
+ tUVWMachine
+-tVelocityMachine
+ )
+ 
+ foreach (test ${tests})
+@@ -27,8 +13,3 @@ foreach (test ${tests})
+     add_test (${test} ${CMAKE_SOURCE_DIR}/cmake/cmake_assay ./${test})
+ endforeach (test)
+ 
+-foreach (test tIAU2000)
+-    add_executable (tIAU2000 tIAU2000.cc)
+-    target_link_libraries (tIAU2000 casa_measures sofa)
+-    add_test (${test} ${CMAKE_SOURCE_DIR}/cmake/cmake_assay ./${test})
+-endforeach (test)
+diff --git a/measures/TableMeasures/test/CMakeLists.txt b/measures/TableMeasures/test/CMakeLists.txt
+index 20db6b4..042b8a9 100644
+--- a/measures/TableMeasures/test/CMakeLists.txt
++++ b/measures/TableMeasures/test/CMakeLists.txt
+@@ -1,6 +1,5 @@
+ set (tests
+ tTableQuantum
+-tTableMeasures
+ dVarRefMdirCol
+ )
+ 
+diff --git a/ms/MeasurementSets/test/CMakeLists.txt b/ms/MeasurementSets/test/CMakeLists.txt
+deleted file mode 100644
+index 42ff162..0000000
+--- a/ms/MeasurementSets/test/CMakeLists.txt
++++ /dev/null
+@@ -1,29 +0,0 @@
+-#foreach (files
+-#antenna.params
+-#feed.params
+-#field.params
+-#obs.params
+-#range-obs.params
+-#selector-obs.params
+-#spw.params
+-#)
+-#    configure_file (${CMAKE_CURRENT_SOURCE_DIR}/${files} ${CMAKE_CURRENT_BINARY_DIR}#/${files} COPYONLY)
+-#endforeach (files)
+-
+-set (tests
+-tMeasurementSet
+-tMSColumns
+-tMSDataDescBuffer
+-tMSFieldBuffer
+-tMSFieldEphem
+-tMSIter
+-tMSMainBuffer
+-tMSPolBuffer
+-tStokesConverter
+-)
+-
+-foreach (test ${tests})
+-	add_executable (${test} ${test}.cc)
+-	target_link_libraries (${test} casa_ms)
+-	add_test (${test} ${CMAKE_SOURCE_DIR}/cmake/cmake_assay ./${test})
+-endforeach (test)

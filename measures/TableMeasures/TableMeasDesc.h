@@ -30,9 +30,10 @@
 
 
 //# Includes
-#include <measures/TableMeasures/TableMeasDescBase.h>
+#include <casacore/casa/aips.h>
+#include <casacore/measures/TableMeasures/TableMeasDescBase.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
 class String;
@@ -57,7 +58,7 @@ class TableMeasValueDesc;
 
 // <synopsis>
 // The TableMeasures system was created to add support for Measure
-// columns to the AIPS++ Table system.
+// columns to the Casacore Table system.
 // Measures are not a fundamental type of the Tables system and hence
 // cannot be represented directly.  Instead a Measure column can be created
 // with the aid of
@@ -292,9 +293,9 @@ public:
 
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #ifndef CASACORE_NO_AUTO_TEMPLATES
-#include <measures/TableMeasures/TableMeasDesc.tcc>
+#include <casacore/measures/TableMeasures/TableMeasDesc.tcc>
 #endif //# CASACORE_NO_AUTO_TEMPLATES
 #endif

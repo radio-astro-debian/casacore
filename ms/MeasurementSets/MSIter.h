@@ -28,20 +28,20 @@
 #ifndef MS_MSITER_H
 #define MS_MSITER_H
 
-#include <casa/aips.h>
-#include <casa/Arrays/Matrix.h>
-#include <casa/Arrays/Cube.h>
-#include <ms/MeasurementSets/MeasurementSet.h>
-#include <measures/Measures/MFrequency.h>
-#include <measures/Measures/MDirection.h>
-#include <measures/Measures/MPosition.h>
-#include <tables/Tables/ScalarColumn.h>
-#include <casa/Utilities/Compare.h>
-#include <casa/BasicSL/String.h>
-#include <scimath/Mathematics/SquareMatrix.h>
-#include <scimath/Mathematics/RigidVector.h>
+#include <casacore/casa/aips.h>
+#include <casacore/casa/Arrays/Matrix.h>
+#include <casacore/casa/Arrays/Cube.h>
+#include <casacore/ms/MeasurementSets/MeasurementSet.h>
+#include <casacore/measures/Measures/MFrequency.h>
+#include <casacore/measures/Measures/MDirection.h>
+#include <casacore/measures/Measures/MPosition.h>
+#include <casacore/tables/Tables/ScalarColumn.h>
+#include <casacore/casa/Utilities/Compare.h>
+#include <casacore/casa/BasicSL/String.h>
+#include <casacore/scimath/Mathematics/SquareMatrix.h>
+#include <casacore/scimath/Mathematics/RigidVector.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# forward decl
 class ROMSColumns;
@@ -60,7 +60,9 @@ public:
   explicit MSInterval(Double interval) : interval_p(interval), offset_p(0) {}
     virtual ~MSInterval() {}
     virtual int comp(const void * obj1, const void * obj2) const;
+    Double getOffset() {return offset_p;}
     void setOffset(Double offset) {offset_p=offset;}
+    Double getInterval() {return interval_p;}
     void setInterval(Double interval) {interval_p=interval;}
 private:
     Double interval_p;
@@ -380,7 +382,7 @@ protected:
   Block<Int> preselectedChanStart_p,preselectednChan_p;
   
   // columns
-  ROScalarColumn<Int> colArray_p, colDataDesc_p, colField_p;
+  ScalarColumn<Int> colArray_p, colDataDesc_p, colField_p;
 
   //cache for access functions
   MDirection phaseCenter_p;
@@ -407,6 +409,9 @@ protected:
   MFrequency frequency0_p;
   MFrequency restFrequency_p;
   MPosition telescopePosition_p;
+
+  MSInterval *timeComp_p;          // Points to the time comparator.
+                                   // 0 if not using a time interval.
 };
 
 inline Bool MSIter::more() const { return more_p;}
@@ -450,6 +455,6 @@ inline const Cube<RigidVector<Double, 2> >& MSIter::getBeamOffsets() const
 inline Int MSIter::startChan() const {return startChan_p;}
 inline Bool MSIter::allBeamOffsetsZero() const {return allBeamOffsetsZero_p;}
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

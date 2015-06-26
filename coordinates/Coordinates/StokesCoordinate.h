@@ -30,13 +30,13 @@
 #ifndef COORDINATES_STOKESCOORDINATE_H
 #define COORDINATES_STOKESCOORDINATE_H
 
-#include <casa/aips.h>
-#include <coordinates/Coordinates/Coordinate.h>
-#include <measures/Measures/Stokes.h>
-#include <casa/Containers/Block.h>
-#include <casa/Arrays/Vector.h>
+#include <casacore/casa/aips.h>
+#include <casacore/coordinates/Coordinates/Coordinate.h>
+#include <casacore/measures/Measures/Stokes.h>
+#include <casacore/casa/Containers/Block.h>
+#include <casacore/casa/Arrays/Vector.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 
 
@@ -177,6 +177,9 @@ public:
     // with into a vector
     Vector<Int> stokes() const;
 
+    // Get the stokes string representations
+    Vector<String> stokesStrings() const;
+
     // Set a new vector of Stokes values (a vector of Stokes::StokesType) 
     void setStokes (const Vector<Int> &whichStokes);
    
@@ -236,7 +239,7 @@ public:
                           uInt worldAxis,
                           Bool isAbsolute=True,
                           Bool showAsAbsolute=True,
-                          Int precision = -1) const;
+                          Int precision = -1, Bool usePrecForMixed=False) const;
 
     // Comparison function. Any private Double data members are compared    
     // with the specified fractional tolerance.  Don't compare on the specified     
@@ -289,7 +292,7 @@ private:
     StokesCoordinate();
 };
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 
 #endif

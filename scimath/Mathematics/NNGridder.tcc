@@ -16,7 +16,7 @@
 //# along with this library; if not, write to the Free Software Foundation,
 //# Inc., 675 Massachusetts Ave, Cambridge, MA 02139, USA.
 //#
-//# Correspondence concerning AIPS++ should be adressed as follows:
+//# Correspondence concerning AIPS++ should be addressed as follows:
 //#        Internet email: aips2-request@nrao.edu.
 //#        Postal address: AIPS++ Project Office
 //#                        National Radio Astronomy Observatory
@@ -26,11 +26,14 @@
 //#
 //# $Id$
 
-#include <scimath/Mathematics/NNGridder.h>
-#include <casa/BasicSL/Constants.h>
-#include <casa/Arrays/ArrayMath.h>
+#ifndef SCIMATH_NNGRIDDER_TCC
+#define SCIMATH_NNGRIDDER_TCC
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+#include <casacore/scimath/Mathematics/NNGridder.h>
+#include <casacore/casa/BasicSL/Constants.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
+
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 // Constructor
 template <class Domain, class Range>
@@ -94,5 +97,7 @@ Range NNGridder<Domain, Range>::correctionFactor1D(Int loc, Int len)
 }
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
+
+#endif

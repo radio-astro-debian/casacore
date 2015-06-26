@@ -27,9 +27,9 @@
 
 //# Includes
 
-#include <casa/Quanta/UnitMap.h>
+#include <casacore/casa/Quanta/UnitMap.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 // Initialise the maps
 void UnitMap::initUMCust2() {
@@ -80,6 +80,10 @@ void UnitMap::initUMCust2() {
   UnitMap::mapCust->insert(map<String, UnitName>::value_type
 			   ("statV",   	UnitName("statV",
 						 UnitVal((C::c*1.0e-6),"V"),
+						 "statvolt")));
+  UnitMap::mapCust->insert(map<String, UnitName>::value_type
+			   ("debye", UnitName("debye",
+						 UnitVal(10e-18, "statC.cm"),
 						 "statvolt")));
   UnitMap::mapCust->insert(map<String, UnitName>::value_type
 			   ("ac",   	UnitName("ac",
@@ -143,5 +147,5 @@ void UnitMap::initUMCust2() {
 						 "erg")));
 }
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 

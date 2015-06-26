@@ -16,7 +16,7 @@
 //# along with this library; if not, write to the Free Software Foundation,
 //# Inc., 675 Massachusetts Ave, Cambridge, MA 02139, USA.
 //#
-//# Correspondence concerning AIPS++ should be adressed as follows:
+//# Correspondence concerning AIPS++ should be addressed as follows:
 //#        Internet email: aips2-request@nrao.edu.
 //#        Postal address: AIPS++ Project Office
 //#                        National Radio Astronomy Observatory
@@ -29,12 +29,12 @@
 #ifndef SCIMATH_RIGIDVECTOR_H
 #define SCIMATH_RIGIDVECTOR_H
   
-#include <casa/aips.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/BasicSL/Complex.h>
-#include <casa/iosfwd.h>
+#include <casacore/casa/aips.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/BasicSL/Complex.h>
+#include <casacore/casa/iosfwd.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# forward
 template <class T, Int n> class SquareMatrix;
@@ -166,6 +166,18 @@ public:
 	if (n!=4) exit(1);
 	v_p[0]=v0; v_p[1]=v1; v_p[2]=v2; v_p[3]=v3;
     }
+    // Construct a 5-element vector, fails for wrong size vectors.
+    RigidVector(const T& v0, const T& v1, const T& v2, const T& v3,
+                const T& v4) {
+        if (n!=5) exit(1);
+        v_p[0]=v0; v_p[1]=v1; v_p[2]=v2; v_p[3]=v3; v_p[4]=v4;
+    }
+    // Construct a 6-element vector, fails for wrong size vectors.
+    RigidVector(const T& v0, const T& v1, const T& v2, const T& v3,
+                const T& v4, const T& v5) {
+        if (n!=6) exit(1);
+        v_p[0]=v0; v_p[1]=v1; v_p[2]=v2; v_p[3]=v3; v_p[4]=v4; v_p[5]=v5;
+    }
     // Construct from a c-array (copy semantics)
     RigidVector(const T v[n]) {
 	for (Int i=0; i<n; i++) v_p[i]=v[i];
@@ -280,9 +292,9 @@ inline RigidVector<Complex,4> operator*(const SquareMatrix<Complex,4>& m,
 }
 // </group>
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #ifndef CASACORE_NO_AUTO_TEMPLATES
-#include <scimath/Mathematics/RigidVector.tcc>
+#include <casacore/scimath/Mathematics/RigidVector.tcc>
 #endif //# CASACORE_NO_AUTO_TEMPLATES
 #endif

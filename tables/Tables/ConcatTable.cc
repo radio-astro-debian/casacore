@@ -25,22 +25,22 @@
 //#
 //# $Id$
 
-#include <tables/Tables/ConcatTable.h>
-#include <tables/Tables/ConcatColumn.h>
-#include <tables/Tables/Table.h>
-#include <tables/Tables/TableDesc.h>
-#include <tables/Tables/TableLock.h>
-#include <casa/Containers/Record.h>
-#include <casa/Containers/BlockIO.h>
-#include <casa/Arrays/ArrayIO.h>
-#include <casa/OS/Path.h>
-#include <casa/OS/Directory.h>
-#include <casa/BasicMath/Math.h>
-#include <tables/Tables/TableError.h>
-#include <casa/Utilities/Assert.h>
+#include <casacore/tables/Tables/ConcatTable.h>
+#include <casacore/tables/Tables/ConcatColumn.h>
+#include <casacore/tables/Tables/Table.h>
+#include <casacore/tables/Tables/TableDesc.h>
+#include <casacore/tables/Tables/TableLock.h>
+#include <casacore/casa/Containers/Record.h>
+#include <casacore/casa/Containers/BlockIO.h>
+#include <casacore/casa/Arrays/ArrayIO.h>
+#include <casacore/casa/OS/Path.h>
+#include <casacore/casa/OS/Directory.h>
+#include <casacore/casa/BasicMath/Math.h>
+#include <casacore/tables/Tables/TableError.h>
+#include <casacore/casa/Utilities/Assert.h>
 
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
   ConcatTable::ConcatTable (AipsIO& ios, const String& name, uInt nrrow,
 			    int option, const TableLock& lockOptions,
@@ -169,6 +169,11 @@ namespace casa { //# NAMESPACE CASA - BEGIN
   Bool ConcatTable::asBigEndian() const
   {
     return baseTabPtr_p[0]->asBigEndian();
+  }
+
+  const StorageOption& ConcatTable::storageOption() const
+  {
+    return baseTabPtr_p[0]->storageOption();
   }
 
   Bool ConcatTable::isMultiUsed (Bool) const
@@ -327,11 +332,14 @@ namespace casa { //# NAMESPACE CASA - BEGIN
   void ConcatTable::initialize()
   {
     // Check if all tables have the same description.
-    vector<CountedPtr<TableDesc> > actualDesc;
-    actualDesc.reserve (baseTabPtr_p.nelements());
+    // Note that we size the table instead of reserve, because push_back
+    // gives the following warning for CountedPtr:
+    //  "dereferencing pointer aonymous  does break strict-aliasing rule"
+    vector<CountedPtr<TableDesc> > actualDesc(baseTabPtr_p.nelements());;
     Bool equalDataTypes;
     for (uInt i=0; i<baseTabPtr_p.nelements(); ++i) {
-      actualDesc.push_back (new TableDesc (baseTabPtr_p[i]->actualTableDesc()));
+      actualDesc[i] = CountedPtr<TableDesc> (new TableDesc
+					     (baseTabPtr_p[i]->actualTableDesc()));
       if (actualDesc[i]->columnDescSet().isEqual
 	  (actualDesc[0]->columnDescSet(), equalDataTypes)) {
 	if (equalDataTypes) {
@@ -601,4 +609,4 @@ void ConcatTable::addColumn (const TableDesc& tableDesc,
     }
   }
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END

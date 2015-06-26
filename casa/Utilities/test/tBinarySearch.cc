@@ -33,14 +33,14 @@
 #define AIPS_ARRAY_INDEX_CHECK
 #endif
 
-#include <casa/Utilities/BinarySearch.h>
-#include <casa/Arrays/IPosition.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/Exceptions/Error.h>
+#include <casacore/casa/Utilities/BinarySearch.h>
+#include <casacore/casa/Arrays/IPosition.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/Exceptions/Error.h>
 
-#include <casa/iostream.h>
+#include <casacore/casa/iostream.h>
 
-#include <casa/namespace.h>
+#include <casacore/casa/namespace.h>
 int main()
 {
     Bool found;
@@ -91,6 +91,19 @@ int main()
 	AlwaysAssertExit(binarySearch(found, ip1, 10, ip1.nelements()) == 0 && 
 			 !found);
     }
+
+    {
+        IPosition ip1(1, 5);
+        AlwaysAssertExit(binarySearchBrackets(found, ip1, 1, ip1.nelements()) == 0 &&
+                 !found);
+        AlwaysAssertExit(binarySearchBrackets(found, ip1, 5, ip1.nelements()) == 0 &&
+                 found);
+        AlwaysAssertExit(binarySearchBrackets(found, ip1, 10, ip1.nelements()) == 1 &&
+                 !found);
+
+        AlwaysAssertExit(binarySearchBrackets(found, ip1, 10, 0u) == 0 && !found);
+    }
+
 
     {
 	int ia[4];  // int ia[] = {22,9,5,1}; isn't available on all compilers

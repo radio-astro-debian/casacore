@@ -31,15 +31,15 @@
 
 
 //# Includes
-#include <casa/aips.h>
-#include <measures/Measures/MFrequency.h>
-#include <measures/Measures/MDirection.h>
-#include <measures/Measures/MDoppler.h>
-#include <coordinates/Coordinates/CoordinateSystem.h>
-#include <coordinates/Coordinates/ObsInfo.h>
-#include <images/Images/ImageInfo.h>
+#include <casacore/casa/aips.h>
+#include <casacore/measures/Measures/MFrequency.h>
+#include <casacore/measures/Measures/MDirection.h>
+#include <casacore/measures/Measures/MDoppler.h>
+#include <casacore/coordinates/Coordinates/CoordinateSystem.h>
+#include <casacore/coordinates/Coordinates/ObsInfo.h>
+#include <casacore/images/Images/ImageInfo.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
 template <class T> class ImageInterface;
@@ -192,8 +192,6 @@ public:
 // Retrieve default mask name.  Empty if none
    String defaultMaskName() const;
 
-// Retrieve restoring beam.  Will be of length zero if does not exist
-   Vector<Quantum<Double> > restoringBeam() const;
 
 // Retrieve image type
    String imageType () const;
@@ -204,8 +202,10 @@ public:
 // For spectral axes, both frequency and velocity information is listed. You
 // can specify what velocity definition you want with <src>velocityType</src>
 // If postLocally is True, the formatted strings are returned in the return value
-   Vector<String> list(LogIO& os, const MDoppler::Types velocityType=MDoppler::RADIO,
-                       Bool postLocally=False);
+   Vector<String> list(
+		   LogIO& os, const MDoppler::Types velocityType=MDoppler::RADIO,
+		   Bool postLocally=False, const Bool verbose=False
+   );
 
 // Set a new image
    Bool setNewImage (const ImageInterface<T>& image);
@@ -216,15 +216,15 @@ private:
    ObsInfo obsInfo_p;
    ImageInfo imageInfo_p;
    const ImageInterface<T>* pImage_p;
-//
+
     String makeMasksString() const;
     String makeRegionsString() const;
 };
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #ifndef CASACORE_NO_AUTO_TEMPLATES
-#include <images/Images/ImageSummary.tcc>
+#include <casacore/images/Images/ImageSummary.tcc>
 #endif //# CASACORE_NO_AUTO_TEMPLATES
 #endif

@@ -29,14 +29,14 @@
 #define CASA_IPOSITION_H
 
 //# Includes
-#include <casa/aips.h>
-#include <casa/iosfwd.h>
-#include <casa/BasicSL/String.h>
+#include <casacore/casa/aips.h>
+#include <casacore/casa/iosfwd.h>
+#include <casacore/casa/BasicSL/String.h>
 #include <vector>
 #include <cstddef>                  // for ptrdiff_t
 #include <sys/types.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
 class AipsIO;
@@ -228,6 +228,20 @@ public:
     ssize_t operator()  (uInt index) const;
     // </group>
 
+    // Make an IPosition by using only the specified elements of the current
+    // IPosition. All values of <src>axes</src> must be less than
+    // the number of elements of the current object.
+    // <example>
+    // IPosition ipos(4, 11, 12, 13, 14);
+    // // ex1 is IPosition(3, 11, 12, 13);
+    // IPosition ex1 = ipos(IPosition(3,0,1,2);
+    // // ex2 is IPosition(3, 12, 11)
+    // IPosition ex2 = ipos(IPosition(2,2,1);
+    // // ex3 is IPosition(4,14,14,14,14)
+    // IPosition ex3 = ipos(IPosition(4,3,3,3,3);
+    // </example>
+    IPosition operator() (const IPosition& axes) const;
+
     // Index into the IPosition from the end.
     // By default the last value is returned.
     // If the preprocessor symbol AIPS_ARRAY_INDEX_CHECK is defined, it will
@@ -384,7 +398,6 @@ public:
     const_iterator end() const
       { return data_p + size_p; }
     // </group>
-
     // </group>
 
 private:
@@ -589,6 +602,6 @@ inline Bool IPosition::conform(const IPosition& other) const
     return  (size_p == other.size_p);
 }
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

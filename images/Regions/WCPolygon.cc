@@ -25,26 +25,26 @@
 //#
 //# $Id$
 
-#include <images/Regions/WCPolygon.h>
+#include <casacore/images/Regions/WCPolygon.h>
 
-#include <casa/Arrays/ArrayLogical.h>
-#include <coordinates/Coordinates/CoordinateSystem.h>
-#include <coordinates/Coordinates/DirectionCoordinate.h>
-#include <coordinates/Coordinates/SpectralCoordinate.h>
-#include <casa/Exceptions/Error.h>
-#include <casa/Arrays/IPosition.h>
-#include <lattices/Lattices/LCPolygon.h>
-#include <casa/BasicMath/Math.h>
-#include <casa/Quanta/Unit.h>
-#include <casa/Quanta/Quantum.h>
-#include <casa/Quanta/QuantumHolder.h>
-#include <casa/Quanta/QLogical.h>
-#include <tables/Tables/TableRecord.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/BasicSL/String.h>
+#include <casacore/casa/Arrays/ArrayLogical.h>
+#include <casacore/coordinates/Coordinates/CoordinateSystem.h>
+#include <casacore/coordinates/Coordinates/DirectionCoordinate.h>
+#include <casacore/coordinates/Coordinates/SpectralCoordinate.h>
+#include <casacore/casa/Exceptions/Error.h>
+#include <casacore/casa/Arrays/IPosition.h>
+#include <casacore/lattices/LRegions/LCPolygon.h>
+#include <casacore/casa/BasicMath/Math.h>
+#include <casacore/casa/Quanta/Unit.h>
+#include <casacore/casa/Quanta/Quantum.h>
+#include <casacore/casa/Quanta/QuantumHolder.h>
+#include <casacore/casa/Quanta/QLogical.h>
+#include <casacore/tables/Tables/TableRecord.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/BasicSL/String.h>
 
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 WCPolygon::WCPolygon()
 //
@@ -100,7 +100,11 @@ WCPolygon::WCPolygon(const Quantum<Vector<Double> >& x,
 // Check axes/units
 
    unitInit();
-   checkAxes (itsPixelAxes, itsCSys, itsX.getUnit(), itsY.getUnit());
+   Vector<String> units(2);
+   units[0] = itsX.getUnit();
+   units[1] = itsY.getUnit();
+
+   checkAxes (itsPixelAxes, itsCSys, units);
 
 // Create the axis descriptions.
    
@@ -528,96 +532,5 @@ String WCPolygon::type() const
   return className();
 }
 
-
-void WCPolygon::checkAxes (const IPosition& pixelAxes,
-                           const CoordinateSystem& cSys,
-                           const String& xUnit,
-                           const String& yUnit) const
-{
-
-// Make sure we have world axes for these pixel axes
-
-   Vector<Int> worldAxes(2);
-   worldAxes(0) = cSys.pixelAxisToWorldAxis(pixelAxes(0));
-   if (worldAxes(0) == -1) {
-      throw (AipsError ("WCPolygon::checkAxes - pixelAxes(0) has no corresponding world axis"));
-   }
-   worldAxes(1) = cSys.pixelAxisToWorldAxis(pixelAxes(1));
-   if (worldAxes(1) == -1) {
-      throw (AipsError ("WCPolygon::checkAxes - pixelAxes(1) has no corresponding world axis"));
-   }
-
-// Check units
-
-   Vector<String> units = cSys.worldAxisUnits();
-   String error;
-   if (xUnit == "default") {
-      error = "WCPolygon::checkAxes - x vector units (default) are not allowed";
-      throw (AipsError (error));
-   }
-   if (xUnit != "pix" &&  xUnit != "frac") {
-      if (Unit(xUnit) != Unit(units(worldAxes(0)))) {
-         String error = String("WCPolygon - units of X vector (") +
-                        xUnit + String(") inconsistent with units of CoordinateSystem (") +
-                        units(worldAxes(0)) + String(")");
-         throw (AipsError (error));
-      }
-   }
-//
-   if (yUnit == "default") {
-      error = "WCPolygon::checkAxes - y vector units (default) are not allowed";
-      throw (AipsError (error));
-   }
-   if (yUnit != "pix" && yUnit != "frac") {
-      if (Unit(yUnit) != Unit(units(worldAxes(1)))) {
-         String error = String("WCPolygon - units of Y vector (") +
-                        yUnit + String(") inconsistent with units of CoordinateSystem (") +
-                        units(worldAxes(1)) + String(")");
-         throw (AipsError (error));
-      }
-   }
-}
-
-void WCPolygon::unitInit() 
-{
-   static Bool doneUnitInit = False;
-   if (!doneUnitInit) {
-      UnitMap::putUser("pix",UnitVal(1.0), "pixel units");
-      UnitMap::putUser("frac",UnitVal(1.0), "fractional units");
-      UnitMap::putUser("def",UnitVal(1.0), "default value");
-      UnitMap::putUser("default",UnitVal(1.0), "default value");
-      doneUnitInit = True;
-   }
-}
-
-
-
-void WCPolygon::convertPixel(Double& pixel,
-                             const Double& value,
-                             const String& unit,
-                             const Int absRel,
-                             const Double refPix,
-                             const Int shape) const
-
-{
-   Bool isWorld = True;
-   if (unit == "pix") {
-      pixel = value;
-      isWorld = False;
-   } else if (unit == "frac") {
-      pixel = value * shape;
-      isWorld = False;
-   }
-//      
-   if (isWorld) return;
-//
-   if (absRel == RegionType::RelRef) {
-      pixel += refPix;
-   } else if (absRel == RegionType::RelCen) {
-      pixel += Double(shape)/2;
-   }                     
-}
-
-
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 

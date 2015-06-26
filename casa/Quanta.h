@@ -29,15 +29,17 @@
 #define CASA_QUANTA_H
 
 //# Includes
-#include <casa/Quanta/Unit.h>
-//# Next one at this place
-#include <casa/Quanta/QC.h>
-#include <casa/Quanta/UnitMap.h>
-#include <casa/Quanta/Quantum.h>
-#include <casa/Quanta/QMath.h>
-#include <casa/Quanta/QLogical.h>
+#include <casacore/casa/aips.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+#include <casacore/casa/Quanta/Unit.h>
+//# Next one at this place
+#include <casacore/casa/Quanta/QC.h>
+#include <casacore/casa/Quanta/UnitMap.h>
+#include <casacore/casa/Quanta/Quantum.h>
+#include <casacore/casa/Quanta/QMath.h>
+#include <casacore/casa/Quanta/QLogical.h>
+
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 // <module>
 // 
@@ -587,6 +589,7 @@ namespace casa { //# NAMESPACE CASA - BEGIN
 //    statH     (stathenry)                  899377374000 m2.kg.s-2.A-2
 //    statOhm   (statohm)                    899377374000 m2.kg.s-3.A-2
 //    statV     (statvolt)                   299.792458 m2.kg.s-3.A-1
+//    debye     (electric dipole moment)     10-18 statC.cm
 //    u         (atomic mass unit)           1.661e-27 kg
 //    yd        (yard)                       0.9144 m
 //    yr        (year)                       31557600 s
@@ -599,7 +602,7 @@ namespace casa { //# NAMESPACE CASA - BEGIN
 //# class Quanta {};
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif
 

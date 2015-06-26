@@ -1,4 +1,4 @@
-//# tTypes.cc: Test that fundamental types are valid for AIPS++
+//# tTypes.cc: Test that fundamental types are valid for Casacore
 //# Copyright (C) 1998
 //# Associated Universities, Inc. Washington DC, USA.
 //#
@@ -28,8 +28,8 @@
 //# Includes
 
 
-#include <casa/Utilities/Assert.h>
-#include <casa/namespace.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/namespace.h>
 
 int main()
 {

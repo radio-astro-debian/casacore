@@ -30,19 +30,20 @@
 
 
 //# Includes
-#include <images/Images/ImageInterface.h>
-#include <images/Images/MaskSpecifier.h>
-#include <tables/Tables/TiledFileAccess.h>
-#include <lattices/Lattices/TiledShape.h>
-#include <fits/FITS/fits.h>
-#include <casa/BasicSL/String.h>
-#include <casa/Utilities/DataType.h>
+#include <casacore/casa/aips.h>
+#include <casacore/images/Images/ImageInterface.h>
+#include <casacore/images/Images/MaskSpecifier.h>
+#include <casacore/tables/DataMan/TiledFileAccess.h>
+#include <casacore/lattices/Lattices/TiledShape.h>
+#include <casacore/fits/FITS/fits.h>
+#include <casacore/casa/BasicSL/String.h>
+#include <casacore/casa/Utilities/DataType.h>
 
 #ifndef WCSLIB_GETWCSTAB
  #define WCSLIB_GETWCSTAB
 #endif
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
 template <class T> class Array;
@@ -117,7 +118,7 @@ public:
   FITSImage(const FITSImage& other);
 
   // Destructor does nothing
-  ~FITSImage();
+  virtual ~FITSImage();
 
   // Assignment (reference semantics)
   FITSImage& operator=(const FITSImage& other);
@@ -252,6 +253,10 @@ public:
   // Report on cache success.
   virtual void showCacheStatistics (ostream& os) const;
 
+protected:
+  // Set the masking of values 0.0
+  void setMaskZero(Bool filterZero);
+
 private:  
   String         name_p;
   String         fullname_p;
@@ -268,8 +273,10 @@ private:
   DataType       dataType_p;
   Int64          fileOffset_p;
   Bool           isClosed_p;
+  Bool           filterZeroMask_p;
   uInt           whichRep_p;
   uInt           whichHDU_p;
+  Bool           _hasBeamsTable;
 
 // Reopen the image if needed.
    void reopenIfNeeded() const
@@ -313,10 +320,10 @@ private:
 
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #ifndef CASACORE_NO_AUTO_TEMPLATES
-#include <images/Images/FITS2Image.tcc>
+#include <casacore/images/Images/FITS2Image.tcc>
 #endif //# CASACORE_NO_AUTO_TEMPLATES
 
 #endif

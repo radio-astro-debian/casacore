@@ -25,36 +25,36 @@
 //#
 //# $Id$
 
-#include <images/Images/HDF5Image.h>
-#include <images/Images/ImageInfo.h>
-#include <coordinates/Coordinates/CoordinateSystem.h>
-#include <coordinates/Coordinates/CoordinateUtil.h>
-#include <lattices/Lattices/ArrayLattice.h>
-#include <lattices/Lattices/LatticeIterator.h>
+#include <casacore/images/Images/HDF5Image.h>
+#include <casacore/images/Images/ImageInfo.h>
+#include <casacore/coordinates/Coordinates/CoordinateSystem.h>
+#include <casacore/coordinates/Coordinates/CoordinateUtil.h>
+#include <casacore/lattices/Lattices/ArrayLattice.h>
+#include <casacore/lattices/Lattices/LatticeIterator.h>
 
-#include <casa/Arrays/Array.h>
-#include <casa/Arrays/ArrayIO.h>
-#include <casa/Arrays/ArrayMath.h>
-#include <casa/Arrays/ArrayLogical.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Exceptions/Error.h>
-#include <scimath/Functionals/Polynomial.h>
-#include <casa/Arrays/IPosition.h>
-#include <casa/Arrays/Slicer.h>
-#include <casa/Quanta/QLogical.h>
-#include <tables/Tables/TableDesc.h>
-#include <tables/Tables/SetupNewTab.h>
-#include <tables/Tables/Table.h>
-#include <tables/Tables/TableRecord.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/Utilities/DataType.h>
-#include <casa/BasicSL/String.h>
-#include <casa/Utilities/Regex.h>
+#include <casacore/casa/Arrays/Array.h>
+#include <casacore/casa/Arrays/ArrayIO.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
+#include <casacore/casa/Arrays/ArrayLogical.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Exceptions/Error.h>
+#include <casacore/scimath/Functionals/Polynomial.h>
+#include <casacore/casa/Arrays/IPosition.h>
+#include <casacore/casa/Arrays/Slicer.h>
+#include <casacore/casa/Quanta/QLogical.h>
+#include <casacore/tables/Tables/TableDesc.h>
+#include <casacore/tables/Tables/SetupNewTab.h>
+#include <casacore/tables/Tables/Table.h>
+#include <casacore/tables/Tables/TableRecord.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/Utilities/DataType.h>
+#include <casacore/casa/BasicSL/String.h>
+#include <casacore/casa/Utilities/Regex.h>
 
-#include <casa/stdlib.h>
-#include <casa/iostream.h>
+#include <casacore/casa/stdlib.h>
+#include <casacore/casa/iostream.h>
 
-using namespace casa;
+using namespace casacore;
 
 
 // Remove the dirname from the file name in an error message.
@@ -194,16 +194,16 @@ int main()
       AlwaysAssert(cSys2.near(cSys3,1e-6), AipsError);
 
       ImageInfo info = pIm.imageInfo();
-      AlwaysAssert(info.restoringBeam().nelements()==0, AipsError);
-      Quantum<Double> a1(10.0,Unit("arcsec"));
-      Quantum<Double> a2(8.0,Unit("arcsec"));
-      Quantum<Double> a3(-45.0,Unit("deg"));
-      info.setRestoringBeam(a1, a2, a3);
+      AlwaysAssert(info.restoringBeam().isNull(), AipsError);
+      Quantity a1(10.0,Unit("arcsec"));
+      Quantity a2(8.0,Unit("arcsec"));
+      Quantity a3(-45.0,Unit("deg"));
+      info.setRestoringBeam(GaussianBeam(a1, a2, a3));
       pIm.setImageInfo(info);
       info = pIm.imageInfo();
-      AlwaysAssert(info.restoringBeam()(0)==a1, AipsError);
-      AlwaysAssert(info.restoringBeam()(1)==a2, AipsError);
-      AlwaysAssert(info.restoringBeam()(2)==a3, AipsError);
+      AlwaysAssert(info.restoringBeam().getMajor()==a1, AipsError);
+      AlwaysAssert(info.restoringBeam().getMinor()==a2, AipsError);
+      AlwaysAssert(info.restoringBeam().getPA()==a3, AipsError);
     }
 
     // do{Put,Get}Slice tests

@@ -26,32 +26,33 @@
 //# $Id$
 
 //# Includes
-#include <casa/Inputs/Input.h>
-#include <casa/Arrays/ArrayMath.h>
-#include <casa/Arrays/ArrayLogical.h>
-#include <casa/Arrays/Cube.h>
-#include <casa/Arrays/Matrix.h>
-#include <casa/Containers/Block.h>
-#include <coordinates/Coordinates/CoordinateSystem.h>
-#include <coordinates/Coordinates/CoordinateUtil.h>
-#include <coordinates/Coordinates/DirectionCoordinate.h>
-#include <images/Images/TempImage.h>
-#include <images/Images/SubImage.h>
-#include <images/Images/PagedImage.h>
-#include <images/Images/ImageRegrid.h>
-#include <images/Regions/ImageRegion.h>
-#include <lattices/Lattices/MaskedLattice.h> 
-#include <lattices/Lattices/LCPagedMask.h> 
-#include <lattices/Lattices/TempLattice.h>
-#include <lattices/Lattices/TiledShape.h>
-#include <scimath/Mathematics/Interpolate2D.h>
-#include <casa/Logging/LogIO.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/iostream.h>
+#include <casacore/casa/Inputs/Input.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
+#include <casacore/casa/Arrays/ArrayLogical.h>
+#include <casacore/casa/Arrays/Cube.h>
+#include <casacore/casa/Arrays/Matrix.h>
+#include <casacore/casa/Containers/Block.h>
+#include <casacore/coordinates/Coordinates/CoordinateSystem.h>
+#include <casacore/coordinates/Coordinates/CoordinateUtil.h>
+#include <casacore/coordinates/Coordinates/DirectionCoordinate.h>
+#include <casacore/images/Images/TempImage.h>
+#include <casacore/images/Images/SubImage.h>
+#include <casacore/images/Images/PagedImage.h>
+#include <casacore/images/Images/ImageRegrid.h>
+#include <casacore/images/Regions/ImageRegion.h>
+#include <casacore/lattices/Lattices/MaskedLattice.h> 
+#include <casacore/lattices/LRegions/LCPagedMask.h> 
+#include <casacore/lattices/Lattices/TempLattice.h>
+#include <casacore/lattices/Lattices/TiledShape.h>
+#include <casacore/scimath/Mathematics/Interpolate2D.h>
+#include <casacore/casa/Logging/LogIO.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/iostream.h>
+#include <set>
 
 
 
-#include <casa/namespace.h>
+#include <casacore/casa/namespace.h>
 int main (int argc, const char* argv[])
 {
 
@@ -196,9 +197,124 @@ try {
 //
       delete pImOut;
     }
+
+      {
+    	  cout << "*** Test makeCoordinateSystem" << endl;
+    	  CoordinateSystem cIn = CoordinateUtil::defaultCoords2D();
+    	  CoordinateSystem cTo = CoordinateUtil::defaultCoords3D();
+    	  LogIO os;
+    	  cout << "1" << endl;
+    	  std::set<Coordinate::Type> coordsToRegrid;
+    	  CoordinateSystem cOut = ImageRegrid<Float>::makeCoordinateSystem(os, coordsToRegrid, cTo, cIn, IPosition(2, 0, 1));
+    	  AlwaysAssert(coordsToRegrid.size() == 1, AipsError);
+    	  AlwaysAssert(
+    	      coordsToRegrid.find(Coordinate::DIRECTION) != coordsToRegrid.end(),
+    	      AipsError
+    	  );
+    	  AlwaysAssert(
+    	      coordsToRegrid.find(Coordinate::SPECTRAL) == coordsToRegrid.end(),
+    	      AipsError
+    	  );
+    	  cIn = CoordinateUtil::defaultCoords3D();
+    	  cTo = CoordinateUtil::defaultCoords2D();
+    	  cout << "2" << endl;
+
+    	  cOut = ImageRegrid<Float>::makeCoordinateSystem(os, coordsToRegrid, cTo, cIn, IPosition(2, 0, 1));
+    	  AlwaysAssert(coordsToRegrid.size() == 1, AipsError);
+    	  AlwaysAssert(
+    	      coordsToRegrid.find(Coordinate::DIRECTION) != coordsToRegrid.end(),
+    	      AipsError
+    	  );
+    	  AlwaysAssert(
+    		  coordsToRegrid.find(Coordinate::SPECTRAL) == coordsToRegrid.end(),
+    		  AipsError
+    	  );
+    	  cIn = CoordinateUtil::defaultCoords3D();
+    	  cTo = CoordinateUtil::defaultCoords3D();
+    	  cout << "3" << endl;
+
+    	  cOut = ImageRegrid<Float>::makeCoordinateSystem(os, coordsToRegrid, cTo, cIn, IPosition(2, 0, 1));
+    	  AlwaysAssert(coordsToRegrid.size() == 1, AipsError);
+    	  AlwaysAssert(
+    		  coordsToRegrid.find(Coordinate::DIRECTION) != coordsToRegrid.end(),
+    		  AipsError
+    	  );
+    	  AlwaysAssert(
+    		  coordsToRegrid.find(Coordinate::SPECTRAL) == coordsToRegrid.end(),
+    		  AipsError
+    	  );
+    	  cout << "4" << endl;
+
+    	  cOut = ImageRegrid<Float>::makeCoordinateSystem(os, coordsToRegrid, cTo, cIn, IPosition(1, 2));
+    	  AlwaysAssert(coordsToRegrid.size() == 1, AipsError);
+    	  AlwaysAssert(
+    	      coordsToRegrid.find(Coordinate::DIRECTION) == coordsToRegrid.end(),
+    	      AipsError
+    	  );
+    	  AlwaysAssert(
+    	      coordsToRegrid.find(Coordinate::SPECTRAL) != coordsToRegrid.end(),
+    	      AipsError
+    	  );
+    	  cout << "5" << endl;
+
+    	  cOut = ImageRegrid<Float>::makeCoordinateSystem(os, coordsToRegrid, cTo, cIn, IPosition());
+    	  AlwaysAssert(coordsToRegrid.size() == 2, AipsError);
+    	  AlwaysAssert(
+    	      coordsToRegrid.find(Coordinate::DIRECTION) != coordsToRegrid.end(),
+    	      AipsError
+    	  );
+    	  AlwaysAssert(
+    	      coordsToRegrid.find(Coordinate::SPECTRAL) != coordsToRegrid.end(),
+    	      AipsError
+    	  );
+    	  cout << "6" << endl;
+
+    	  cOut = ImageRegrid<Float>::makeCoordinateSystem(os, coordsToRegrid, cTo, cIn, IPosition(3, 0, 1, 2));
+    	  AlwaysAssert(coordsToRegrid.size() == 2, AipsError);
+    	  AlwaysAssert(
+    	      coordsToRegrid.find(Coordinate::DIRECTION) != coordsToRegrid.end(),
+    	      AipsError
+    	  );
+    	  AlwaysAssert(
+    	      coordsToRegrid.find(Coordinate::SPECTRAL) != coordsToRegrid.end(),
+    	      AipsError
+    	  );
+    	  cout << "7" << endl;
+    	  cIn = CoordinateUtil::defaultCoords4D();
+    	  cTo = CoordinateUtil::defaultCoords4D();
+    	  cOut = ImageRegrid<Float>::makeCoordinateSystem(os, coordsToRegrid, cTo, cIn, IPosition());
+    	  AlwaysAssert(coordsToRegrid.size() == 2, AipsError);
+    	  AlwaysAssert(
+    	      coordsToRegrid.find(Coordinate::DIRECTION) != coordsToRegrid.end(),
+    	      AipsError
+    	  );
+    	  AlwaysAssert(
+    		  coordsToRegrid.find(Coordinate::SPECTRAL) != coordsToRegrid.end(),
+    		  AipsError
+    	  );
+    	  AlwaysAssert(
+    		  coordsToRegrid.find(Coordinate::STOKES) == coordsToRegrid.end(),
+    		  AipsError
+    	  );
+    	  cout << "8" << endl;
+    	  cOut = ImageRegrid<Float>::makeCoordinateSystem(os, coordsToRegrid, cTo, cIn, IPosition(3, 0, 1, 2));
+    	  AlwaysAssert(coordsToRegrid.size() == 1, AipsError);
+    	  AlwaysAssert(
+    		  coordsToRegrid.find(Coordinate::DIRECTION) != coordsToRegrid.end(),
+    		  AipsError
+    	  );
+    	  AlwaysAssert(
+    		  coordsToRegrid.find(Coordinate::SPECTRAL) == coordsToRegrid.end(),
+    		  AipsError
+    	  );
+    	  AlwaysAssert(
+    		  coordsToRegrid.find(Coordinate::STOKES) == coordsToRegrid.end(),
+    		  AipsError
+    	  );
+    }
 //
     delete pIm;
-
+    cout << "OK" << endl;
 } catch (AipsError x) {
      cerr << "aipserror: error " << x.getMesg() << endl;
      return 1;

@@ -30,11 +30,11 @@
 
 
 //# Includes
-#include <casa/aips.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/BasicSL/String.h>
+#include <casacore/casa/aips.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/BasicSL/String.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
 class Regex;
@@ -190,6 +190,45 @@ uInt partialFuncHelper (Int& nelemCont,
 // </group>
 
 
+// <summary>
+// Reverse the order of one or more axes of an array.
+// </summary>
+
+// <use visibility=export>
+
+// <reviewed reviewer="UNKNOWN" date="before2004/08/25" tests="tArrayUtil2.cc">
+
+// <synopsis>
+// This function makes it possible to reverse one or more axes of an array by
+// swapping around the elements of each axis.
+// The resulting array is a copy of the input array with its data
+// moved around according to the new order.
+// If the order does not change, a copy is returned if the
+// <src>alwaysCopy</src> is true. Otherwise a reference of the
+// input array is returned.
+// <p>
+// Reversing axis 0 means that its elements are reversed.
+// Reversing axis 1 means that the 
+// </synopsis>
+
+// <example>
+// Reversing axis 0 of a Vector means that the Vector is reversed.
+// Reversing axis 1 of a Matrix means that its rows are reversed.
+// Reversing axis 0 of an N-dim array means that the elements of each Vector
+// in that array are reversed.
+// Reversing axis 1 of a Matrix means that its columns are reversed.
+// </example>
+
+// <group name=reverseArray>
+template<class T>
+Array<T> reverseArray (const Array<T>& array,
+                       const IPosition& reversedAxes,
+                       Bool alwaysCopy = True);
+template<class T>
+Array<T> reverseArray (const Array<T>& array, uInt axis,
+                       Bool alwaysCopy = True);
+// </group>
+
 
 // <summary>
 // Reorder the axes of an array.
@@ -265,9 +304,9 @@ uInt reorderArrayHelper (IPosition& newShape, IPosition& incr,
 
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #ifndef CASACORE_NO_AUTO_TEMPLATES
-#include <casa/Arrays/ArrayUtil.tcc>
+#include <casacore/casa/Arrays/ArrayUtil.tcc>
 #endif //# CASACORE_NO_AUTO_TEMPLATES
 #endif

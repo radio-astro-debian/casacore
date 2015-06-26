@@ -30,12 +30,14 @@
 
 
 //# Includes
-#include <casa/aips.h>
-#include <casa/Quanta/Unit.h>
+#include <casacore/casa/aips.h>
+#include <casacore/casa/Quanta/Unit.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
+
+class LogIO;
 
 //# Typedefs
 
@@ -146,9 +148,11 @@ protected:
 // <group name=Output>
 // Output declaration
 ostream &operator<<(ostream &os, const QBase &meas);
+LogIO &operator<<(LogIO &os, const QBase &meas);
+
 // </group>
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

@@ -25,15 +25,15 @@
 //#
 //# $Id$
 
-#include <casa/OS/Mutex.h>
+#include <casacore/casa/OS/Mutex.h>
 #include <errno.h>
-#include <casa/Exceptions/Error.h>
+#include <casacore/casa/Exceptions/Error.h>
 
 //# Define a macro to cast the void* to pthread_mutex_t*.
 #define ITSMUTEX \
   (static_cast<pthread_mutex_t*>(itsMutex))
 
-namespace casa {
+namespace casacore {
 
 #ifdef USE_THREADS
 
@@ -106,6 +106,7 @@ namespace casa {
     case 0:
       return True;
     case EBUSY:
+    case EDEADLK: // returned by error_check mutexes
       return False;
     default:
       throw SystemCallError ("pthread_mutex_trylock", error);
@@ -148,4 +149,4 @@ namespace casa {
   }
 
 
-} // namespace casa
+} // namespace casacore

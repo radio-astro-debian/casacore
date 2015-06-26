@@ -26,23 +26,23 @@
 //#
 //# $Id$
 
-#include <fits/FITS/FITSHistoryUtil.h>
+#include <casacore/fits/FITS/FITSHistoryUtil.h>
 
-#include <casa/Arrays/Vector.h>
-#include <casa/Arrays/ArrayUtil.h>
-#include <fits/FITS/fits.h>
-#include <fits/FITS/FITSDateUtil.h>
-#include <tables/LogTables/LoggerHolder.h>
-#include <casa/Logging/LogIO.h>
-#include <casa/Logging/LogOrigin.h>
-#include <casa/Logging/LogSink.h>
-#include <measures/Measures/MEpoch.h>
-#include <casa/Quanta/MVTime.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/Utilities/Regex.h>
-#include <casa/BasicSL/String.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Arrays/ArrayUtil.h>
+#include <casacore/fits/FITS/fits.h>
+#include <casacore/fits/FITS/FITSDateUtil.h>
+#include <casacore/tables/LogTables/LoggerHolder.h>
+#include <casacore/casa/Logging/LogIO.h>
+#include <casacore/casa/Logging/LogOrigin.h>
+#include <casacore/casa/Logging/LogSink.h>
+#include <casacore/measures/Measures/MEpoch.h>
+#include <casacore/casa/Quanta/MVTime.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/Utilities/Regex.h>
+#include <casacore/casa/BasicSL/String.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 uInt FITSHistoryUtil::getHistoryGroup(Vector<String> &strings, 
 				      String &groupType,
@@ -127,15 +127,15 @@ uInt FITSHistoryUtil::getHistoryGroup(Vector<String> &strings,
 }
 
 void FITSHistoryUtil::addHistoryGroup(FitsKeywordList &out,
-				     const Vector<String> &strings,
+				     const vector<String> &strings,
 				     uInt nstrings, const String &groupType)
 {
     LogIO os;
     os << LogOrigin("FITSHistoryUtil", "addHistoryGroup", WHERE);
-    if (nstrings > strings.nelements()) {
+    if (nstrings > strings.size()) {
 	os << LogIO::SEVERE << "Asked to add more lines to history than there "
 	    "are strings (adjusting)." << LogIO::POST;
-	nstrings = strings.nelements();
+	nstrings = strings.size();
     }
 
     if (groupType != "") {
@@ -148,7 +148,7 @@ void FITSHistoryUtil::addHistoryGroup(FitsKeywordList &out,
     String tmp;
     for (uInt i=0; i<nstrings; i++) {
 	// Break at \n if any.
-	Vector<String> lines = stringToVector(strings(i), '\n');
+	Vector<String> lines = stringToVector(strings[i], '\n');
 	for (uInt j=0; j<lines.nelements(); j++) {
 	    if (Int(lines(j).length()) <= maxlen) {
 		out.history(lines(j).chars());
@@ -190,6 +190,8 @@ void FITSHistoryUtil::fromHISTORY(LoggerHolder& logger,
 				  const Vector<String> &history, 
 				  uInt nstrings, Bool aipsppFormat)
 {
+    LogIO os;
+    os << LogOrigin("FITSHistoryUtil", "fromHistory", WHERE);
     LogSink& sink = logger.sink();
     AlwaysAssert(nstrings <= history.nelements(), AipsError);
 //
@@ -258,7 +260,13 @@ void FITSHistoryUtil::fromHISTORY(LoggerHolder& logger,
 		objid = objid2.at(0, objid2.length() - 1);
 	    }
 //
-            sink.writeLocally(dtime, msg, priority, location, objid);
+	    try{
+	      sink.writeLocally(dtime, msg, priority, location, objid);
+	    }
+	    catch (const AipsError& x) {
+	      os << LogIO::WARN << "Problem while parsing image HISTORY: " << x.getMesg() 
+		 << endl << "Will try to continue ... " << LogIO::POST; 
+	    }
 	}
     } else {
 
@@ -271,13 +279,13 @@ void FITSHistoryUtil::fromHISTORY(LoggerHolder& logger,
 }
 
 
-uInt FITSHistoryUtil::toHISTORY(Vector<String>& history, Bool& aipsppFormat,
+uInt FITSHistoryUtil::toHISTORY(vector<String>& history, Bool& aipsppFormat,
 				uInt& nstrings, uInt firstLine,
 				const LoggerHolder& logger)
 {
     String priority, message, location, id;
     Double timeInSec;
-//
+    history.resize(0);
     nstrings = 0;
     Bool thisLineFormat;
     String tmp1, tmp2;
@@ -290,9 +298,8 @@ uInt FITSHistoryUtil::toHISTORY(Vector<String>& history, Bool& aipsppFormat,
           location = iter->location();
           id = iter->objectID();
           timeInSec = iter->time();
-
 // In  each call  to toHistory, we process a group of contiguous records
-// all in the fsame format (aips++ 2 [lines per logical line] or standard fits)
+// all in the fsame format (Casacore 2 [lines per logical line] or standard fits)
 
           thisLineFormat = (timeInSec>0.0 && priority!="");
           if (line == firstLine) {
@@ -300,9 +307,6 @@ uInt FITSHistoryUtil::toHISTORY(Vector<String>& history, Bool& aipsppFormat,
           }
           if (aipsppFormat == thisLineFormat) {
              nstrings += aipsppFormat ? 2 : 1;
-             if (history.nelements() < nstrings) {
-                history.resize(2*nstrings+1, True);
-             }
              if (aipsppFormat) {
                 MVTime time(timeInSec/86400.0);
                 FITSDateUtil::toFITS(tmp1, tmp2, time, MEpoch::UTC, 
@@ -319,15 +323,16 @@ uInt FITSHistoryUtil::toHISTORY(Vector<String>& history, Bool& aipsppFormat,
                    tmp1 += id;
                    tmp1 += "'";
                 }
-                history(2*(line - firstLine) + 0) = tmp1;
-                history(2*(line - firstLine) + 1) = message;
-             } else {
-                history(line - firstLine) = message;
+                history.push_back(tmp1);
+                history.push_back(message);
+
+             }
+             else {
+            	 history.push_back(message);
              }
           }
        }
     }
-//
     // If nstrings==0, aipsppFormat may not be set yet. So test it.
     if (nstrings > 0) {
       firstLine += aipsppFormat ? nstrings/2 : nstrings;
@@ -335,5 +340,5 @@ uInt FITSHistoryUtil::toHISTORY(Vector<String>& history, Bool& aipsppFormat,
     return firstLine;
 }
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 

@@ -25,28 +25,31 @@
 //#
 //# $Id$
 
-#include <images/Images/SubImage.h>
-#include <images/Images/PagedImage.h>
-#include <images/Regions/ImageRegion.h>
-#include <coordinates/Coordinates/CoordinateSystem.h>
-#include <coordinates/Coordinates/CoordinateUtil.h>
-#include <lattices/Lattices/LatticeIterator.h>
-#include <lattices/Lattices/LatticeStepper.h>
-#include <lattices/Lattices/LCBox.h>
-#include <lattices/Lattices/LCPixelSet.h>
-#include <lattices/Lattices/LCPagedMask.h>
-#include <casa/Arrays/AxesSpecifier.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Arrays/ArrayMath.h>
-#include <casa/Arrays/ArrayLogical.h>
-#include <casa/Arrays/ArrayIO.h>
-#include <casa/Arrays/IPosition.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/Exceptions/Error.h>
-#include <casa/iostream.h>
+#include <casacore/images/Images/SubImage.h>
+#include <casacore/images/Images/PagedImage.h>
+#include <casacore/images/Images/TempImage.h>
+#include <casacore/images/Regions/ImageRegion.h>
+#include <casacore/coordinates/Coordinates/CoordinateSystem.h>
+#include <casacore/coordinates/Coordinates/CoordinateUtil.h>
+#include <casacore/lattices/Lattices/LatticeIterator.h>
+#include <casacore/lattices/Lattices/LatticeStepper.h>
+#include <casacore/lattices/LRegions/LCBox.h>
+#include <casacore/lattices/LRegions/LCLELMask.h>
+#include <casacore/lattices/LRegions/LCPixelSet.h>
+#include <casacore/lattices/LRegions/LCPagedMask.h>
+#include <casacore/casa/Arrays/AxesSpecifier.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
+#include <casacore/casa/Arrays/ArrayLogical.h>
+#include <casacore/casa/Arrays/ArrayIO.h>
+#include <casacore/casa/Arrays/IPosition.h>
+#include <casacore/casa/Utilities/PtrHolder.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/Exceptions/Error.h>
+#include <casacore/casa/iostream.h>
 
 
-#include <casa/namespace.h>
+#include <casacore/casa/namespace.h>
 void testVectorROIter (const Lattice<Float>& sublat,
 		       const Lattice<Float>& lattice,
 		       const Slicer& slicer)
@@ -291,6 +294,49 @@ void testAxes()
 			     msubsub));
 }
 
+void testBeams() {
+	IPosition shape(4, 10, 11, 4, 13);
+	TempImage<Float> x(
+		shape, CoordinateUtil::defaultCoords4D()
+	);
+	ImageInfo info = x.imageInfo();
+	Quantity pa(5, "deg");
+	info.setAllBeams(shape[3], shape[2], GaussianBeam());
+	for (uInt i=0; i<shape[2]; i++) {
+		for (uInt j=0; j<shape[3]; j++) {
+			Quantity maj(i + j + 2, "arcsec");
+			Quantity min(i + j + 1, "arcsec");
+			info.setBeam(j, i, maj, min, pa);
+		}
+	}
+	x.setImageInfo(info);
+	Vector<Double> blc(4, 1.7);
+	Vector<Double> trc(4, 4.2);
+	trc[2] = 3.5;
+	trc[3] = 5.7;
+	LCBox box(blc, trc, shape);
+    Record myboxRec = box.toRecord("");
+    PtrHolder<LogIO> log(new LogIO());
+    PtrHolder<ImageRegion> outRegionMgr(
+        ImageRegion::fromRecord(
+            log.ptr(), x.coordinates(),
+            x.shape(), myboxRec
+        )
+    );
+    SubImage<Float> subim = SubImage<Float>(
+        x, *outRegionMgr,
+        False, AxesSpecifier(False)
+    );
+	for (uInt i=0; i<subim.shape()[2]; i++) {
+		for (uInt j=0; j<subim.shape()[3]; j++) {
+			AlwaysAssert(
+				subim.imageInfo().restoringBeam(j, i)
+				== info.restoringBeam(j+2, i+2),
+				AipsError
+			);
+		}
+	}
+}
 
 int main ()
 {
@@ -324,7 +370,10 @@ int main ()
     testRest();
     // Test the axes removal..
     testAxes();
-  } catch (AipsError x) {
+    // test per plane beams
+    testBeams();
+  }
+  catch (AipsError x) {
     cerr << "Caught exception: " << x.getMesg() << endl;
     cout << "FAIL" << endl;
     return 1;

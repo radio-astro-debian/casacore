@@ -25,28 +25,28 @@
 //#
 //# $Id$
 
-#include <images/Images/ImageExprParse.h>
-#include <images/Images/ImageExprGram.h>
-#include <images/Images/PagedImage.h>
-#include <images/Images/ImageOpener.h>
-#include <images/Regions/ImageRegion.h>
-#include <images/Regions/RegionHandlerTable.h>
-#include <images/Images/HDF5Image.h>
-#include <lattices/Lattices/LatticeExprNode.h>
-#include <lattices/Lattices/PagedArray.h>
-#include <lattices/Lattices/ArrayLattice.h>
-#include <tables/Tables/Table.h>
-#include <tables/Tables/TableDesc.h>
-#include <tables/Tables/ColumnDesc.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Arrays/Slice.h>
-#include <casa/Arrays/ArrayUtil.h>
-#include <casa/Arrays/ArrayIO.h>
-#include <casa/BasicSL/Constants.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/Exceptions/Error.h>
+#include <casacore/images/Images/ImageExprParse.h>
+#include <casacore/images/Images/ImageExprGram.h>
+#include <casacore/images/Images/PagedImage.h>
+#include <casacore/images/Images/ImageOpener.h>
+#include <casacore/images/Regions/ImageRegion.h>
+#include <casacore/images/Regions/RegionHandlerTable.h>
+#include <casacore/images/Images/HDF5Image.h>
+#include <casacore/lattices/LEL/LatticeExprNode.h>
+#include <casacore/lattices/Lattices/PagedArray.h>
+#include <casacore/lattices/Lattices/ArrayLattice.h>
+#include <casacore/tables/Tables/Table.h>
+#include <casacore/tables/Tables/TableDesc.h>
+#include <casacore/tables/Tables/ColumnDesc.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Arrays/Slice.h>
+#include <casacore/casa/Arrays/ArrayUtil.h>
+#include <casacore/casa/Arrays/ArrayIO.h>
+#include <casacore/casa/BasicSL/Constants.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/Exceptions/Error.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Define pointer blocks holding temporary lattices and regions.
 static const Block<LatticeExprNode>* theTempLattices;
@@ -67,6 +67,27 @@ static Table theLastTable;
 
 //# Hold a pointer to the last HDF5 file to lookup unqualified region names.
 static CountedPtr<HDF5File> theLastHDF5;
+
+#define SAVE_GLOBALS \
+ const Block<LatticeExprNode>* savTempLattices=theTempLattices; \
+ const PtrBlock<const ImageRegion*>* savTempRegions=theTempRegions; \
+ String savDirName=theDirName; \
+ Block<void*> savNodes=theNodes; \
+ Block<Bool>  savNodesType=theNodesType; \
+ uInt savNrNodes=theNrNodes; \
+ Table savLastTable=theLastTable; \
+ CountedPtr<HDF5File> savLastHDF5=theLastHDF5;
+
+#define RESTORE_GLOBALS \
+ theTempLattices=savTempLattices; \
+ theTempRegions=savTempRegions; \
+ theDirName=savDirName; \
+ theNodes=savNodes; \
+ theNodesType=savNodesType; \
+ theNrNodes=savNrNodes; \
+ theLastTable=savLastTable; \
+ theLastHDF5=savLastHDF5;
+
 
 // Clear the global info.
 void imageExprParse_clear()
@@ -181,6 +202,8 @@ LatticeExprNode ImageExprParse::command
 			    const PtrBlock<const ImageRegion*>& tempRegions,
 			    const String& dirName)
 {
+    // Save the global variables to make it re-entrant.
+    SAVE_GLOBALS;
     theTempLattices = &tempLattices;
     theTempRegions  = &tempRegions;
     theDirName      = dirName;
@@ -209,6 +232,8 @@ LatticeExprNode ImageExprParse::command
 	throw (AipsError(message + '\n' + "Scanned so far: " +
 	                 command.before(imageExprGramPosition())));
     }
+    // Restore the global variables to make it re-entrant.
+    RESTORE_GLOBALS;
     return node;
 }
 
@@ -527,7 +552,7 @@ Slice* ImageExprParse::makeSlice (const ImageExprParse& start,
   if (start.itsIval > end.itsIval) {
     throw AipsError("ImageExprParse: in s:e:i s must be <= e");
   }
-  return new Slice(start.itsIval, end.itsIval-start.itsIval+1, incr.itsIval);
+  return new Slice(start.itsIval, end.itsIval, incr.itsIval, False);
 }
 
 LatticeExprNode ImageExprParse::makeIndexinNode (const LatticeExprNode& axis,
@@ -870,5 +895,5 @@ LatticeExprNode ImageExprParse::makeRegionNode() const
 }
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 

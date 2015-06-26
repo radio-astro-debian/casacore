@@ -27,20 +27,20 @@
 //# $Id$
 
 
-#include <coordinates/Coordinates/StokesCoordinate.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Arrays/Matrix.h>
-#include <casa/Arrays/ArrayMath.h>
+#include <casacore/coordinates/Coordinates/StokesCoordinate.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Arrays/Matrix.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
 
-#include <casa/Containers/Record.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/Utilities/LinearSearch.h>
-#include <casa/BasicMath/Math.h>
+#include <casacore/casa/Containers/Record.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/Utilities/LinearSearch.h>
+#include <casacore/casa/BasicMath/Math.h>
 
-#include <casa/sstream.h>
+#include <casacore/casa/sstream.h>
 
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 
 StokesCoordinate::StokesCoordinate(const Vector<Int> &whichStokes)
@@ -186,6 +186,14 @@ Vector<Int> StokesCoordinate::stokes() const
     return Vector<Int>(values_p);
 }
 
+Vector<String> StokesCoordinate::stokesStrings() const {
+    uInt n = values_p.size();
+    Vector<String> ret(n);
+    for (uInt i=0; i<n; i++) {
+        ret[i] = Stokes::name(Stokes::type(values_p[i]));
+    }
+    return ret;
+}
 
 void StokesCoordinate::setStokes (const Vector<Int> &whichStokes)
 {
@@ -498,7 +506,7 @@ String StokesCoordinate::format(String& units,
                                 Coordinate::formatType,
                                 Double worldValue,
                                 uInt worldAxis,
-                                Bool, Bool, Int) const
+                                Bool, Bool, Int, Bool) const
 //
 // world  abs=rel for Stokes
 //
@@ -586,7 +594,7 @@ Bool StokesCoordinate::toPixel(Double& pixel,  const Double world) const
     Bool found = False;
     Int index;
     for (index=0; index<nValues_p; index++) {
-	found = casa::near(world, Double(values_p[index]));
+	found = casacore::near(world, Double(values_p[index]));
 	if (found) break;
     }
     if (!found) {
@@ -619,5 +627,5 @@ void StokesCoordinate::setDefaultWorldMixRanges ()
 }
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 

@@ -25,15 +25,15 @@
 //#
 //# $Id$
 
-#include <casa/IO/LargeRegularFileIO.h>
-#include <casa/OS/RegularFile.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/iostream.h>
+#include <casacore/casa/IO/LargeRegularFileIO.h>
+#include <casacore/casa/OS/RegularFile.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/iostream.h>
 #include <unistd.h>
 #include <fcntl.h>
 
 
-#include <casa/namespace.h>
+#include <casacore/casa/namespace.h>
 void check (int fd, int bufSize, const char* buf)
 {
   LargeFilebufIO fio(fd, bufSize);
@@ -51,6 +51,8 @@ void check (int fd, int bufSize, const char* buf)
   for (int i=0; i<rem; i++) {
     AlwaysAssertExit (buf1[i] == *buf++);
   }
+
+  delete [] buf1;
 }
 
 

@@ -1,6 +1,7 @@
 set (tests
 tCanonicalConversion
 tConversion
+tConversionPerf
 tDataConversion
 tDirectoryIterator
 tEnvVar
@@ -8,6 +9,7 @@ tHostInfo
 tIBMConversion
 tLECanonicalConversion
 tMemory
+tMemoryTrace
 tModcompConversion
 tMutex
 tPrecTimer

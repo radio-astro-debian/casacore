@@ -26,42 +26,22 @@
 //# $Id$
 
 
-#include <casa/OS/Path.h>
-#include <casa/OS/File.h>
-#include <casa/OS/SymLink.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/Exceptions.h>
-
+#include <casacore/casa/OS/Path.h>
+#include <casacore/casa/OS/File.h>
+#include <casacore/casa/OS/SymLink.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/Exceptions.h>
+#include <casacore/casa/Logging/LogIO.h>
 #include <unistd.h>                 // needed for access, etc.
 #include <sys/stat.h>               // needed for lstat or lstat64
 #include <utime.h>                  // needed for utimbuf
 #include <errno.h>                  // needed for errno
-#include <casa/string.h>                 // needed for strerror
-#include <casa/stdio.h>                  // needed for sprintf
+#include <casacore/casa/string.h>                 // needed for strerror
+#include <casacore/casa/stdio.h>                  // needed for sprintf
 #include <time.h>                   // needed for asctime/localtime on linux
 
 
-namespace casa { //# NAMESPACE CASA - BEGIN
-
-//# The ifdef's below are similar to those in IO/LargeIOFuncDef.h.
-#if !defined(AIPS_NOLARGEFILE)
-# ifdef AIPS_LINUX
-#  if !defined(_LARGEFILE64_SOURCE)
-#   define _LARGEFILE64_SOURCE
-#  endif
-# endif
-#if defined(AIPS_DARWIN) || defined(AIPS_BSD)
-# define fileLSTAT lstat
-# define fileSTAT  stat
-#else
-# define fileLSTAT lstat64
-# define fileSTAT  stat64
-#endif
-#else
-# define fileLSTAT lstat
-# define fileSTAT  stat
-#endif
-
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 uInt File::uniqueSeqnr_p = 0;      // Initialization
 Mutex File::theirMutex;
@@ -183,7 +163,16 @@ Bool File::exists() const
     // The function access always substitutes symlinks.
     // Therefore use lstat instead.
     struct fileSTAT buf;
-    return  (mylstat((itsPath.expandedName()).chars(), &buf) == 0);
+    int status = mylstat((itsPath.expandedName()).chars(), &buf);
+    if (status != 0 && errno != ENOENT){
+        LogIO logIo (LogOrigin ("File", "exists"));
+        logIo << LogIO::WARN;
+        logIo << "lstat failed for " << itsPath.expandedName()
+              << ": errno=" << errno << "'" << strerror (errno)
+              << "'\n";
+        logIo << LogIO::POST;
+    }
+    return status == 0;
 }
 
 Bool File::isReadable() const
@@ -434,5 +423,28 @@ void File::checkTarget (Path& targetName, Bool overwrite,
     }
 }
 
-} //# NAMESPACE CASA - END
+
+#ifdef AIPS_DARWIN
+#include <sys/param.h>
+#include <sys/mount.h>
+#else
+#include <sys/vfs.h>
+#endif
+
+
+String File::getFSType() const
+{
+	String rstat("Normal");
+	struct fileSTATFS  statbuf;
+        fileSTATFS(itsPath.dirName().chars(), &statbuf);
+#ifdef AIPS_DARWIN
+	rstat = String(statbuf.f_fstypename);
+#else
+	if(statbuf.f_type == 0x0BD00BD0)
+	   rstat = "Lustre";
+#endif
+	return rstat;
+}
+
+} //# NAMESPACE CASACORE - END
 

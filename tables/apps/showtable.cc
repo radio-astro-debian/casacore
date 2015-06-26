@@ -25,15 +25,19 @@
 //#
 //# $Id$
 
-#include <tables/Tables/Table.h>
-#include <tables/Tables/TableParse.h>
-#include <tables/Tables/TableRecord.h>
-#include <tables/Tables/TableColumn.h>
-#include <casa/Inputs/Input.h>
+#include <casacore/tables/Tables/Table.h>
+#include <casacore/tables/TaQL/TableParse.h>
+#include <casacore/tables/Tables/TableRecord.h>
+#include <casacore/tables/Tables/TableColumn.h>
+#include <casacore/casa/OS/Directory.h>
+#include <casacore/casa/Inputs/Input.h>
 #include <stdexcept>
 #include <iostream>
+#include <cstdlib>          // for mkstemp
+#include <casacore/casa/string.h>    // for strerror
+#include <errno.h>
 
-using namespace casa;
+using namespace casacore;
 using namespace std;
 
 
@@ -52,7 +56,7 @@ void showKeys (const Table& table, Bool showtabkey, Bool showcolkey,
   if (showcolkey) {
     Vector<String> colNames (table.tableDesc().columnNames());
     for (uInt i=0; i<colNames.size(); ++i) {
-      TableRecord keys (ROTableColumn(table, colNames[i]).keywordSet());
+      TableRecord keys (TableColumn(table, colNames[i]).keywordSet());
       if (keys.size() > 0) {
         cout << "  Column " << colNames[i] << endl;
         keys.print (cout, maxval, "    ");
@@ -105,7 +109,6 @@ int main (int argc, char* argv[])
     String selsort (inputs.getString("selsort"));
 
     // Do the selection if needed.
-    String tmpName;
     Table table(in);
     Table seltab(table);
     if (! (selcol.empty() && selrow.empty() && selsort.empty())) {
@@ -122,11 +125,6 @@ int main (int argc, char* argv[])
       }
       clog << "TaQL command = " << command << endl;
       seltab = tableCommand (command);
-      if (seltab.tableName() != table.tableName()) {
-        char* tmpnm = tempnam("/tmp", "showtable_");
-        tmpName = tmpnm;
-        free (tmpnm);
-      }
     }
     // Show the table structure.
     table.showStructure (cout, showdm, showcol, showsub, sortcol);
@@ -154,14 +152,31 @@ int main (int argc, char* argv[])
     }
     if (browse) {
       // Need to make table persistent for casabrowser.
-      if (!tmpName.empty()) {
+      String tmpName;
+      if (seltab.tableName() != table.tableName()) {
+	// g++ gives a deprecated warning for tempnam.
+        // Therefore we use mkstemp and close/unlink the file immediately.
+        char tmpnm[] = "/tmp/shtabXXXXXX";
+        int fd = mkstemp(tmpnm);
+        tmpName = tmpnm;
+        cout << "tmpnm="<<tmpName<<endl;
+        // Close and delete the file.
+        ::close(fd);
+        ::unlink(tmpnm);
         seltab.rename (tmpName, Table::New);
       }
       clog << "Starting casabrowser " << seltab.tableName() << " ..." << endl;
-      system (("casabrowser " + in).chars());
+      if (! system (("casabrowser " + seltab.tableName()).chars())) {
+	clog << "Could not start casabrowser; " << strerror(errno) << endl;
+      }
       if (!tmpName.empty()) {
-        clog << "Removing temporary table " << seltab.tableName() << endl;
-        Table::deleteTable(tmpName);
+        seltab = Table();  // close table
+        clog << "Removing temporary table " << tmpName << endl;
+        // Use Directory instead of Table::deleteTable because the
+        // latter tests if the table is writable, which it is not if
+        // the underlying table is ot writable.
+        Directory dir(tmpName);
+        dir.removeRecursive();
       }
     }
   } catch (std::exception& x) {

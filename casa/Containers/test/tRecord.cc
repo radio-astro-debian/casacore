@@ -25,20 +25,20 @@
 //#
 //# $Id$
 
-#include <casa/Containers/Record.h>
-#include <casa/Containers/RecordField.h>
-#include <casa/Exceptions/Error.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/Arrays/Array.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Arrays/ArrayIO.h>
-#include <casa/Arrays/ArrayMath.h>
-#include <casa/Arrays/ArrayLogical.h>
-#include <casa/Arrays/ArrayUtil.h>
-#include <casa/IO/AipsIO.h>
-#include <casa/iostream.h>
+#include <casacore/casa/Containers/Record.h>
+#include <casacore/casa/Containers/RecordField.h>
+#include <casacore/casa/Exceptions/Error.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/Arrays/Array.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Arrays/ArrayIO.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
+#include <casacore/casa/Arrays/ArrayLogical.h>
+#include <casacore/casa/Arrays/ArrayUtil.h>
+#include <casacore/casa/IO/AipsIO.h>
+#include <casacore/casa/iostream.h>
 
-#include <casa/namespace.h>
+#include <casacore/casa/namespace.h>
 // This program tests the Record and RecordRep classes.
 // Its expected output (which only consists of exception text)
 // is stored in tRecord.out and can be checked using assay.
@@ -319,7 +319,7 @@ void doIt (Bool doExcp)
 	} catch (AipsError x) {
 	    cout << x.getMesg() << endl;           // invalid type
 	} 
-	RecordDesc rd1(rd);
+	RecordDesc rd1;
 	rd1.addField ("TpTable", TpTable);
 	try {
 	    Record rec(rd1);

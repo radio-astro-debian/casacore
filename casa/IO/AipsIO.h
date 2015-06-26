@@ -1,4 +1,4 @@
-//# AipsIO.h: AipsIO is the object persistency mechanism of AIPS++
+//# AipsIO.h: AipsIO is the object persistency mechanism of Casacore
 //# Copyright (C) 1993,1994,1995,1996,1998,2000,2001
 //# Associated Universities, Inc. Washington DC, USA.
 //#
@@ -30,22 +30,24 @@
 
 
 //# Includes
-#include <casa/aips.h>
-#include <casa/Containers/Block.h>
-#include <casa/BasicSL/String.h>
-#include <casa/BasicSL/Complex.h>
-#include <casa/IO/ByteIO.h>
+#include <casacore/casa/aips.h>
+#include <casacore/casa/Containers/Block.h>
+#include <casacore/casa/BasicSL/String.h>
+#include <casacore/casa/BasicSL/Complex.h>
+#include <casacore/casa/IO/ByteIO.h>
+#include <casacore/casa/vector.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
 class TypeIO;
 class ByteIO;
 class RegularFileIO;
+class MultiFileBase;
 
 
 // <summary> 
-// AipsIO is the object persistency mechanism of AIPS++.
+// AipsIO is the object persistency mechanism of Casacore
 // </summary>
 
 // <use visibility=export>
@@ -53,7 +55,8 @@ class RegularFileIO;
 // <reviewed reviewer="ghunt" date="95Feb21" tests="" demos="">
 
 // <etymology>
-//  AipsIO is simply the conventional shorthand for "aips++ input/output".
+// AipsIO is simply the conventional shorthand for "AIPS++ input/output".
+// Note that Casacore is the successor of the old AIPS++ project.
 // </etymology>
 
 // <synopsis> 
@@ -169,12 +172,15 @@ public:
     AipsIO();
 
     // Construct and open/create a file with the given name.
-    // The actual IO is done via a CanonicalIO object using a filebuf
-    // with a buffer of the given size.
+    // The actual IO is done via a CanonicalIO object on a regular file
+    // using buffered IO with a buffer of the given size.
+    // <br>If the MultiFileBase pointer is not null, a virtual file in the
+    // MultiFileBase will be used instead of a regular file.
     explicit AipsIO (const String& fileName,
 		     ByteIO::OpenOption = ByteIO::Old,
-		     uInt filebufSize=65536);
-////		     uInt filebufSize=1048576);
+		     uInt filebufSize=65536,
+////		     uInt filebufSize=1048576,
+                     MultiFileBase* mfile=0);
 
     // Construct and open/create a file with the given name.
     // This can for instance by used to use AipsIO on a file descriptor
@@ -191,10 +197,10 @@ public:
     // Close if not done yet
     ~AipsIO();
 
-    // Open/create file.
+    // Open/create file (either a regular file or a MultiFileBase virtual file).
     // An exception is thrown if the object contains an already open file.
     void open (const String& fileName, ByteIO::OpenOption = ByteIO::Old,
-	       uInt filebufSize=65536);
+	       uInt filebufSize=65536, MultiFileBase* mfile=0);
 
     // Open by connecting to the given byte stream.
     // This can for instance by used to use AipsIO on a file descriptor
@@ -204,7 +210,7 @@ public:
     // An exception is thrown if the object contains an already open file.
     void open (ByteIO*);
 
-    // Open by connecting to the given file descriptor.
+    // Open by connecting to the given typed byte stream.
     // An exception is thrown if the object contains an already open file.
     void open (TypeIO*);
 
@@ -270,6 +276,22 @@ public:
     AipsIO& put (uInt nrval, const String* values, Bool putNR = True);
     // </group>
 
+    // Put a vector as an array of values
+    // For standard types it has the same result as put with putNR=True.
+    template<typename T>
+    AipsIO& put (const vector<T>& vec)
+      { *this << uInt(vec.size());
+        for (typename vector<T>::const_iterator iter=vec.begin();
+             iter!=vec.end(); ++iter) {
+          *this << *iter;
+        }
+        return *this;
+      }
+    //# Possibly specialize for standard types to make it faster.
+    //# Specialize for a bool vector.
+    AipsIO& put (const vector<Bool>& vec);
+
+
     // End putting an object. It returns the object length (including
     // possible nested objects).
     uInt putend();
@@ -331,6 +353,23 @@ public:
     AipsIO& get (uInt nrval, DComplex* values);
     AipsIO& get (uInt nrval, String* values);
     // </group>
+
+    // Get a vector as an array of values (similar to getnew).
+    // It resizes the vector as needed.
+    template<typename T>
+    AipsIO& get (vector<T>& vec)
+      { uInt sz;
+        *this >> sz;
+        vec.resize(sz);
+        for (typename vector<T>::iterator iter=vec.begin();
+             iter!=vec.end(); ++iter) {
+          *this >> *iter;
+        }
+        return *this;
+      }
+    //# Specialize for a bool vector.
+    AipsIO& get (vector<Bool>& vec);
+
 
     // Read in values as written by the function put.
     // It will read the number of values (into nrval), allocate a
@@ -414,7 +453,7 @@ private:
     // The cached object type.
     String       objectType_p;
     // The file object.
-    RegularFileIO* file_p;
+    ByteIO*      file_p;
     // The actual IO object.
     TypeIO*      io_p;
     // Is the file is seekable?
@@ -454,6 +493,6 @@ inline void AipsIO::testgetLength()
 
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

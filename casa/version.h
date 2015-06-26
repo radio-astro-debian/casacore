@@ -29,8 +29,11 @@
 #define CASA_VERSION_H
 
 #include <string>
+#include <casacore/casa/aips.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+#define CASACORE_VERSION "2.0.0"
+
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
   // Get the casacore version.
   const std::string getVersion();
@@ -42,6 +45,6 @@ namespace casa { //# NAMESPACE CASA - BEGIN
   // on CASA's vendor branch.
   const std::string getVersionCASA();
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

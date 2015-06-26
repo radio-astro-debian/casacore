@@ -25,19 +25,21 @@
 //#
 //# $Id$
 
-#include <ms/MeasurementSets/MSField.h>
-#include <casa/BasicSL/String.h>
-#include <tables/Tables/SetupNewTab.h>
-#include <tables/Tables/TableDesc.h>
-#include <tables/Tables/ColDescSet.h>
-#include <tables/Tables/ScaColDesc.h>
-#include <tables/Tables/ArrColDesc.h>
-#include <tables/Tables/StManAipsIO.h>
-#include <tables/Tables/ForwardCol.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Exceptions/Error.h>
+#include <casacore/ms/MeasurementSets/MSField.h>
+#include <casacore/casa/BasicSL/String.h>
+#include <casacore/tables/Tables/SetupNewTab.h>
+#include <casacore/tables/Tables/TableDesc.h>
+#include <casacore/tables/Tables/ColDescSet.h>
+#include <casacore/tables/Tables/ScaColDesc.h>
+#include <casacore/tables/Tables/ArrColDesc.h>
+#include <casacore/tables/DataMan/StManAipsIO.h>
+#include <casacore/tables/DataMan/ForwardCol.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Exceptions/Error.h>
+#include <casacore/casa/OS/Directory.h>
+#include <casacore/casa/Utilities/Regex.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 MSField::MSField():hasBeenDestroyed_p(True) { }
 
@@ -196,5 +198,66 @@ MSField MSField::referenceCopy(const String& newTableName,
 		     referenceCopy(newTableName,writableColumns));
 }
 
-} //# NAMESPACE CASA - END
+Bool MSField::addEphemeris(const uInt id, const String& inputEphemTableName,
+			   const String& comment){
+  Bool rval=False;
+  if( (inputEphemTableName.empty() && comment.empty()) 
+      || Table::isReadable(inputEphemTableName) 
+      ){
+    // add the eph id column if it doesn't exist alreay
+    const String& ephemerisId = MSField::columnName(MSField::EPHEMERIS_ID);
+    if(!this->actualTableDesc().isColumn(ephemerisId)){
+      if(this->isWritable()){
+	try{
+	  this->addColumn(ScalarColumnDesc<Int>(ephemerisId, "Ephemeris id, pointer to EPHEMERIS table"), False);
+	}
+        catch(...){
+	  return False;
+	}
+	// initialize to -1
+	ScalarColumn<Int> fld(*this, ephemerisId);
+	for(uInt i=0; i<this->nrow(); i++){
+	  fld.put(i,-1);
+	}
+	rval = True;
+      }
+      else{
+	return False;
+      }
+    }
+    if(Table::isReadable(inputEphemTableName)){
+      Directory inputDir(inputEphemTableName);
+      stringstream ss;
+      ss << "/EPHEM" << id << "_" << comment << ".tab";
+      String destTableName = Path(this->tableName()).absoluteName() + String(ss.str());
+      removeEphemeris(id); // remove preexisting ephemerides with the same id
+      inputDir.copy(destTableName);
+      rval = True;
+    }
+  }
+  return rval;
+}
+
+Bool MSField::removeEphemeris(const uInt id){
+
+  Bool rval=True;
+  Directory fieldDir(Path(this->tableName()).absoluteName());
+  stringstream ss;
+  ss << "EPHEM" << id << "_*.tab";
+  Regex ephemTableRegex = Regex::fromPattern(ss.str());
+  Vector<String> candidates = fieldDir.find(ephemTableRegex, True, False); // followSymLinks=True, recursive=False
+  for(uInt i=0; i<candidates.size(); i++){
+    Table tTab(fieldDir.path().absoluteName()+"/"+candidates(i));
+    tTab.markForDelete();
+  }
+  for(uInt i=0; i<candidates.size(); i++){
+    if(Table::isReadable(candidates(i))){
+      rval = False;
+    }
+  }
+  return rval;
+}
+
+
+} //# NAMESPACE CASACORE - END
 

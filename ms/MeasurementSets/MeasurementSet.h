@@ -29,28 +29,72 @@
 #ifndef MS_MEASUREMENTSET_H
 #define MS_MEASUREMENTSET_H
 
-#include <casa/aips.h>
-#include <ms/MeasurementSets/MSTable.h>
-#include <ms/MeasurementSets/MSMainEnums.h>
-#include <ms/MeasurementSets/MSAntenna.h>
-#include <ms/MeasurementSets/MSDataDescription.h>
-#include <ms/MeasurementSets/MSDoppler.h>
-#include <ms/MeasurementSets/MSFeed.h>
-#include <ms/MeasurementSets/MSField.h>
-#include <ms/MeasurementSets/MSFlagCmd.h>
-#include <ms/MeasurementSets/MSFreqOffset.h>
-#include <ms/MeasurementSets/MSHistory.h>
-#include <ms/MeasurementSets/MSObservation.h>
-#include <ms/MeasurementSets/MSPointing.h>
-#include <ms/MeasurementSets/MSPolarization.h>
-#include <ms/MeasurementSets/MSProcessor.h>
-#include <ms/MeasurementSets/MSSource.h>
-#include <ms/MeasurementSets/MSSpectralWindow.h>
-#include <ms/MeasurementSets/MSState.h>
-#include <ms/MeasurementSets/MSSysCal.h>
-#include <ms/MeasurementSets/MSWeather.h>
+#include <casacore/casa/aips.h>
+#include <casacore/ms/MeasurementSets/MSTable.h>
+#include <casacore/ms/MeasurementSets/MSMainEnums.h>
+#include <casacore/ms/MeasurementSets/MSAntenna.h>
+#include <casacore/ms/MeasurementSets/MSDataDescription.h>
+#include <casacore/ms/MeasurementSets/MSDoppler.h>
+#include <casacore/ms/MeasurementSets/MSFeed.h>
+#include <casacore/ms/MeasurementSets/MSField.h>
+#include <casacore/ms/MeasurementSets/MSFlagCmd.h>
+#include <casacore/ms/MeasurementSets/MSFreqOffset.h>
+#include <casacore/ms/MeasurementSets/MSHistory.h>
+#include <casacore/ms/MeasurementSets/MSObservation.h>
+#include <casacore/ms/MeasurementSets/MSPointing.h>
+#include <casacore/ms/MeasurementSets/MSPolarization.h>
+#include <casacore/ms/MeasurementSets/MSProcessor.h>
+#include <casacore/ms/MeasurementSets/MSSource.h>
+#include <casacore/ms/MeasurementSets/MSSpectralWindow.h>
+#include <casacore/ms/MeasurementSets/MSState.h>
+#include <casacore/ms/MeasurementSets/MSSysCal.h>
+#include <casacore/ms/MeasurementSets/MSWeather.h>
+#include <set>
+
  
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
+
+class MrsEligibility { // Memory Resident Subtable (Mrs) Eligibility (no pun intended)
+
+public:
+
+    typedef MSMainEnums::PredefinedKeywords SubtableId;
+
+    friend MrsEligibility operator- (const MrsEligibility & a, SubtableId subtableId);
+    friend MrsEligibility operator+ (const MrsEligibility & a, SubtableId subtableId);
+    friend MrsEligibility operator- (const MrsEligibility & a, const MrsEligibility & b);
+    friend MrsEligibility operator+ (const MrsEligibility & a, const MrsEligibility & b);
+
+    // Returns true if the specified subtable is in the set of subtables
+    // eligible for memory residency.
+    Bool isEligible (SubtableId subtableId) const;
+
+    // Factory methods to create MrsEligibility sets.  The two variable argument methods
+    // require that the list be terminated by using the id MSMainEnums::UNDEFINED_KEYWORD.
+    //
+    static MrsEligibility allEligible ();
+    static MrsEligibility defaultEligible ();
+    static MrsEligibility noneEligible ();
+    static MrsEligibility eligibleSubtables (SubtableId subtableId, ...);
+    static MrsEligibility allButTheseSubtables (SubtableId ineligibleSubtableId, ...);
+
+private:
+
+    typedef std::set<MSMainEnums::PredefinedKeywords> Eligible;
+
+    Eligible eligible_p;
+
+    static const MrsEligibility allSubtables_p;
+
+    static Bool isSubtable (SubtableId subtableId);
+};
+
+// Creates a new MrsEligibilitySet by adding or removing the specified subtable or
+// the specified set of subtables.
+MrsEligibility operator- (const MrsEligibility & a, MrsEligibility::SubtableId subtableId);
+MrsEligibility operator+ (const MrsEligibility & a, MrsEligibility::SubtableId subtableId);
+MrsEligibility operator- (const MrsEligibility & a, const MrsEligibility & b);
+MrsEligibility operator+ (const MrsEligibility & a, const MrsEligibility & b);
 
 //# Forward Declarations, more could be if they weren't part of the
 //# static classes 
@@ -84,7 +128,7 @@ typedef MeasurementSet MS;
 //
 // <etymology>
 // The MeasurementSet is where all data are ultimately to be found
-// in AIPS++.  Since, this is a collection of 
+// in Casacore.  Since, this is a collection of 
 // measurements (either actual or simulated), the term MeasurementSet
 // seems appropriate.
 // </etymology>
@@ -198,6 +242,7 @@ class MeasurementSet : public MSTable<MSMainEnums::PredefinedColumns,
                                       MSMainEnums::PredefinedKeywords>,
 		       public MSMainEnums
 {
+
 public:
   // This constructs an empty MeasurementSet, only useful to assign to
   // (it is not a valid MS yet).
@@ -214,7 +259,13 @@ public:
 
   MeasurementSet (const String &tableName, TableOption = Table::Old);
   MeasurementSet (const String &tableName, const TableLock& lockOptions,
-		  TableOption = Table::Old);
+		          TableOption = Table::Old);
+
+  MeasurementSet (const String &tableName, const TableLock& lockOptions,
+		          bool doNotLockSubtables, TableOption = Table::Old);
+      // Allows keeping subtables unlocked/read-locked independent of lock
+      // mode of main table.
+
   MeasurementSet (const String &tableName, const String &tableDescName,
 		  TableOption = Table::Old);
   MeasurementSet (const String &tableName, const String &tableDescName,
@@ -223,7 +274,7 @@ public:
 		  Bool initialize = False);
   MeasurementSet (SetupNewTable &newTab, const TableLock& lockOptions,
 		  uInt nrrow = 0, Bool initialize = False);
-  MeasurementSet (const Table &table);
+  MeasurementSet (const Table &table, const MeasurementSet * otherMs = NULL);
   MeasurementSet (const MeasurementSet &other);
   // </group>
 
@@ -234,7 +285,7 @@ public:
   // <thrown>
   //   <li> AipsError
   // </thrown>
-  ~MeasurementSet();
+  virtual ~MeasurementSet();
 
   //  Assignment operator, reference semantics
   MeasurementSet& operator=(const MeasurementSet&);
@@ -249,6 +300,10 @@ public:
   // cases, the use of this function will be rare.
   MeasurementSet referenceCopy(const String& newTableName,
 			       const Block<String>& writableColumns) const;
+
+  // Converts the MS to make the specified set of subtables memory resident.
+  void
+  setMemoryResidentSubtables (const MrsEligibility & mrsEligibility);
 
   // Return the name of each of the subtables. This should be used by the
   // filler to create the subtables in the correct location.
@@ -310,6 +365,8 @@ public:
   const MSWeather& weather() const {return weather_p;}
   // </group>
 
+  MrsEligibility getMrsEligibility () const;
+
   // Initialize the references to the subtables. You need to call
   // this only if you assign new subtables to the table keywords.
   // This also checks for validity of the table and its subtables.
@@ -346,7 +403,34 @@ public:
   Record msseltoindex(const String& spw="", const String& field="", 
 		      const String& baseline="", const String& time="", 
 		      const String& scan="", const String& uvrange="", 
+		      const String& observation="", const String& poln="",
 		      const String& taql="");
+
+protected:
+
+
+  // Clears all of the subtable components of this object (i.e., set to
+  // value of subtable's default constructor).
+  void clearSubtables ();
+
+  // Assigns one subtable to another if the original subtable (otherSubtable)
+  // is not null and is also memory resident
+  void copySubtable (const Table & otherSubtable, Table & subTable);
+
+  // Copies (assigns) all of the non-null subtables from the other MS into this one.
+  void copySubtables (const MeasurementSet & other);
+
+  // Returns true if the named subtable is eligible for memory residency.
+  Bool isEligibleForMemoryResidency (const String & subtableName) const;
+
+  // Opens all of the eligible subtables in memory resident form
+  void openMrSubtables ();
+
+  // The top level name for MRS related CASARC settings
+  static String getMrsAipsRcBase ()
+  {
+    return "MemoryResidentSubtables";
+  }
 
 private:
 
@@ -357,6 +441,16 @@ private:
 
   // check that the MS is the latest version (2.0)
   void checkVersion();
+
+  // Opens a single subtable as memory resident (if permitted).
+  template <typename Subtable>
+  void
+  openMrSubtable (Subtable & subtable, const String & subtableName);
+
+  // Opens a single subtable if not present in MS object but defined in on-disk MS
+  template <typename Subtable>
+  void
+  openSubtable (Subtable & subtable, const String & subtableName, Bool useLock);
 
   // keep references to the subtables
   MSAntenna antenna_p;
@@ -377,13 +471,16 @@ private:
   MSSysCal sysCal_p; //optional
   MSWeather weather_p; //optional
 
-  // required by the need to throw an exception in the destructor
-  Bool hasBeenDestroyed_p;
+  bool doNotLockSubtables_p; // used to prevent subtable locking to allow parallel interprocess sharing
+  int mrsDebugLevel_p; // logging level currently enabled
+  Bool hasBeenDestroyed_p; // required by the need to throw an exception in the destructor
   TableLock mainLock_p;
+  Bool memoryResidentSubtables_p;   // true if memory resident subtables are enabled
+  MrsEligibility mrsEligibility_p;  // subtables which can be made memory resident
 
 };
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

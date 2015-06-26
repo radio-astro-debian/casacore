@@ -30,12 +30,12 @@
 
 
 //# Includes
-#include <casa/aips.h>
-#include <casa/BasicSL/Constants.h>
-#include <casa/Quanta/Quantum.h>
-#include <casa/Quanta/UnitMap.h>
+#include <casacore/casa/aips.h>
+#include <casacore/casa/BasicSL/Constants.h>
+#include <casacore/casa/Quanta/Quantum.h>
+#include <casacore/casa/Quanta/UnitMap.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
 
@@ -67,7 +67,7 @@ namespace casa { //# NAMESPACE CASA - BEGIN
 // <example>
 // To obtain the velocity of light in pc/a, use:
 // <srcblock>
-// #include <casa/Quanta.h>
+// #include <casacore/casa/Quanta.h>
 // Double vel_pcpy = (C::c).convert("pc/a").getValue();
 // </srcblock>
 // </example>
@@ -142,6 +142,15 @@ namespace casa { //# NAMESPACE CASA - BEGIN
 //    // IAU Gaussian grav. const **2
 //    static Quantum<Double> k2;
 //
+//    // quarter turn = 90 degrees = pi/2 radians
+//    static Quantum<Double> qTurn;
+//
+//    // half turn = 180 degrees = pi radians
+//    static Quantum<Double> hTurn;
+//
+//    // full turn = 360 degrees = 2pi radians
+//    static Quantum<Double> fTurn;
+//
 // </srcblock>
 
 // <motivation>
@@ -211,6 +220,16 @@ public:
 
     // IAU Gaussian grav. const **2
     static Quantum<Double> k2;
+
+    // quarter turn = 90 degrees = pi/2 radians
+    static Quantum<Double> qTurn;
+
+    // half turn = 180 degrees = pi radians
+    static Quantum<Double> hTurn;
+
+    // full turn = 360 degrees = 2pi radians
+    static Quantum<Double> fTurn;
+
 private:
 // This function is used, in conjunction with the
 // <linkto class=QC_init>QC_init</linkto>
@@ -273,6 +292,6 @@ static QC_init qc_init;
 //# Inline Implementations
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

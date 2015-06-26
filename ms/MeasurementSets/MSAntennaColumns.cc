@@ -25,22 +25,22 @@
 //#
 //# $Id$
 
-#include <ms/MeasurementSets/MSAntennaColumns.h>
-#include <ms/MeasurementSets/MSAntenna.h>
-#include <tables/Tables/ColDescSet.h>
-#include <tables/Tables/TableDesc.h>
-#include <tables/Tables/TableRecord.h>
+#include <casacore/ms/MeasurementSets/MSAntennaColumns.h>
+#include <casacore/ms/MeasurementSets/MSAntenna.h>
+#include <casacore/tables/Tables/ColDescSet.h>
+#include <casacore/tables/Tables/TableDesc.h>
+#include <casacore/tables/Tables/TableRecord.h>
 
-#include <casa/Arrays/Vector.h>
-#include <casa/Arrays/ArrayLogical.h>
-#include <casa/Exceptions/Error.h>
-#include <measures/Measures/MPosition.h>
-#include <casa/Quanta/MVPosition.h>
-#include <casa/Quanta/Quantum.h>
-#include <casa/Quanta/UnitVal.h>
-#include <casa/Utilities/Assert.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Arrays/ArrayLogical.h>
+#include <casacore/casa/Exceptions/Error.h>
+#include <casacore/measures/Measures/MPosition.h>
+#include <casacore/casa/Quanta/MVPosition.h>
+#include <casacore/casa/Quanta/Quantum.h>
+#include <casacore/casa/Quanta/UnitVal.h>
+#include <casacore/casa/Utilities/Assert.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 ROMSAntennaColumns::ROMSAntennaColumns(const MSAntenna& msAntenna):
   dishDiameter_p(msAntenna, MSAntenna::
@@ -175,6 +175,16 @@ Int ROMSAntennaColumns::matchAntenna(const String& antName,
 					const MPosition& antennaPos,
 					const Quantum<Double>& tolerance,
 					Int tryRow) {
+  return matchAntennaAndStation(antName, "",
+				antennaPos, tolerance, tryRow);
+
+}
+
+Int ROMSAntennaColumns::matchAntennaAndStation(const String& antName,
+					       const String& stationName,
+					       const MPosition& antennaPos,
+					       const Quantum<Double>& tolerance,
+					       Int tryRow) {
   uInt r = nrow();
   if (r == 0) return -1;
   // Convert the antenna position to something in m.
@@ -193,6 +203,7 @@ Int ROMSAntennaColumns::matchAntenna(const String& antName,
   const Double tolInM = tolerance.getValue(m);
   // Convert the position to meters
   const Vector<Double>& antPosInM = antennaPos.getValue().getValue();
+
   // Main matching loop
   if (tryRow >= 0) {
     const uInt tr = tryRow;
@@ -200,7 +211,9 @@ Int ROMSAntennaColumns::matchAntenna(const String& antName,
       throw(AipsError("ROMSAntennaColumns::matchAntenna(...) - "
                       "the row you suggest is too big"));
     }
+    Bool stationMatches = stationName.empty() || matchStation(tr, stationName);
     if (!flagRow()(tr) &&
+	stationMatches &&
 	matchName(tr, antName) &&
 	matchPosition(tr, antPosInM, tolInM)) {
       return tr;
@@ -209,7 +222,9 @@ Int ROMSAntennaColumns::matchAntenna(const String& antName,
   }
   while (r > 0) {
     r--;
+    Bool stationMatches = stationName.empty() || matchStation(r, stationName);
     if (!flagRow()(r) &&
+	stationMatches &&
 	matchName(r, antName) &&
 	matchPosition(r, antPosInM, tolInM)) {
       return r;
@@ -218,9 +233,15 @@ Int ROMSAntennaColumns::matchAntenna(const String& antName,
   return -1;
 }
 
+
 Bool ROMSAntennaColumns::matchName(uInt row, const String& antName) const {
   DebugAssert(row < nrow(), AipsError);
   return antName.matches(name()(row));
+}
+
+Bool ROMSAntennaColumns::matchStation(uInt row, const String& stationName) const {
+  DebugAssert(row < nrow(), AipsError);
+  return stationName.matches(station()(row));
 }
 
 Bool ROMSAntennaColumns::
@@ -339,5 +360,5 @@ void MSAntennaColumns::setOffsetRef(MPosition::Types ref)
 // compile-command: "gmake MSAntennaColumns"
 // End: 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 

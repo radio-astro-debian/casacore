@@ -26,14 +26,14 @@
 //#
 //# $Id$
 
-#include <coordinates/Coordinates/Projection.h>
-#include <casa/BasicMath/Math.h>
-#include <casa/Exceptions/Error.h>
-#include <casa/Utilities/Regex.h>
-#include <casa/BasicSL/String.h>
+#include <casacore/coordinates/Coordinates/Projection.h>
+#include <casacore/casa/BasicMath/Math.h>
+#include <casacore/casa/Exceptions/Error.h>
+#include <casacore/casa/Utilities/Regex.h>
+#include <casacore/casa/BasicSL/String.h>
 
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
     
     
     Projection::Projection(Projection::Type which) 
@@ -280,7 +280,7 @@ namespace casa { //# NAMESPACE CASA - BEGIN
 	if (parameters_p.nelements() != other.parameters_p.nelements()) return False;
 	
 	for (uInt i=0; i<parameters_p.nelements(); i++) {
-	    if (!casa::near(parameters_p(i),other.parameters_p(i),tol)) return False;
+	    if (!casacore::near(parameters_p(i),other.parameters_p(i),tol)) return False;
 	}
 	
 	return True;
@@ -304,9 +304,15 @@ namespace casa { //# NAMESPACE CASA - BEGIN
 	    throw(AipsError("Projection::validate() - there are missing"
 			    "obligatory parameters"));
 	}
- 	else if (requiredSize < actualSize && verbose){
- 	    cerr << "Projection::validate() - too many projection parameters supplied, will try to continue ..."
- 		 << endl;
+ 	else if (requiredSize < actualSize && verbose){ 
+	  if(name(which_p)=="SFL" and actualSize==3){
+	    cerr << "Note: The GLS projection is deprecated. Use SFL instead." << endl;
+	  }
+	  else{
+	    cerr << "Projection::validate() - " << actualSize << " projection parameters provided, at most "
+		 << requiredSize << " expected. Will try to continue ..."
+		 << endl;
+	  }
  	}
 	else if (actualSize < requiredSize){ // take care of default values 
 	    parameters_p.resize(requiredSize);
@@ -392,5 +398,5 @@ Projection::Type Projection::type (String& ctypeLong,
    return type(proj1);
 }
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 

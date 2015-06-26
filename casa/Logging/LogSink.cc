@@ -26,22 +26,22 @@
 //#
 //# $Id$
 
-#include <casa/Logging/LogSink.h>
-#include <casa/Logging/LogMessage.h>
-#include <casa/Logging/LogFilter.h>
+#include <casacore/casa/Logging/LogSink.h>
+#include <casacore/casa/Logging/LogMessage.h>
+#include <casacore/casa/Logging/LogFilter.h>
 
-#include <casa/Logging/NullLogSink.h>
-#include <casa/Logging/MemoryLogSink.h>
-#include <casa/Logging/StreamLogSink.h>
+#include <casacore/casa/Logging/NullLogSink.h>
+#include <casacore/casa/Logging/MemoryLogSink.h>
+#include <casacore/casa/Logging/StreamLogSink.h>
 
-#include <casa/Utilities/Assert.h>
+#include <casacore/casa/Utilities/Assert.h>
 
-#include <casa/iostream.h>
+#include <casacore/casa/iostream.h>
 
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
-CountedPtr<LogSinkInterface> *LogSink::global_sink_p = 0;
+CountedPtr<LogSink::LsiIntermediate> *LogSink::global_sink_p = 0;
 Mutex LogSink::theirMutex;
 
 
@@ -168,7 +168,7 @@ Bool LogSink::postGlobally(const LogMessage &message)
 {
     Bool posted = False;
     AlwaysAssert(!(*global_sink_p).null(), AipsError);
-    if ((*global_sink_p)->filter().pass(message)) {
+    if ((**global_sink_p)->filter().pass(message)) {
         posted = globalSink().postLocally(message);
     }
     return posted;
@@ -272,7 +272,7 @@ LogSinkInterface &LogSink::globalSink()
     if ( ! LogSink::global_sink_p ) {
         createGlobalSink();
     }
-    return *(*global_sink_p);
+    return ***global_sink_p;
 }
 
 void LogSink::globalSink(LogSinkInterface *&fromNew)
@@ -280,7 +280,7 @@ void LogSink::globalSink(LogSinkInterface *&fromNew)
     if ( ! LogSink::global_sink_p ) {
         createGlobalSink();
     }
-    (*global_sink_p).replace(fromNew);
+    (* global_sink_p)->replace(fromNew);
     fromNew = 0;
     AlwaysAssert(!(*global_sink_p).null(), AipsError);
 }
@@ -312,7 +312,7 @@ void LogSink::flush (Bool global)
         local_sink_p->flush(False);
     }
     if (global  &&  !(*global_sink_p).null()) {
-        (*global_sink_p)->flush(False);
+        (**global_sink_p)->flush(False);
     }
 }
 
@@ -320,10 +320,10 @@ void LogSink::createGlobalSink()
 {
     ScopedMutexLock lock(theirMutex);
     if ( ! LogSink::global_sink_p ) {
-        LogSink::global_sink_p = new CountedPtr<LogSinkInterface>
-          (new StreamLogSink(LogMessage::NORMAL, &cerr));
+        LogSink::global_sink_p = new CountedPtr<LsiIntermediate> ();
+        (* global_sink_p) = new LsiIntermediate (new StreamLogSink(LogMessage::NORMAL, &cerr));
     }
 }
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 

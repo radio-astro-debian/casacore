@@ -25,16 +25,16 @@
 //#
 //# $Id$
 
-#include <tables/Tables/TableRecord.h>
-#include <tables/Tables/TableKeyword.h>
-#include <tables/Tables/Table.h>
-#include <casa/IO/AipsIO.h>
-#include <casa/Arrays/IPosition.h>
-#include <casa/Exceptions/Error.h>
-#include <casa/Utilities/Assert.h>
+#include <casacore/tables/Tables/TableRecord.h>
+#include <casacore/tables/Tables/TableKeyword.h>
+#include <casacore/tables/Tables/Table.h>
+#include <casacore/casa/IO/AipsIO.h>
+#include <casacore/casa/Arrays/IPosition.h>
+#include <casacore/casa/Exceptions/Error.h>
+#include <casacore/casa/Utilities/Assert.h>
 
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 TableRecord::TableRecord()
 : RecordInterface (),
@@ -329,7 +329,9 @@ Table TableRecord::asTable (const RecordFieldId& id,
 {
     Int whichField = idToNumber (id);
     const Table& tab =
-      ((const TableKeyword*)get_pointer (whichField, TpTable))->table();
+      ((const TableKeyword*)get_pointer (whichField,
+                                         TpTable))->table(&lockOptions);
+    /*
     String name = tab.tableName();
     int option = tab.tableOption();
     if (option == Table::New || option == Table::NewNoReplace) {
@@ -342,6 +344,7 @@ Table TableRecord::asTable (const RecordFieldId& id,
         closeTable (id);
         return Table (name, lockOptions, Table::TableOption(option));
     }
+    */
     return tab;
 }
 
@@ -440,5 +443,5 @@ void TableRecord::setTableAttr (const TableRecord& other,
   }
 }
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 

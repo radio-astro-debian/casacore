@@ -1,4 +1,4 @@
-//# MatrixMath.h: The AIPS++ linear algebra functions
+//# MatrixMath.h: The Casacore linear algebra functions
 //# Copyright (C) 1994,1995,1996,1999,2000,2002
 //# Associated Universities, Inc. Washington DC, USA.
 //#
@@ -29,13 +29,13 @@
 #define CASA_MATRIXMATH_H
 
 
-#include <casa/aips.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Arrays/Matrix.h>
-#include <casa/BasicSL/Complex.h>
+#include <casacore/casa/aips.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Arrays/Matrix.h>
+#include <casacore/casa/BasicSL/Complex.h>
 
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //<summary>
 //    Linear algebra functions on Vectors and Matrices.
@@ -76,6 +76,8 @@ Double norm (const Vector<DComplex> &x);
 template <class T> 
    Vector<T> crossProduct (const Vector<T> &x, const Vector<T> &y);
 
+// Magnitude of cross product of two 2-space vectors, x[0]*y[1] - x[1]*y[0]. 
+template <class T> T crossProduct2D(const Vector<T> &x, const Vector<T> &y);
 //
 // The matrix/outer product of a vector and a transposed vector. 
 // <note> The function's second argument is actually a transposed vector
@@ -190,10 +192,10 @@ Matrix<Double> adjoint (const Matrix<Double> &A);
 // </group>
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #ifndef CASACORE_NO_AUTO_TEMPLATES
-#include <casa/Arrays/MatrixMath.tcc>
+#include <casacore/casa/Arrays/MatrixMath.tcc>
 #endif //# CASACORE_NO_AUTO_TEMPLATES
 #endif
 

@@ -29,16 +29,17 @@
 #define MEASURES_TABLEQUANTUMDESC_H
 
 //# Includes
-#include <casa/Arrays/Vector.h>
-#include <casa/BasicSL/String.h>
+#include <casacore/casa/aips.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/BasicSL/String.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 //# Forward Declarations
 class TableDesc;
 class Table;
 class TableRecord;
-class ROTableColumn;
+class TableColumn;
 class Unit;
 
 
@@ -334,7 +335,7 @@ public:
   // </group>
 
   // Does this column contain table quanta?
-  static Bool hasQuanta (const ROTableColumn& column);
+  static Bool hasQuanta (const TableColumn& column);
 
 private:
   // Name of column which stores the Quantum's values.
@@ -357,6 +358,6 @@ private:
 
 
 
-} //# NAMESPACE CASA - END
+} //# NAMESPACE CASACORE - END
 
 #endif

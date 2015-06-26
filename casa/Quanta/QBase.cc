@@ -26,10 +26,11 @@
 //# $Id$
 
 //# Includes
-#include <casa/Exceptions/Error.h>
-#include <casa/Quanta/QBase.h>
+#include <casacore/casa/Exceptions/Error.h>
+#include <casacore/casa/Logging/LogIO.h>
+#include <casacore/casa/Quanta/QBase.h>
 
-namespace casa { //# NAMESPACE CASA - BEGIN
+namespace casacore { //# NAMESPACE CASACORE - BEGIN
 
 QBase::QBase() 
 : qUnit() {}
@@ -71,5 +72,10 @@ ostream &operator<<(ostream &os, const QBase &meas) {
   return os;
 }
 
-} //# NAMESPACE CASA - END
+LogIO &operator<<(LogIO& os, const QBase &meas) {
+  os.output() << meas;
+  return os;
+}
+
+} //# NAMESPACE CASACORE - END
 
