@@ -1,5 +1,5 @@
-casacore (2.0.0-1) unstable; urgency=low
+casacore (2.0.1-1) unstable; urgency=low
 
   * Initial release. (Closes: #686924)
 
- -- Benda Xu <heroxbd@gentoo.org>  Fri, 26 Jun 2015 13:17:21 +0900
+ -- Benda Xu <heroxbd@gentoo.org>  Fri, 26 Jun 2015 14:57:17 +0900
