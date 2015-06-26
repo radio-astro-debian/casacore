@@ -1,4 +1,4 @@
-From df33e210fc7140c7bb4c0f122d73fb59d2d27518 Mon Sep 17 00:00:00 2001
+From ad4c79db860d97514cd61405cb034b6cdba0c129 Mon Sep 17 00:00:00 2001
 From: Benda Xu <heroxbd@gentoo.org>
 Date: Wed, 10 Sep 2014 10:00:43 +0900
 Subject: disable known failed tests
@@ -17,7 +17,7 @@ Description: Testsuite of tEarthField, tEarthMagneticMachine,
     tFrequencyAligner, tObsInfo, tSpectralCoordinate  disabled, because
     geodetic/Observatories is not yet available in casacore-data.
 
-    dTwoSidedShape, dImageHistograms, tMSSimulator, tIAU2000,
+    dTwoSidedShape, dImageHistograms, tIAU2000,
     tVelocityMachine, tParAngleMachine, tMuvw, tMeasure, dMeasure,
     disabled for missing geodetic/TAI_UTC.
 
@@ -34,13 +34,13 @@ Description: Testsuite of tEarthField, tEarthMagneticMachine,
        geodetic/{IERSeop{2000,97},IERSpredict{,2000},TAI_UTC}.
 ---
  coordinates/Coordinates/test/CMakeLists.txt |  6 ------
- images/Images/test/CMakeLists.txt           | 19 ++-----------------
+ images/Images/test/CMakeLists.txt           | 17 -----------------
  images/Regions/test/CMakeLists.txt          |  4 ----
+ lattices/LatticeMath/test/CMakeLists.txt    |  1 -
  measures/Measures/test/CMakeLists.txt       | 19 -------------------
  measures/TableMeasures/test/CMakeLists.txt  |  1 -
- ms/MeasurementSets/test/CMakeLists.txt      | 29 -----------------------------
- 6 files changed, 2 insertions(+), 76 deletions(-)
- delete mode 100644 ms/MeasurementSets/test/CMakeLists.txt
+ ms/MSOper/test/CMakeLists.txt               |  1 -
+ 7 files changed, 49 deletions(-)
 
 diff --git a/coordinates/Coordinates/test/CMakeLists.txt b/coordinates/Coordinates/test/CMakeLists.txt
 index f46b327..bbf7e68 100644
@@ -66,10 +66,10 @@ index f46b327..bbf7e68 100644
  tQualityCoordinate
  tTabularCoordinate
 diff --git a/images/Images/test/CMakeLists.txt b/images/Images/test/CMakeLists.txt
-index 7d606f5..74de981 100644
+index 7d606f5..a0e8461 100644
 --- a/images/Images/test/CMakeLists.txt
 +++ b/images/Images/test/CMakeLists.txt
-@@ -24,36 +24,21 @@ endforeach (file)
+@@ -24,36 +24,19 @@ endforeach (file)
  
  set (tests
  dImageInterface
@@ -95,8 +95,6 @@ index 7d606f5..74de981 100644
  tImageExprParse_addDir
  tImageInfo
 -tImageRegrid
-+tImagePolarimetry
-+tImageSourceFinder
  tImageStatistics
 -tImageStatistics2
 -tImageUtilities
@@ -125,6 +123,18 @@ index e41dd37..6ac6c4b 100644
  tWCUnion
  )
  
+diff --git a/lattices/LatticeMath/test/CMakeLists.txt b/lattices/LatticeMath/test/CMakeLists.txt
+index 1df3ce6..528096c 100644
+--- a/lattices/LatticeMath/test/CMakeLists.txt
++++ b/lattices/LatticeMath/test/CMakeLists.txt
+@@ -13,7 +13,6 @@ tLatticeSlice1D
+ tLatticeStatistics
+ tLatticeStatsDataProvider
+ tLatticeTwoPtCorr
+-tLattStatsSpecialize
+ )
+ 
+ foreach (test ${tests})
 diff --git a/measures/Measures/test/CMakeLists.txt b/measures/Measures/test/CMakeLists.txt
 index 0723581..130babb 100644
 --- a/measures/Measures/test/CMakeLists.txt
@@ -174,38 +184,13 @@ index 20db6b4..042b8a9 100644
  dVarRefMdirCol
  )
  
-diff --git a/ms/MeasurementSets/test/CMakeLists.txt b/ms/MeasurementSets/test/CMakeLists.txt
-deleted file mode 100644
-index 42ff162..0000000
---- a/ms/MeasurementSets/test/CMakeLists.txt
-+++ /dev/null
-@@ -1,29 +0,0 @@
--#foreach (files
--#antenna.params
--#feed.params
--#field.params
--#obs.params
--#range-obs.params
--#selector-obs.params
--#spw.params
--#)
--#    configure_file (${CMAKE_CURRENT_SOURCE_DIR}/${files} ${CMAKE_CURRENT_BINARY_DIR}#/${files} COPYONLY)
--#endforeach (files)
--
--set (tests
--tMeasurementSet
--tMSColumns
--tMSDataDescBuffer
--tMSFieldBuffer
--tMSFieldEphem
--tMSIter
--tMSMainBuffer
--tMSPolBuffer
--tStokesConverter
--)
--
--foreach (test ${tests})
--	add_executable (${test} ${test}.cc)
--	target_link_libraries (${test} casa_ms)
--	add_test (${test} ${CMAKE_SOURCE_DIR}/cmake/cmake_assay ./${test})
--endforeach (test)
+diff --git a/ms/MSOper/test/CMakeLists.txt b/ms/MSOper/test/CMakeLists.txt
+index bb3d659..c934ba0 100644
+--- a/ms/MSOper/test/CMakeLists.txt
++++ b/ms/MSOper/test/CMakeLists.txt
+@@ -1,5 +1,4 @@
+ set (tests
+-tMSDerivedValues
+ tMSMetaData
+ tMSReader
+ tMSSummary

@@ -35,8 +35,6 @@ tImageConcat
 tImageExprGram
 tImageExprParse_addDir
 tImageInfo
-tImagePolarimetry
-tImageSourceFinder
 tImageStatistics
 tMIRIADImage
 tSubImage
