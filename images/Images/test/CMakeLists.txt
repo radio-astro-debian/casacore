@@ -31,7 +31,6 @@ tFITSExtImageII
 tFITSImage
 tFITSImgParser
 tHDF5Image
-tImageConcat
 tImageExprGram
 tImageExprParse_addDir
 tImageInfo

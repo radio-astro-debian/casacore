@@ -1,0 +1,65 @@
+From 6cf27bf967e8ef75b4ef71e087b79f37f83eb5a1 Mon Sep 17 00:00:00 2001
+From: Benda Xu <heroxbd@gentoo.org>
+Date: Mon, 29 Jun 2015 17:33:10 +0900
+Subject: disable known failed tests post 2.0.0
+
+Forwarded: no need
+Description: tImageConcat, tMSFieldEphem, tmeas requires casacore-data,
+    which is not available yet (bug #761146).  tLatticeStatsDataProvider
+    tries to allocate a 1024*1024*1024 array, which is at least 4GiB,
+    not likely to be available on port machines.
+---
+ images/Images/test/CMakeLists.txt        | 1 -
+ lattices/LatticeMath/test/CMakeLists.txt | 1 -
+ meas/MeasUDF/test/CMakeLists.txt         | 4 +---
+ ms/MeasurementSets/test/CMakeLists.txt   | 1 -
+ 4 files changed, 1 insertion(+), 6 deletions(-)
+
+diff --git a/images/Images/test/CMakeLists.txt b/images/Images/test/CMakeLists.txt
+index a0e8461..b1d0caf 100644
+--- a/images/Images/test/CMakeLists.txt
++++ b/images/Images/test/CMakeLists.txt
+@@ -31,7 +31,6 @@ tFITSExtImageII
+ tFITSImage
+ tFITSImgParser
+ tHDF5Image
+-tImageConcat
+ tImageExprGram
+ tImageExprParse_addDir
+ tImageInfo
+diff --git a/lattices/LatticeMath/test/CMakeLists.txt b/lattices/LatticeMath/test/CMakeLists.txt
+index 528096c..91d103f 100644
+--- a/lattices/LatticeMath/test/CMakeLists.txt
++++ b/lattices/LatticeMath/test/CMakeLists.txt
+@@ -11,7 +11,6 @@ tLatticeHistograms
+ tLatticeMathUtil
+ tLatticeSlice1D
+ tLatticeStatistics
+-tLatticeStatsDataProvider
+ tLatticeTwoPtCorr
+ )
+ 
+diff --git a/meas/MeasUDF/test/CMakeLists.txt b/meas/MeasUDF/test/CMakeLists.txt
+index 155c470..ad73942 100644
+--- a/meas/MeasUDF/test/CMakeLists.txt
++++ b/meas/MeasUDF/test/CMakeLists.txt
+@@ -1,6 +1,4 @@
+-set (tests
+- tmeas
+-)
++set (tests)
+ 
+ foreach (test ${tests})
+     add_test (${test} ${CMAKE_SOURCE_DIR}/cmake/cmake_assay ./${test})
+diff --git a/ms/MeasurementSets/test/CMakeLists.txt b/ms/MeasurementSets/test/CMakeLists.txt
+index 42ff162..3b07142 100644
+--- a/ms/MeasurementSets/test/CMakeLists.txt
++++ b/ms/MeasurementSets/test/CMakeLists.txt
+@@ -15,7 +15,6 @@ tMeasurementSet
+ tMSColumns
+ tMSDataDescBuffer
+ tMSFieldBuffer
+-tMSFieldEphem
+ tMSIter
+ tMSMainBuffer
+ tMSPolBuffer
