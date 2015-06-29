@@ -11,7 +11,6 @@ tLatticeHistograms
 tLatticeMathUtil
 tLatticeSlice1D
 tLatticeStatistics
-tLatticeStatsDataProvider
 tLatticeTwoPtCorr
 )
 
