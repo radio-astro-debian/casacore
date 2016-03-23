@@ -163,20 +163,11 @@ namespace casacore { //# NAMESPACE CASACORE - BEGIN
   {
     TableExprNode condition;
 
-    if (antennaIds2.size()) 
-      {
-	condition =
+    condition =
 	  // (ms()->col(colName1).in(antennaIds1)  && ms()->col(colName2).in(antennaIds2)) ||
 	  // (ms()->col(colName1).in(antennaIds2)  && ms()->col(colName2).in(antennaIds1));
-	  (column1AsTEN_p.in(antennaIds1)  && column2AsTEN_p.in(antennaIds2)) ||
-	  (column1AsTEN_p.in(antennaIds2)  && column2AsTEN_p.in(antennaIds1));
-      } 
-    else 
-      {
-	condition =
-	  //	  (ms()->col(colName1).in(antennaIds1) && ms()->col(colName2).in(antennaIds1));
-	  (column1AsTEN_p.in(antennaIds1) && column2AsTEN_p.in(antennaIds1));
-      }    
+      (column1AsTEN_p.in(antennaIds1)  && column2AsTEN_p.in(antennaIds2)) ||
+      (column1AsTEN_p.in(antennaIds2)  && column2AsTEN_p.in(antennaIds1));
     makeAntennaList(ant1List, antennaIds1,negate);
     makeAntennaList(ant2List, antennaIds2,negate);
 
@@ -245,21 +236,54 @@ namespace casacore { //# NAMESPACE CASACORE - BEGIN
     Matrix<double> blength = getBaselineLengths();
     Matrix<Bool> match(blength.shape());
     match = False;
-    int nr=0;
     for (Int j=0; j<blength.shape()[1]; ++j) {
       for (Int i=0; i<blength.shape()[0]; ++i) {
         double bl = blength(i,j);
         for (uInt k=0; k<lengths.size(); k+=2) {
           if (bl >= lengths[k]  &&  bl <= lengths[k+1]) {
             match(i,j) = True;
-            ++nr;
           }
         }
       }
     }
+    return makeBLNode (match, negate);
+  }
+
+  const TableExprNode* MSAntennaParse::selectBLRegex
+  (const std::vector<String>& blRegex, Bool negate)
+  {
+    TableExprNode selAnt1, selAnt2;
+    Vector<String> names = ScalarColumn<String>(msSubTable_p, "NAME").getColumn();
+    Matrix<Bool> match(names.size(), names.size());
+    match = False;
+    for (std::vector<String>::const_iterator iter=blRegex.begin();
+         iter!=blRegex.end(); ++iter) {
+      // Create the Regex object. Take care of a possibly negated one.
+      String str(*iter);
+      Bool neg = (str[0] == '^');
+      if (neg) {
+        str = str.after(0);
+      }
+      Regex re(str);
+      // Form all possible baseline names and see it they match.
+      for (uInt j=0; j<names.size(); ++j) {
+        for (uInt i=0; i<names.size(); ++i) {
+          String bl = names[i] + '&' + names[j];
+          if (bl.matches(re) != neg) {
+            match(i,j) = True;
+          }
+        }
+      }
+    }
+    return makeBLNode (match, negate);
+  }
+
+  const TableExprNode* MSAntennaParse::makeBLNode (const Matrix<Bool>& match,
+                                                   Bool negate)
+  {
     vector<Int> ant1, ant2;
-    for (Int i=0; i<blength.shape()[0]; ++i) {
-      for (Int j=0; j<blength.shape()[1]; ++j) {
+    for (Int i=0; i<match.shape()[0]; ++i) {
+      for (Int j=0; j<match.shape()[1]; ++j) {
         if (match(i,j)) {
           ant1.push_back (i);
           ant2.push_back (j);

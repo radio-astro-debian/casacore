@@ -2,6 +2,11 @@
 # CASA casa
 #
 
+configure_file (
+  config.h.in
+  "${PROJECT_BINARY_DIR}/casacore/casa/config.h"
+  @ONLY)
+
 add_library (casa_casa
 Arrays/ArrayBase.cc
 Arrays/ArrayError.cc
@@ -10,6 +15,7 @@ Arrays/ArrayPosIter.cc
 Arrays/ArrayUtil2.cc
 Arrays/Array2.cc
 Arrays/Array2Math.cc
+Arrays/Array_tmpl.cc
 Arrays/AxesMapping.cc
 Arrays/AxesSpecifier.cc
 Arrays/ExtendSpecifier.cc
@@ -19,6 +25,7 @@ Arrays/MaskArrMath2.cc
 Arrays/Matrix2Math.cc
 Arrays/Slice.cc
 Arrays/Slicer.cc
+Arrays/Vector_tmpl.cc
 BasicMath/Math.cc
 BasicMath/Primes.cc
 BasicMath/Random.cc
@@ -28,7 +35,9 @@ BasicSL/IComplex.cc
 BasicSL/RegexBase.cc
 BasicSL/STLMath.cc
 BasicSL/String.cc
+Containers/Allocator.cc
 Containers/Block.cc
+Containers/Block_tmpl.cc
 Containers/HashMap2.cc
 Containers/IterError.cc
 Containers/List2.cc
@@ -308,6 +317,7 @@ DESTINATION include/casacore/casa/BasicSL
 )
 
 install (FILES
+Containers/Allocator.h
 Containers/Block.h
 Containers/BlockIO.h
 Containers/BlockIO.tcc
@@ -590,6 +600,7 @@ DESTINATION include/casacore/casa/Utilities
 )
 
 install (FILES
+${PROJECT_BINARY_DIR}/casacore/casa/config.h
 aipsdef.h
 aipsenv.h
 aips.h

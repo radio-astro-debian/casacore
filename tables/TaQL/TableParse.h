@@ -478,7 +478,8 @@ public:
 
   // Make a function object node for the given function name and arguments.
   // The ignoreFuncs vector contains invalid function codes.
-  static TableExprNode makeFuncNode (const String& name,
+  static TableExprNode makeFuncNode (TableParseSelect*,
+                                     const String& name,
 				     const TableExprNodeSet& arguments,
 				     const Vector<int>& ignoreFuncs,
 				     const Table& table,
@@ -515,6 +516,13 @@ private:
 
   // Get the aggregate functions used in SELECT and HAVING.
   vector<TableExprNodeRep*> getAggrNodes() const;
+
+  // Try to make a UDF function node for the given function name and arguments.
+  static TableExprNode makeUDFNode (TableParseSelect*,
+                                    const String& name,
+                                    const TableExprNodeSet& arguments,
+                                    const Table& table,
+                                    const TaQLStyle&);
 
   // Find the function code belonging to a function name.
   // Functions to be ignored can be given (as function type values).
@@ -558,6 +566,10 @@ private:
   // Fill projectExprSelColumn_p telling the columns to be projected
   // at the first stage.
   void makeProjectExprSel();
+
+  // Add a column node to applySelNodes_p.
+  void addApplySelNode (const TableExprNode& node)
+    { applySelNodes_p.push_back (node); }
 
   // Set the selected rows for the column objects in applySelNodes_p.
   // These nodes refer the original table. They requires different row
@@ -655,6 +667,7 @@ private:
 		      Int ndim, const IPosition& shape,
 		      const String& dmType, const String& dmGroup,
 		      const String& comment,
+                      const TableRecord& keywordSet,
 		      const String& unitName);
 
   // Find the names of all stored columns in a table.
@@ -688,7 +701,7 @@ private:
     // is the index in a vector of a set of aggregate function objects.
     vector<CountedPtr<TableExprGroupFuncSet> > funcSets;
     std::map<T, int> keyFuncMap;
-    T lastKey = std::numeric_limits<Double>::max();
+    T lastKey = std::numeric_limits<T>::max();
     int groupnr = -1;
     // Loop through all rows.
     // For each row generate the key to get the right entry.
@@ -734,6 +747,8 @@ private:
   Block<String> columnOldNames_p;
   //# The new data type for a column.
   Block<String> columnDtypes_p;
+  //# The keywords used in a column.
+  Block<TableRecord> columnKeywords_p;
   //# Number of real expressions used in selected columns.
   uInt nrSelExprUsed_p;
   //# Distinct values in output?

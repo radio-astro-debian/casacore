@@ -76,6 +76,8 @@ String toString(const ScanKey& scanKey);
 // define operator<() so it can be used as a key in std::map
 Bool operator<(const ScanKey& lhs, const ScanKey& rhs);
 
+Bool operator==(const ScanKey& lhs, const ScanKey& rhs);
+
 // extract all the unique scan numbers from the specified scans
 std::set<Int> scanNumbers(const std::set<ScanKey>& scanKeys);
 
@@ -94,6 +96,19 @@ Bool operator<(const ArrayKey& lhs, const ArrayKey& rhs);
 
 // construct scan keys given a set of scan numbers and an ArrayKey
 std::set<ScanKey> scanKeys(const std::set<Int>& scans, const ArrayKey& arrayKey);
+
+// represents primary key in the SOURCE table
+struct SourceKey {
+    // SOURCE_ID column
+    uInt id;
+    uInt spw;
+};
+
+// define operator<() so it can be used as a key in std::map
+Bool operator<(const SourceKey& lhs, const SourceKey& rhs);
+
+// get a set of unique ArrayKeys from a set of ScanKeys
+std::set<ArrayKey> uniqueArrayKeys(const std::set<ScanKey>& scanKeys);
 
 }
 

@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id$
+//# $Id: MSSummary.cc 21578 2015-03-18 15:01:43Z gervandiepen $
 //#
 
 #include <casacore/casa/aips.h>
@@ -67,29 +67,29 @@ namespace casacore { //# NAMESPACE CASACORE - BEGIN
 // Constructor assigns pointer.  If MS goes out of scope you
 // will get rubbish.  Also sets string to separate subtable output.
 //
-MSSummary::MSSummary (const MeasurementSet& ms)
-: pMS(&ms), _msmd(new MSMetaData(&ms, 50.0)),
+MSSummary::MSSummary (const MeasurementSet& ms, Float maxCacheMB)
+: pMS(&ms), _msmd(new MSMetaData(&ms, maxCacheMB)),
   dashlin1(replicate("-",80)),
   dashlin2(replicate("=",80)),
   _listUnflaggedRowCount(False),
-  _cacheSizeMB(50)
+  _cacheSizeMB(maxCacheMB)
 {}
 
-MSSummary::MSSummary (const MeasurementSet* ms)
-: pMS(ms), _msmd(new MSMetaData(ms, 50.0)),
+MSSummary::MSSummary (const MeasurementSet* ms, Float maxCacheMB)
+: pMS(ms), _msmd(new MSMetaData(ms, maxCacheMB)),
   dashlin1(replicate("-",80)),
   dashlin2(replicate("=",80)),
   _listUnflaggedRowCount(False),
-  _cacheSizeMB(50)
+  _cacheSizeMB(maxCacheMB)
 {}
 
-MSSummary::MSSummary (const MeasurementSet* ms, const String msname)
-: pMS(ms), _msmd(new MSMetaData(ms, 50)),
+MSSummary::MSSummary (const MeasurementSet* ms, const String msname, Float maxCacheMB)
+: pMS(ms), _msmd(new MSMetaData(ms, maxCacheMB)),
   dashlin1(replicate("-",80)),
   dashlin2(replicate("=",80)),
   msname_p(msname),
   _listUnflaggedRowCount(False),
-  _cacheSizeMB(50)
+  _cacheSizeMB(maxCacheMB)
 {}
 //
 // Destructor does nothing
@@ -122,7 +122,7 @@ String MSSummary::name () const
 //
 // Reassign pointer.
 //
-Bool MSSummary::setMS (const MeasurementSet& ms)
+Bool MSSummary::setMS (const MeasurementSet& ms, Float maxCacheMB)
 {
 	const MeasurementSet* pTemp;
 	pTemp = &ms;
@@ -130,7 +130,8 @@ Bool MSSummary::setMS (const MeasurementSet& ms)
 		return False;
 	} else {
 		pMS = pTemp;
-		_msmd.reset(new MSMetaData(&ms, _cacheSizeMB));
+		Float cache = maxCacheMB < 0 ? _cacheSizeMB : maxCacheMB;
+		_msmd.reset(new MSMetaData(&ms, cache));
 		return True;
 	}
 }
@@ -320,21 +321,23 @@ void MSSummary::listMain (LogIO& os, Record& outRec, Bool verbose,
 	Block<String> icols(2);
 	icols[0] = "OBSERVATION_ID";
 	icols[1] = "ARRAY_ID";
-	TableIterator obsarriter(mstab,icols);
+	//TableIterator obsarriter(mstab,icols);
 	//Limiting record length
 	Int recLength=0;
 	const Int maxRecLength=10000; //limiting for speed and size sake
-	// Iterate:
-	while (!obsarriter.pastEnd()) {
+	set<ArrayKey> allArrayKeys = uniqueArrayKeys(_msmd->getScanKeys());
 
-		// Table containing this iteration:
-		Table obsarrtab(obsarriter.table());
-		// Extract (zero-based) OBSID and ARRID for this iteration:
-		ROTableVector<Int> obsidcol(obsarrtab,"OBSERVATION_ID");
-		Int obsid(obsidcol(0));
-		ROTableVector<Int> arridcol(obsarrtab,"ARRAY_ID");
-		Int arrid(arridcol(0));
-
+	set<ArrayKey>::const_iterator iter = allArrayKeys.begin();
+	set<ArrayKey>::const_iterator end = allArrayKeys.end();
+	_msmd->setForceSubScanPropsToCache(True);
+	SHARED_PTR<const std::map<ScanKey, std::pair<Double,Double> > > scanToTRMap = _msmd->getScanToTimeRangeMap();
+	SHARED_PTR<const std::map<SubScanKey, MSMetaData::SubScanProperties> > ssprops
+	    = _msmd->getSubScanProperties(True);
+	SHARED_PTR<const std::map<SubScanKey, std::set<String> > > ssToIntents = _msmd->getSubScanToIntentsMap();
+	SHARED_PTR<const map<SubScanKey, uInt> > nrowMap = _msmd->getNRowMap(MSMetaData::BOTH);
+	for (; iter != end; ++iter) {
+		Int obsid = iter->obsID;
+		Int arrid = iter->arrayID;
 		if (verbose) {
 			// Report OBSID and ARRID, and header for listing:
 			os << endl << "   ObservationID = " << obsid;
@@ -345,394 +348,136 @@ void MSSummary::listMain (LogIO& os, Record& outRec, Bool verbose,
 			datetime.replace(25+timeref.length(),1,")");
 			os << datetime;
 			os << "Scan  FldId FieldName "
-                           << "            nRows     ";
-                        if (_listUnflaggedRowCount) {
-                          os << "nUnflRows   ";
-                        }
-                        os << "SpwIds   Average Interval(s)    ScanIntent" << endl;
-		}
-		/* CAS-2751. Sort the table by scan then field (not timestamp)
-		 * so that scans are not listed for every different DDID
-		 */
-		// Setup iteration over scan and field within this iteration:
-		Block<String> jcols(2);
-		jcols[0] = "SCAN_NUMBER";
-		jcols[1] = "FIELD_ID";
-		TableIterator stiter(obsarrtab,jcols);
-
-		// Vars for keeping track of time, fields, and ddis
-		Int lastscan(-1);
-		Vector<Int> lastfldids;
-		Vector<Int> lastddids;
-		Vector<Int> laststids;
-		Vector<Int> fldids(1,0);
-		Vector<Int> ddids(1,0);
-		Vector<Int> stids(1,0); // State IDs
-		//Vector<Int> spwids;
-		Int nfld(1);
-		Int nddi(1);
-		Int nst(1);
-		Double btime(0.0), etime(0.0);
-		Double lastday(0.0), day(0.0);
-		Bool firsttime(True);
-		Int thisnrow(0);
-		Double meanIntTim(0.0);
-
-		os.output().precision(3);
-		Int subsetscan=0;
-		// Iterate over scans/fields:
-		std::set<uInt> spw;
-		ScanKey lastScanKey;
-		while (!stiter.pastEnd()) {
-			// ms table at this scan
-			Table t(stiter.table());
-			Int nrow=t.nrow();
-
-			// relevant columns
-			ROTableVector<Double> timecol(t,"TIME");
-			ROTableVector<Double> inttim(t,"EXPOSURE");
-			ROTableVector<Int> scncol(t,"SCAN_NUMBER");
-			ROTableVector<Int> fldcol(t,"FIELD_ID");
-			ROTableVector<Int> ddicol(t,"DATA_DESC_ID");
-			ROTableVector<Int> stidcol(t,"STATE_ID");
-
-			lastScanKey.obsID = obsid;
-			lastScanKey.arrayID = arrid;
-			lastScanKey.scan = lastscan;
-
-			// this timestamp
-			//Double thistime(timecol(0));
-
-			// this scan_number
-			Int thisscan(scncol(0));
-
-			// First field and ddi at this timestamp:
-			fldids.resize(1,False);
-			fldids(0)=fldcol(0);
-			nfld=1;
-			ddids.resize(1,False);
-			ddids(0)=ddicol(0);
-			nddi=1;
-
-			stids.resize(1, False);
-			stids(0) = stidcol(0);
-			nst=1;
-			nVisPerField_(fldids(0))+=nrow;
-
-			// fill field and ddi lists for this scan
-			for (Int i=1; i < nrow; i++) {
-				if ( !anyEQ(fldids,fldcol(i)) ) {
-					nfld++;
-					fldids.resize(nfld,True);
-					fldids(nfld-1)=fldcol(i);
-				}
-
-				if ( !anyEQ(ddids,ddicol(i)) ) {
-					nddi++;
-					ddids.resize(nddi,True);
-					ddids(nddi-1)=ddicol(i);
-				}
-
-				if ( !anyEQ(stids,stidcol(i)) ) {
-					nst++;
-					stids.resize(nst,True);
-					stids(nst-1)=stidcol(i);
-				}
-
-			}
-
-			// If not first timestamp, check if scan changed, etc.
-			ScanKey thisScanKey = lastScanKey;
-			thisScanKey.scan = thisscan;
-			if (!firsttime) {
-				// Has state changed?
-				Bool samefld;
-				samefld=fldids.conform(lastfldids) && !anyNE(fldids,lastfldids);
-				Bool sameddi;
-				sameddi=ddids.conform(lastddids) && !anyNE(ddids,lastddids);
-
-				Bool samest;
-				samest=stids.conform(laststids) && !anyNE(stids,laststids);
-
-				Bool samescan;
-				samescan=(thisscan==lastscan);
-
-				samescan = samescan && samefld && sameddi && samest;
-				//		samescan = samescan && samefld;
-
-				// If state changed, then print out last scan's info
-				if (!samescan) {
-					//	      cout << "thisscan " << thisscan << "lastscan " << lastscan
-					// 		   << " fldids " << fldids << " lastfldids " << lastfldids
-					// 		   << " ddids " << ddids << " lastddids " << lastddids
-					// 		   << " samescan " << (thisscan==lastscan) <<  " samefld " << samefld << " sameddi " << sameddi
-					// 		   << " meanIntTim " << meanIntTim << " thisnrow " << thisnrow << " inttim.makeVector().size() "
-					// 		   <<  inttim.makeVector().size() << " meanIntTim/thisnrow " << meanIntTim/thisnrow << endl;
-					if (thisnrow>0){
-						meanIntTim/=thisnrow;
-					}
-					else {
-						meanIntTim=0.0;
-					}
-					// this MJD
-					day=floor(MVTime(btime/C::day).day());
-					spw = _msmd->getSpwsForScan(lastScanKey);
-					String name=fieldnames(lastfldids(0));
-					if (verbose) {
-						// Print out last scan's times, fields, ddis
-						os.output().setf(ios::right, ios::adjustfield);
-						os.output().width(widthLead); os << "  ";
-						os.output().width(widthbtime);
-						if (day!=lastday) {     // print date
-							os << MVTime(btime/C::day).string(MVTime::DMY,7);
-						} else {                // omit date
-							os << MVTime(btime/C::day).string(MVTime::TIME,7);
-						}
-						os.output().width(3); os << " - ";
-						os.output().width(widthetime);
-						os << MVTime(etime/C::day).string(MVTime::TIME,7);
-						os.output().width(widthLead); os << "  ";
-						os.output().setf(ios::right, ios::adjustfield);
-						os.output().width(widthScan); os << lastscan;
-						os.output().width(widthLead); os << "  ";
-						os.output().setf(ios::right, ios::adjustfield);
-						os.output().width(widthFieldId); os << lastfldids(0) << " ";
-						os.output().setf(ios::left, ios::adjustfield);
-						if (name.length()>20) name.replace(19,1,'*');
-						os.output().width(widthField); os << name.at(0,20);
-						//os.output().width(widthnrow); os << thisnrow;
-						os.output().width(widthnrow);
-						os.output().setf(ios::right, ios::adjustfield);
-						os <<  _msmd->nRows(MSMetaData::BOTH, arrid, obsid, lastscan, lastfldids(0));
-                                                if (_listUnflaggedRowCount) {
-                                                  ostringstream xx;
-                                                  xx << std::fixed << setprecision(2)
-                                                     << _msmd->nUnflaggedRows(
-								MSMetaData::BOTH, arrid, obsid, lastscan, lastfldids(0)
-							);
-                                                  os.output().width(widthNUnflaggedRow);
-                                                  os << xx.str();
-                                                }
-						//os.output().width(widthInttim); os << meanIntTim;
-						os.output().width(widthLead); os << "  ";
-
-						os << spw;
-						/*
-						if (spw.size() <= 9) {
-							os.output().width(28 - (3*spw.size())); os << " ";
-						}
-						*/
-						os.output().width(widthLead); os << "  ";
-
-						std::map<uInt, Double> intToScanMap = _msmd->getAverageIntervalsForScan(lastScanKey);
-						os << "[";
-						for (
-							std::set<uInt>::const_iterator iter=spw.begin();
-							iter!=spw.end(); iter++
-						) {
-							if (iter!=spw.begin()) {
-								os << ", ";
-							}
-							os << intToScanMap[*iter];
-						}
-						os << "] ";
-						// The Obsmode column can be empty only report them if it is not
-						//String obsMode = "";
-						//if (obsModes.size() > (unsigned int) 0) {
-						//	obsMode=obsModes(laststids(0));
-						//}
-						//os << obsMode;
-
-						//os << endl;
-						std::set<String> intents = _msmd->getIntentsForScan(lastScanKey);
-						if (intents.size() > 0) {
-							os << intents;
-						}
-						os << endl;
-					}
-					if(fillRecord && (recLength < maxRecLength))  {
-						Record scanRecord;
-						Record subScanRecord;
-						String scanrecid=String("scan_")+String::toString(lastscan);
-						if(outRec.isDefined(scanrecid)){
-							scanRecord=outRec.asrwRecord(scanrecid);
-							outRec.removeField(scanrecid);
-						}
-
-						subScanRecord.define("BeginTime", btime/C::day);
-						subScanRecord.define("EndTime", etime/C::day);
-						subScanRecord.define("scanId", lastscan);
-						subScanRecord.define("FieldId", lastfldids(0));
-						subScanRecord.define("FieldName", name);
-						subScanRecord.define("StateId", laststids(0));
-						subScanRecord.define("nRow", thisnrow);
-						subScanRecord.define("IntegrationTime", meanIntTim);
-						subScanRecord.define("SpwIds", Vector<Int>(spw.begin(), spw.size(), 0));
-						scanRecord.defineRecord(String::toString(subsetscan), subScanRecord);
-						if(!outRec.isDefined(scanrecid)){
-							outRec.defineRecord(scanrecid, scanRecord);
-						}
-						if(lastscan == thisscan){
-							++subsetscan;
-						}
-						else{
-							subsetscan=0;
-						}
-					}
-					btime = _msmd->getTimeRangeForScan(thisScanKey).first;
-					// next last day is this day
-					lastday=day;
-
-					thisnrow=0;
-					meanIntTim=0.;
-					++recLength;
-				}
-				//						etime=thistime;
-				//etime=timecol(nrow-1);   //CAS-2751
-				etime = _msmd->getTimeRangeForScan(thisScanKey).second;
-			}
-			else {
-                std::pair<Double, Double> timeRange = _msmd->getTimeRangeForScan(thisScanKey);
-				// initialize btime and etime
-				//btime=thistime;
-				btime = timeRange.first;
-				//						etime=thistime;
-				//etime=timecol(nrow-1);  //CAS-2751
-				etime = timeRange.second;
-				// no longer first time thru
-				firsttime=False;
-			}
-
-			thisnrow+=nrow;
-
-			meanIntTim+=sum(inttim.makeVector());
-
-			// for comparison at next timestamp
-			lastfldids.assign(fldids);
-			lastddids.assign(ddids);
-			laststids.assign(stids);
-			lastscan=thisscan;
-
-			// push iteration
-			stiter.next();
-		} // end of time iteration
-
-		meanIntTim = thisnrow > 0 ? meanIntTim/thisnrow : 0;
-		/*
-		if
-			meanIntTim/=thisnrow;
-		else
-			meanIntTim=0.0;
-			*/
-		// this MJD
-		day=floor(MVTime(btime/C::day).day());
-		lastScanKey.obsID = obsid;
-		lastScanKey.arrayID = arrid;
-		lastScanKey.scan = lastscan;
-		spw = _msmd->getSpwsForScan(lastScanKey);
-		String name=fieldnames(lastfldids(0));
-		if (verbose) {
-			// Print out final scan's times, fields, ddis
-			os.output().setf(ios::right, ios::adjustfield);
-			os.output().width(widthLead); os << "  ";
-			os.output().width(widthbtime);
-			if (day!=lastday) {
-				os << MVTime(btime/C::day).string(MVTime::DMY,7);
-			} else {
-				os << MVTime(btime/C::day).string(MVTime::TIME,7);
-			}
-			os.output().width(widthLead);  os << " - ";
-			os.output().width(widthetime);
-			os << MVTime(etime/C::day).string(MVTime::TIME,7);
-			os.output().width(widthLead); os << "  ";
-			os.output().setf(ios::right, ios::adjustfield);
-			os.output().width(widthScan); os << lastscan;
-			os.output().width(widthLead);  os << "  ";
-			os.output().setf(ios::right, ios::adjustfield);
-			os.output().width(widthFieldId); os << lastfldids(0) << " ";
-			os.output().setf(ios::left, ios::adjustfield);
-			if (name.length()>20) name.replace(19,1,'*');
-			os.output().width(widthField); os << name.at(0,20);
-			os.output().width(widthnrow);
-			os.output().setf(ios::right, ios::adjustfield);
-			os << _msmd->nRows(MSMetaData::BOTH, arrid, obsid, lastscan, lastfldids(0));
+				<< "            nRows     ";
 			if (_listUnflaggedRowCount) {
-                          ostringstream xx;
-                          xx << std::fixed << setprecision(2)
-                             << _msmd->nUnflaggedRows(MSMetaData::BOTH, arrid, obsid, lastscan, lastfldids(0));
-                          os.output().width(widthNUnflaggedRow);
-                          os << xx.str();
-                        }
-//			os.output().width(widthInttim); os << meanIntTim;
-			os.output().width(widthLead);  os << "  ";
-                        showContainer (os.output(), spw, ", ", "[", "]");
-			os.output().width(widthLead); os << "  ";
-
-			std::map<uInt, Double> intToScanMap = _msmd->getAverageIntervalsForScan(lastScanKey);
-			os << "[";
-			for (
-				std::set<uInt>::const_iterator iter=spw.begin();
-				iter!=spw.end(); iter++
-			) {
-				if (iter!=spw.begin()) {
-					os << ", ";
+				os << "nUnflRows   ";
+			}
+			os << "SpwIds   Average Interval(s)    ScanIntent" << endl;
+		}
+		set<SubScanKey> subScans = _msmd->getSubScanKeys(*iter);
+		os.output().precision(3);
+		Double lastday = 0;
+		set<SubScanKey>::const_iterator siter = subScans.begin();
+		set<SubScanKey>::const_iterator send = subScans.end();
+		uInt subsetscan = 0;
+		Int lastscan = 0;
+		for (; siter != send; ++siter) {
+			const MSMetaData::SubScanProperties& props = ssprops->find(*siter)->second;
+			Int nrow = props.nrows;
+			Int thisscan = siter->scan;
+			set<uInt> ddIDs = props.ddIDs;
+			std::set<Int> stateIDs = props.stateIDs;
+			ScanKey scan;
+			scan.arrayID = siter->arrayID;
+			scan.obsID = siter->obsID;
+			scan.scan = siter->scan;
+			const std::pair<Double, Double>& timerange = scanToTRMap->find(scan)->second;
+			Double btime = timerange.first;
+			Double etime = timerange.second;
+			Double day=floor(MVTime(btime/C::day).day());
+			const std::set<uInt>& spw = props.spws;
+			String name=fieldnames(siter->fieldID);
+			if (verbose) {
+				os.output().setf(ios::right, ios::adjustfield);
+				os.output().width(widthLead); os << "  ";
+				os.output().width(widthbtime);
+				if (day!=lastday) {
+					// print date
+					os << MVTime(btime/C::day).string(MVTime::DMY,7);
 				}
-				os << intToScanMap[*iter];
+				else {
+					// omit date
+					os << MVTime(btime/C::day).string(MVTime::TIME,7);
+				}
+				os.output().width(3); os << " - ";
+				os.output().width(widthetime);
+				os << MVTime(etime/C::day).string(MVTime::TIME,7);
+				os.output().width(widthLead); os << "  ";
+				os.output().setf(ios::right, ios::adjustfield);
+				os.output().width(widthScan); os << siter->scan;
+				os.output().width(widthLead); os << "  ";
+				os.output().setf(ios::right, ios::adjustfield);
+				os.output().width(widthFieldId); os << siter->fieldID << " ";
+				os.output().setf(ios::left, ios::adjustfield);
+				if (name.length()>20) {
+					name.replace(19,1,'*');
+				}
+				os.output().width(widthField); os << name.at(0,20);
+				os.output().width(widthnrow);
+				os.output().setf(ios::right, ios::adjustfield);
+				os <<  nrowMap->find(*siter)->second;
+				if (_listUnflaggedRowCount) {
+					ostringstream xx;
+					xx << std::fixed << setprecision(2)
+						<< _msmd->nUnflaggedRows(
+							MSMetaData::BOTH, arrid, obsid, siter->scan, siter->fieldID
+						);
+					os.output().width(widthNUnflaggedRow);
+					os << xx.str();
+				}
+				os.output().width(widthLead); os << "  ";
+				os << spw;
+				os.output().width(widthLead); os << "  ";
+				const std::map<uInt, Quantity>& intToScanMap = ssprops->find(*siter)->second.meanInterval;
+				os << "[";
+				for (
+					std::set<uInt>::const_iterator spwiter=spw.begin();
+					spwiter!=spw.end(); ++spwiter
+				) {
+					if (spwiter!=spw.begin()) {
+						os << ", ";
+					}
+					os << intToScanMap.find(*spwiter)->second.getValue("s");
+				}
+				os << "] ";
+				const std::set<String>& intents = ssToIntents->find(*siter)->second;
+				if (! intents.empty()) {
+					os << intents;
+				}
+				os << endl;
 			}
-			os << "] ";
-			// The Obsmode column can be empty only report them if it is not
-			//String obsMode = "";
-			//if (obsModes.size() > (unsigned int) 0) {
-			//	obsMode=obsModes(laststids(0));
-			//}
-			//os << obsMode;
-			//os << endl;
-			set<String> intents = _msmd->getIntentsForScan(lastScanKey);
-			if (intents.size() > 0) {
-				os << intents;
+			if(fillRecord && (recLength < maxRecLength))  {
+				if(lastscan == thisscan && siter != subScans.begin()) {
+					++subsetscan;
+				}
+				else {
+					subsetscan=0;
+				}
+				Record scanRecord;
+				Record subScanRecord;
+				String scanrecid = String("scan_")+String::toString(siter->scan);
+				if (outRec.isDefined(scanrecid)){
+					scanRecord = outRec.asrwRecord(scanrecid);
+					outRec.removeField(scanrecid);
+				}
+				subScanRecord.define("BeginTime", btime/C::day);
+				subScanRecord.define("EndTime", etime/C::day);
+				subScanRecord.define("scanId", siter->scan);
+				subScanRecord.define("FieldId", siter->fieldID);
+				subScanRecord.define("FieldName", name);
+				subScanRecord.define("StateId", *stateIDs.begin());
+				subScanRecord.define("nRow", nrow);
+				subScanRecord.define("IntegrationTime", props.meanExposureTime.getValue("s"));
+				subScanRecord.define("SpwIds", Vector<Int>(spw.begin(), spw.size(), 0));
+				scanRecord.defineRecord(String::toString(subsetscan), subScanRecord);
+				if(!outRec.isDefined(scanrecid)){
+					outRec.defineRecord(scanrecid, scanRecord);
+				}
 			}
-			os << endl;
-		}
-		if(fillRecord  && (recLength < maxRecLength)){
-			Record scanRecord;
-			Record subScanRecord;
-			String scanrecid=String("scan_")+String::toString(lastscan);
-			if(outRec.isDefined(scanrecid)){
-				scanRecord=outRec.asrwRecord(scanrecid);
-				outRec.removeField(scanrecid);
-			}
-
-			subScanRecord.define("BeginTime", btime/C::day);
-			subScanRecord.define("EndTime", etime/C::day);
-			subScanRecord.define("scanId", lastscan);
-			subScanRecord.define("FieldId", lastfldids(0));
-			subScanRecord.define("FieldName", name);
-			subScanRecord.define("nRow", thisnrow);
-			subScanRecord.define("IntegrationTime", meanIntTim);
-			subScanRecord.define("SpwIds", Vector<Int>(spw.begin(), spw.size(), 0));
-			scanRecord.defineRecord(String::toString(subsetscan), subScanRecord);
-			if(!outRec.isDefined(scanrecid)){
-				outRec.defineRecord(scanrecid, scanRecord);
-			}
-			subsetscan=0;
+			// next last day is this day
+			lastday  =day;
 			++recLength;
+			lastscan = thisscan;
 		}
 
-		// post to logger
-		if (verbose) os << LogIO::POST;
-
-		// push OBS/ARR iteration
-		obsarriter.next();
-	} // end of OBS/ARR iteration
+		if (verbose) {
+			os << LogIO::POST;
+		}
+	}
 	if (verbose){
 		os << "           (nRows = Total number of rows per scan) " << endl;
 		os << LogIO::POST;
 	}
-
-	//		} // end of verbose section
-
-
-
 	os << LogIO::POST;
 }
 
@@ -1111,7 +856,7 @@ void MSSummary::listAntenna (LogIO& os, Bool verbose) const
 
 		vector<MPosition> antPos = _msmd->getAntennaPositions();
 		Bool posIsITRF = antPos[0].type() != MPosition::ITRF;
-		vector<Quantum<Vector<Double> > > offsets = _msmd->getAntennaOffsets();
+		vector<QVD> offsets = _msmd->getAntennaOffsets();
 
 		// For each ant
 		for (Int i=0; i<nAnt; i++) {

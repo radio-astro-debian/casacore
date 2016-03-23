@@ -28,6 +28,7 @@
 # include <casacore/casa/sstream.h>
 # include <casacore/fits/FITS/blockio.h>
 # include <casacore/casa/string.h>
+#include <casacore/casa/OS/File.h>
 #include <unistd.h>
 
 namespace casacore { //# NAMESPACE CASACORE - BEGIN
@@ -73,7 +74,14 @@ namespace casacore { //# NAMESPACE CASACORE - BEGIN
 	strcpy(m_filename,f);
 	// using cfitsio of NASA to open fits file for writting and reading.
 	int l_status, iomode;
-	l_status = 0; 
+	File myfile(m_filename);
+	if (myfile.isReadable()) {
+	    // the file name does not use fits extensions
+	    l_status = OPEN_DISK_FILE;
+	}
+	else {
+	    l_status = 0;
+	}
 	if (m_options & O_CREAT){
 	    if (fits_create_file(&m_fptr, m_filename, &l_status)){ /*create FITS file*/
 		fits_report_error(stderr, l_status); /* print error report */
@@ -176,11 +184,11 @@ namespace casacore { //# NAMESPACE CASACORE - BEGIN
 	    }
 
 	    fits_clear_Fptr( fptr->Fptr, status);  // clear Fptr address 
+#if CFITSIO_VERSION_MAJOR>=3 && CFITSIO_VERSION_MINOR>=181
             // iobuffer was added with version 3.181...
             // cfitsio 3.03-3.14 do not have this...
-            // However, something like CFITSIO_VERSION 3.03 is greek to CPP.
-            // So assume that by 1-Apr-2015 all sites use a sufficiently new cfitsio.
             free((fptr->Fptr)->iobuffer);          // free memory for I/O buffers
+#endif
 	    free((fptr->Fptr)->headstart);         // free memory for headstart array 
 	    free((fptr->Fptr)->filename);          // free memory for the filename
 	    (fptr->Fptr)->filename = 0;
