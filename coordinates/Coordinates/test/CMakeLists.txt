@@ -1,12 +1,18 @@
 set (tests
+dCoordinates
 dRemoveAxes
 dWorldMap
 tCoordinate
+tCoordinateSystem
+tCoordinateUtil
 tDirectionCoordinate
+tFrequencyAligner
 tGaussianConvert
 tLinearCoordinate
 tLinearXform
+tObsInfo
 tProjection
+tSpectralCoordinate
 tStokesCoordinate
 tQualityCoordinate
 tTabularCoordinate

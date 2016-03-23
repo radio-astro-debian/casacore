@@ -1,5 +1,6 @@
 set (tests
 tTableQuantum
+tTableMeasures
 dVarRefMdirCol
 )
 

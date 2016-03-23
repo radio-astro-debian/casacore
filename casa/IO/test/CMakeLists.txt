@@ -3,7 +3,9 @@ tAipsIOCarray
 tAipsIO
 tBucketBuffered
 tBucketCache
+tBucketFile
 tBucketMapped
+tByteIO
 tByteSink
 tByteSinkSource
 tFilebufIO

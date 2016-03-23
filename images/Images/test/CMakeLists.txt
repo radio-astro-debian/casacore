@@ -24,18 +24,36 @@ endforeach (file)
 
 set (tests
 dImageInterface
+dImageStatistics
+dImageSummary
 dPagedImage
 tExtendImage
+tFITSErrorImage
 tFITSExtImage
 tFITSExtImageII
 tFITSImage
 tFITSImgParser
+tFITSQualityImage
 tHDF5Image
+tImageAttrHandler
+tImageBeamSet
+tImageConcat
+tImageEmpty
+tImageExpr
+tImageExpr2Gram
+tImageExpr3Gram
 tImageExprGram
 tImageExprParse_addDir
 tImageInfo
+tImageRegrid
 tImageStatistics
+tImageStatistics2
+tImageUtilities
+tLELSpectralIndex
 tMIRIADImage
+tPagedImage
+tPagedImage2
+tRebinImage
 tSubImage
 tTempImage
 )

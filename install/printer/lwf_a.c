@@ -103,25 +103,23 @@
  * BJB - Nov/85
  * ===========================================================================
  *
- * Copyright (c) 1985-2012 Distributed Systems Software
+ * Copyright (c) Barry Brachman
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Permission is given to freely copy or distribute this program
+ * with the following restrictions:
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *      1) The author is not responsible for the consequences of use of
+ *              this software and is not responsible for correcting any defects
+ *      2) The origin of this software must not be misrepresented, either by
+ *              explicit claim or by omission
+ *      3) You may not sell this program
+ *      4) Altered versions must be plainly marked as such, and must not
+ *              be misrepresented as being the original software
  *
  * Barry Brachman
- * Distributed Systems Software
- * brachman@dss.ca
+ * Dept. of Computer Science
+ * Univ. of British Columbia
+ * Vancouver, B.C. V6T 1W5
  *
  * ===========================================================================
  *

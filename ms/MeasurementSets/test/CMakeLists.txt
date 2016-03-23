@@ -15,6 +15,7 @@ tMeasurementSet
 tMSColumns
 tMSDataDescBuffer
 tMSFieldBuffer
+tMSFieldEphem
 tMSIter
 tMSMainBuffer
 tMSPolBuffer
