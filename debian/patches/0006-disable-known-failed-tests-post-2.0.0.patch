@@ -1,4 +1,3 @@
-From 6cf27bf967e8ef75b4ef71e087b79f37f83eb5a1 Mon Sep 17 00:00:00 2001
 From: Benda Xu <heroxbd@gentoo.org>
 Date: Mon, 29 Jun 2015 17:33:10 +0900
 Subject: disable known failed tests post 2.0.0
@@ -16,17 +15,17 @@ Description: tImageConcat, tMSFieldEphem, tmeas requires casacore-data,
  4 files changed, 1 insertion(+), 6 deletions(-)
 
 diff --git a/images/Images/test/CMakeLists.txt b/images/Images/test/CMakeLists.txt
-index a0e8461..b1d0caf 100644
+index f5ce79e..f0caba3 100644
 --- a/images/Images/test/CMakeLists.txt
 +++ b/images/Images/test/CMakeLists.txt
-@@ -31,7 +31,6 @@ tFITSExtImageII
+@@ -42,7 +42,6 @@ tFITSExtImageII
  tFITSImage
  tFITSImgParser
  tHDF5Image
 -tImageConcat
  tImageExprGram
+ tImageExprParse
  tImageExprParse_addDir
- tImageInfo
 diff --git a/lattices/LatticeMath/test/CMakeLists.txt b/lattices/LatticeMath/test/CMakeLists.txt
 index 528096c..91d103f 100644
 --- a/lattices/LatticeMath/test/CMakeLists.txt
