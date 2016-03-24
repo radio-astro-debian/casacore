@@ -10,12 +10,12 @@ Build-Depends: bison,
                gfortran,
                graphviz,
                libblas-dev,
+	       libboost-python-dev,
                libcfitsio-dev,
                libfftw3-dev,
                liblapack-dev,
                libncurses5-dev,
                libreadline6-dev,
-               python-minimal,
                wcslib-dev
 Standards-Version: 3.9.6
 Section: science
