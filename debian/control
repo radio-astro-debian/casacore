@@ -27,7 +27,6 @@ Package: casacore-dev
 Section: libdevel
 Architecture: any
 Depends: libcasa-casa1 (= ${binary:Version}),
-         libcasa-components1 (= ${binary:Version}),
          libcasa-coordinates1 (= ${binary:Version}),
          libcasa-derivedmscal1 (= ${binary:Version}),
          libcasa-fits1 (= ${binary:Version}),
@@ -258,21 +257,6 @@ Description: CASA coordinates library
  .
  This package contains the implementaion of coordinates for astronomical
  images.
-
-Package: libcasa-components1
-Section: libs
-Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}
-Pre-Depends: ${misc:Pre-Depends}
-Multi-Arch: same
-Description: CASA components library
- The casacore package contains the core libraries of the old
- AIPS++/CASA (Common Astronomy Software Applications) package. This
- split was made to get a better separation of core libraries and
- applications.
- .
- This package contains the implementation of sky components (point sources,
- gaussians, etc.).
 
 Package: libcasa-images1
 Section: libs
