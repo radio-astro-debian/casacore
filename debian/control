@@ -37,6 +37,7 @@ Depends: libcasa-casa2 (= ${binary:Version}),
          libcasa-mirlib2 (= ${binary:Version}),
          libcasa-ms2 (= ${binary:Version}),
          libcasa-msfits2 (= ${binary:Version}),
+         libcasa-python2 (= ${binary:Version}),
          libcasa-scimath-f2 (= ${binary:Version}),
          libcasa-scimath2 (= ${binary:Version}),
          libcasa-tables2 (= ${binary:Version}),
@@ -134,6 +135,20 @@ Description: CASA scimath F library
  .
  This package contains the Mathematical modules N-dim functionals,
  linear/non-linear fitting, and miscellaneous.
+
+Package: libcasa-python2
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: CASA python bindings
+ The casacore package contains the core libraries of the old
+ AIPS++/CASA (Common Astronomy Software Applications) package. This
+ split was made to get a better separation of core libraries and
+ applications.
+ .
+ This package contains the python bindings.
 
 Package: libcasa-tables2
 Section: libs
