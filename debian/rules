@@ -22,9 +22,5 @@ override_dh_auto_test-indep override_dh_auto_install-indep:
 override_dh_auto_test-arch:
 	HOME=$(CURDIR) dh_auto_test -a
 
-override_dh_installdocs-indep:
-	dh_installdocs -i
-	dh_doxygen -i
-
 override_dh_clean:
 	rm -rf doc/
