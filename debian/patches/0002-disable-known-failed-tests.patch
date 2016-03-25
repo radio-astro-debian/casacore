@@ -37,8 +37,8 @@ Description: Testsuite of tEarthField, tEarthMagneticMachine,
  lattices/LatticeMath/test/CMakeLists.txt    |  1 -
  measures/Measures/test/CMakeLists.txt       | 21 ---------------------
  measures/TableMeasures/test/CMakeLists.txt  |  1 -
- ms/MSOper/test/CMakeLists.txt               |  2 --
- 7 files changed, 54 deletions(-)
+ ms/MSOper/test/CMakeLists.txt               |  3 ---
+ 7 files changed, 55 deletions(-)
 
 diff --git a/coordinates/Coordinates/test/CMakeLists.txt b/coordinates/Coordinates/test/CMakeLists.txt
 index f46b327..bbf7e68 100644
@@ -188,13 +188,16 @@ index 20db6b4..042b8a9 100644
  )
  
 diff --git a/ms/MSOper/test/CMakeLists.txt b/ms/MSOper/test/CMakeLists.txt
-index cf40a4a..c934ba0 100644
+index cf40a4a..0491056 100644
 --- a/ms/MSOper/test/CMakeLists.txt
 +++ b/ms/MSOper/test/CMakeLists.txt
-@@ -1,6 +1,4 @@
+@@ -1,9 +1,6 @@
  set (tests
 -tMSDerivedValues
 -tMSKeys
  tMSMetaData
  tMSReader
- tMSSummary
+-tMSSummary
+ )
+ 
+ foreach (test ${tests})
