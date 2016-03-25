@@ -1,0 +1,44 @@
+.TH "casacore_assay" "1" "2016-03-25" "casacore"
+.SH "NAME"
+.PP
+casacore_assay \- invoke an AIPS++ test program and verify its output
+.SH "SYNOPSIS"
+.PP
+\fBcasacore_assay\fP \fItestexe\fR
+.SH "DESCRIPTION"
+\fBcasacore_assay\fP invokes a casacore test program. If the test
+program has an associated \.run file then it simply invokes it.  Otherwise \fBcasacore_assay\fP invokes the test
+executable directly, and, if there is a corresponding .out file,
+compares its output with that.
+
+If there is a .in file associated with the test program then assay will
+redirect stdin from it.
+
+.SS "Exit status:"
+.TP 
+0
+success
+.TP
+1
+test execution failed
+.TP
+2
+test output disagreement
+.TP
+3
+untested (usually returned from a .run)
+.TP
+130
+interrupt
+
+.SH "ENVIRONMENT VARIABLES"
+.B CASACORE_CHECK
+Do checking using tools like valgrind. It defines a script that will
+execute the command. The script can invoke the checking tool. If set
+to 1, yes, or YES, the script \fBcasacore_memcheck\fP will be used
+that uses valgrind's memcheck tool.
+
+.SH "AUTHOR"
+.PP
+This manual page was written according to the in-program comments by
+Benda Xu <heroxbd@gentoo.org>, for the Debian GNU/Linux system.

@@ -1,0 +1,37 @@
+.TH "showtableinfo" "1" "2016-03-25" "caascore"
+.SH NAME
+showtableinfo \- show table info and contents
+.SH SYNOPSIS
+\fBshowtableinfo\fP [\fIOPTION\fR] [\fIINPUT FILE\fR]
+.SH "DESCRIPTION"
+.TP
+\fB-dm\fR T|F
+Show data manager info? Defaults to T.
+.TP
+\fB-col\fR T|F
+Show column info? Defaults to T.
+.TP
+\fB-tabkey\fR T|F
+Show table keywords? Defaults to F.
+.TP
+\fB-colkey\fR T|F
+Show column keywords? Defaults to F.
+.TP
+\fB-maxval\fR [number]
+Max number of array values to show. Defaults to 25.
+.TP
+\fB-sub\fR T|F
+Show info for all subtables? Defaults to F.
+.TP
+\fB-sort\fR T|F
+Sort columns in alphabetical order? Defaults to F.
+.TP
+\fB-browse\fR T|F
+Browse contents of table? Defaults to F.
+.TP
+\fB-selcol\fR|\fB-selrow\fR|\fB-selsort\fR [string]
+TaQL column/row selection or sort string.
+.SH "AUTHOR"
+.PP
+This manual page was written by Benda Xu <heroxbd@gentoo.org>, for the
+Debian GNU/Linux system.
