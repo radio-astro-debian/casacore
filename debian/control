@@ -19,7 +19,7 @@ Build-Depends: bison,
                wcslib-dev
 Standards-Version: 3.9.6
 Section: science
-Homepage: http://code.google.com/p/casacore/
+Homepage: http://casacore.github.io/casacore
 Vcs-Git: git://anonscm.debian.org/debian-astro/packages/casacore.git
 Vcs-Browser: https://anonscm.debian.org/cgit/debian-astro/packages/casacore.git
 
@@ -270,7 +270,7 @@ Description: CASA coordinates library
  split was made to get a better separation of core libraries and
  applications.
  .
- This package contains the implementaion of coordinates for astronomical
+ This package contains the implementation of coordinates for astronomical
  images.
 
 Package: libcasa-images2
