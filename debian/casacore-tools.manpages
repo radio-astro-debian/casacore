@@ -1,13 +1,1 @@
-debian/casahdf5support.1
-debian/findmeastable.1
-debian/fits2table.1
-debian/image2fits.1
-debian/imagecalc.1
-debian/imageregrid.1
-debian/imageslice.1
-debian/imreorder.1
-debian/measuresdata.1
-debian/msselect.1
-debian/showtable.1
-debian/showtablelock.1
-debian/taql.1
+debian/*.1
