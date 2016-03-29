@@ -16,6 +16,7 @@ Build-Depends: bison,
                liblapack-dev,
                libncurses5-dev,
                libreadline6-dev,
+	       python-numpy,
                wcslib-dev
 Standards-Version: 3.9.6
 Section: science
