@@ -1,3 +1,10 @@
+casacore (2.1.0-1xenial1) xenial; urgency=medium
+
+  * Disabled tArrayColumnCellSlices
+  * build for Ubuntu 16.04
+
+ -- Gijs Molenaar (launchpad ppa build key) <gijs@pythonic.nl>  Tue, 12 Apr 2016 10:09:02 +0000
+
 casacore (2.1.0-1) unstable; urgency=low
 
   * Initial release. (Closes: #686924)
