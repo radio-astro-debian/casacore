@@ -1,0 +1,20 @@
+From: Gijs Molenaar <gijs@pythonic.nl>
+Date: Tue, 12 Apr 2016 09:48:08 +0000
+Subject: disable tArrayColumnCellSlices test
+
+---
+ tables/Tables/test/CMakeLists.txt | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/tables/Tables/test/CMakeLists.txt b/tables/Tables/test/CMakeLists.txt
+index 86b0f34..54acb86 100644
+--- a/tables/Tables/test/CMakeLists.txt
++++ b/tables/Tables/test/CMakeLists.txt
+@@ -21,7 +21,6 @@ endforeach (file)
+ set (tests
+ ascii2Table
+ tArrayColumnSlices
+-tArrayColumnCellSlices
+ tColumnsIndex
+ tColumnsIndexArray
+ tConcatRows
